@@ -4,6 +4,7 @@ import { resolve } from 'path'
 
 export default defineConfig({
   plugins: [vue()],
+  // Base path cho GitHub Pages
   base: '/jpa-spring-boot-generic-service/', 
   resolve: {
     alias: {
@@ -11,7 +12,10 @@ export default defineConfig({
     }
   },
   build: {
-    outDir: 'dist',
-    emptyOutDir: true
+    outDir: resolve(__dirname, '../docs'),
+    
+    emptyOutDir: true,
+    
+    assetsDir: 'assets', 
   }
 })
