@@ -1,4 +1,4 @@
-import{_ as s}from"./CodeBlock-BG1DIOSQ.js";import{r,c as d,o as u,b as t,e as o,d as i}from"./index-BqOVmnp8.js";const p={id:"usage",class:"scroll-mt-20 mb-16"},m={id:"usage-3-1",class:"mb-10 scroll-mt-24"},b={id:"usage-3-2",class:"mb-10 scroll-mt-24"},v={id:"usage-3-3",class:"mb-10 scroll-mt-24"},C={__name:"UsageSection",setup(P){const l=r(`
+import{_ as s}from"./CodeBlock-DR8BMuCI.js";import{r,c as d,o as u,b as t,e as o,d as i}from"./index-CIbvM86k.js";const p={id:"usage",class:"scroll-mt-20 mb-16"},m={id:"usage-3-1",class:"mb-10 scroll-mt-24"},b={id:"usage-3-2",class:"mb-10 scroll-mt-24"},v={id:"usage-3-3",class:"mb-10 scroll-mt-24"},C={__name:"UsageSection",setup(P){const l=r(`
 @Data
 @NoArgsConstructor
 public class ProductCreateReq implements IDto<Product> {
