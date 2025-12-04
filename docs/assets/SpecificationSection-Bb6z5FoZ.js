@@ -1,4 +1,4 @@
-import{_ as s}from"./CodeBlock-iGN3yth4.js";import{r as o,c,o as i,b as t,d as a,e as l}from"./index-B1oYgI3J.js";const p={id:"spec-examples",class:"scroll-mt-20 mb-16"},d={id:"spec-search",class:"mb-10 scroll-mt-24"},u={id:"spec-pageable",class:"mb-10 scroll-mt-24"},P={__name:"SpecificationSection",setup(m){const r=o(`
+import{_ as s}from"./CodeBlock-BG1DIOSQ.js";import{r as o,c,o as i,b as t,d as a,e as l}from"./index-BqOVmnp8.js";const p={id:"spec-examples",class:"scroll-mt-20 mb-16"},d={id:"spec-search",class:"mb-10 scroll-mt-24"},u={id:"spec-pageable",class:"mb-10 scroll-mt-24"},P={__name:"SpecificationSection",setup(m){const r=o(`
 @GetMapping("/search")
 public Page<ProductResponse> search(@RequestParam String name, 
                                     @RequestParam int page, 

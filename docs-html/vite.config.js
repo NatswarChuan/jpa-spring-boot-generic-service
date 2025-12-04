@@ -4,9 +4,14 @@ import { resolve } from 'path'
 
 export default defineConfig({
   plugins: [vue()],
+  base: '/jpa-spring-boot-generic-service/', 
   resolve: {
     alias: {
       '@': resolve(__dirname, './src')
     }
+  },
+  build: {
+    outDir: 'dist',
+    emptyOutDir: true
   }
 })
