@@ -25,29 +25,32 @@
     
     <!-- Key Benefits Grid -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-      <div class="bg-white p-6 rounded-lg border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4 text-blue-600">
+      <!-- Card 1: Speed -> Implementation -->
+      <a href="#implementation" class="block bg-white p-6 rounded-lg border border-slate-200 shadow-sm hover:shadow-md transition-all hover:border-blue-400 group cursor-pointer no-underline">
+        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4 text-blue-600 group-hover:scale-110 transition-transform">
           <i class="fas fa-bolt text-xl"></i>
         </div>
-        <h3 class="text-lg font-bold text-slate-800 mb-2">Tốc độ vượt trội</h3>
+        <h3 class="text-lg font-bold text-slate-800 mb-2 group-hover:text-blue-700 transition-colors">Tốc độ vượt trội</h3>
         <p class="text-sm text-slate-600">Triển khai toàn bộ API CRUD chuẩn mực cho một Entity mới chỉ trong vài phút.</p>
-      </div>
+      </a>
 
-      <div class="bg-white p-6 rounded-lg border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4 text-green-600">
+      <!-- Card 2: Standardization -> API Methods -->
+      <a href="#abservice-methods" class="block bg-white p-6 rounded-lg border border-slate-200 shadow-sm hover:shadow-md transition-all hover:border-green-400 group cursor-pointer no-underline">
+        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4 text-green-600 group-hover:scale-110 transition-transform">
           <i class="fas fa-code text-xl"></i>
         </div>
-        <h3 class="text-lg font-bold text-slate-800 mb-2">Chuẩn hóa Code</h3>
+        <h3 class="text-lg font-bold text-slate-800 mb-2 group-hover:text-green-700 transition-colors">Chuẩn hóa Code</h3>
         <p class="text-sm text-slate-600">Mã nguồn đồng nhất giữa các module, dễ đọc, dễ hiểu và cực kỳ dễ bảo trì.</p>
-      </div>
+      </a>
 
-      <div class="bg-white p-6 rounded-lg border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4 text-purple-600">
+      <!-- Card 3: Auto DTO -> Usage -->
+      <a href="#usage" class="block bg-white p-6 rounded-lg border border-slate-200 shadow-sm hover:shadow-md transition-all hover:border-purple-400 group cursor-pointer no-underline">
+        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4 text-purple-600 group-hover:scale-110 transition-transform">
           <i class="fas fa-layer-group text-xl"></i>
         </div>
-        <h3 class="text-lg font-bold text-slate-800 mb-2">Auto DTO Mapping</h3>
+        <h3 class="text-lg font-bold text-slate-800 mb-2 group-hover:text-purple-700 transition-colors">Auto DTO Mapping</h3>
         <p class="text-sm text-slate-600">Tự động chuyển đổi dữ liệu hai chiều giữa Entity và DTO một cách thông minh.</p>
-      </div>
+      </a>
     </div>
   </section>
 </template>

@@ -1,4 +1,4 @@
-import{_ as l}from"./CodeBlock-DR8BMuCI.js";import{r as s,c as d,o as p,b as e,d as o,e as r}from"./index-CIbvM86k.js";const m={id:"implementation",class:"scroll-mt-20 mb-16"},u={id:"step2-1",class:"mb-10 scroll-mt-24"},b={id:"step2-2",class:"mb-10 scroll-mt-24"},x={id:"step2-3",class:"mb-10 scroll-mt-24"},v={id:"step2-4",class:"mb-10 scroll-mt-24"},P={__name:"ImplementationSection",setup(f){const n=s(`
+import{_ as l}from"./CodeBlock-DRz6qq4X.js";import{r as s,c as d,o as p,b as e,d as o,e as r}from"./index-DrsdOihb.js";const m={id:"implementation",class:"scroll-mt-20 mb-16"},u={id:"step2-1",class:"mb-10 scroll-mt-24"},b={id:"step2-2",class:"mb-10 scroll-mt-24"},x={id:"step2-3",class:"mb-10 scroll-mt-24"},v={id:"step2-4",class:"mb-10 scroll-mt-24"},P={__name:"ImplementationSection",setup(f){const n=s(`
 @Entity
 @Table(name = "products")
 @Data

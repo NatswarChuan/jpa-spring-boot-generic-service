@@ -32,7 +32,7 @@ import { ref, computed, defineAsyncComponent, onMounted, onUnmounted, nextTick }
 import Sidebar from './components/Sidebar.vue';
 import MainContent from './components/MainContent.vue';
 
-// Async load components for better performance
+// Async load components
 const sectionComponents = {
   IntroductionSection: defineAsyncComponent(() => import('./components/sections/IntroductionSection.vue')),
   ImplementationSection: defineAsyncComponent(() => import('./components/sections/ImplementationSection.vue')),
@@ -67,16 +67,24 @@ const sections = ref([
       { id: 'api-read-single', title: '4.1. Read (Single)' },
       { id: 'api-read-list', title: '4.2. Read (List)' },
       { id: 'api-write', title: '4.3. Write (C/U/D)' }
+      // Đã chuyển 4.4 sang mục 6
     ]
   },
   { 
     id: 'spec-examples', title: '5. Ví dụ Specification', component: 'SpecificationSection', 
     subs: [
       { id: 'spec-search', title: '5.1. Tìm kiếm cơ bản' },
-      { id: 'spec-pageable', title: '5.4. Phân trang & Sắp xếp' }
+      { id: 'spec-pageable', title: '5.2. Phân trang & Sắp xếp' }
     ]
   },
-  { id: 'notes', title: '6. Lưu ý quan trọng', component: 'NotesSection', subs: [] }
+  { 
+    id: 'notes', title: '6. Lưu ý quan trọng', component: 'NotesSection', 
+    subs: [
+      { id: 'notes-common', title: '6.1. Lỗi thường gặp' },
+      { id: 'notes-n1', title: '6.2. Ưu điểm & N+1' },
+      { id: 'notes-tips', title: '6.3. Mẹo tối ưu' }
+    ] 
+  }
 ]);
 
 const currentSectionIndex = ref(0);
@@ -89,7 +97,6 @@ const handleHashChange = () => {
   let targetIndex = sections.value.findIndex(s => s.id === sectionId);
   let anchorId = null;
 
-  // If hash is a subsection, find parent section
   if (targetIndex === -1) {
     for (let i = 0; i < sections.value.length; i++) {
       if (sections.value[i].subs.some(sub => sub.id === sectionId)) {
@@ -127,7 +134,6 @@ onUnmounted(() => {
   window.removeEventListener('hashchange', handleHashChange);
 });
 
-// Computed properties for navigation
 const currentSection = computed(() => sections.value[currentSectionIndex.value]);
 const isFirstSection = computed(() => currentSectionIndex.value === 0);
 const isLastSection = computed(() => currentSectionIndex.value === sections.value.length - 1);
@@ -140,7 +146,6 @@ const nextSectionTitle = computed(() =>
   !isLastSection.value ? sections.value[currentSectionIndex.value + 1].title : null
 );
 
-// Navigation actions
 const goToNextSection = () => {
   if (!isLastSection.value) {
     window.location.hash = sections.value[currentSectionIndex.value + 1].id;
@@ -153,7 +158,6 @@ const goToPreviousSection = () => {
   }
 };
 
-// Sidebar actions
 const toggleSidebar = () => isSidebarOpen.value = !isSidebarOpen.value;
 const closeSidebar = () => isSidebarOpen.value = false;
 </script>
