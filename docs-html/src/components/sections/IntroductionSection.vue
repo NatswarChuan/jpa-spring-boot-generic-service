@@ -1,0 +1,25 @@
+<template>
+  <section id="intro" class="scroll-mt-20 mb-16">
+    <h2 class="text-4xl font-bold text-slate-900 mb-6">1. Giới thiệu</h2>
+    <p class="text-lg text-slate-600 leading-relaxed mb-6">
+      Hệ thống <strong>Generic Service</strong> được xây dựng nhằm chuẩn hóa quy trình phát triển Backend. 
+      Thay vì viết lại các hàm CRUD (Create, Read, Update, Delete) cho từng bảng dữ liệu, lập trình viên chỉ cần kế thừa 
+      các lớp có sẵn.
+    </p>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+      <div class="bg-blue-50 p-6 rounded-lg border border-blue-100">
+        <h3 class="text-lg font-semibold text-blue-800 mb-2"><i class="fas fa-bolt mr-2"></i>Tốc độ</h3>
+        <p class="text-sm text-blue-600">Triển khai CRUD đầy đủ chỉ trong vài phút.</p>
+      </div>
+      <div class="bg-green-50 p-6 rounded-lg border border-green-100">
+        <h3 class="text-lg font-semibold text-green-800 mb-2"><i class="fas fa-code mr-2"></i>Chuẩn hóa</h3>
+        <p class="text-sm text-green-600">Code đồng nhất giữa các module, dễ bảo trì.</p>
+      </div>
+      <div class="bg-purple-50 p-6 rounded-lg border border-purple-100">
+        <h3 class="text-lg font-semibold text-purple-800 mb-2"><i class="fas fa-layer-group mr-2"></i>DTO Mapping</h3>
+        <p class="text-sm text-purple-600">Tự động chuyển đổi giữa Entity và DTO.</p>
+      </div>
+    </div>
+  </section>
+</template>
