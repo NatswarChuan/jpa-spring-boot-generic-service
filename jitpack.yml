@@ -1,0 +1,4 @@
+jdk:
+  - openjdk17
+script:
+  - mvn -f java-code/pom.xml clean install
