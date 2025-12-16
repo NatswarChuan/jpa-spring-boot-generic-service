@@ -35,6 +35,7 @@ import MainContent from './components/MainContent.vue';
 // Async load components
 const sectionComponents = {
   IntroductionSection: defineAsyncComponent(() => import('./components/sections/IntroductionSection.vue')),
+  InstallationSection: defineAsyncComponent(() => import('./components/sections/InstallationSection.vue')),
   ImplementationSection: defineAsyncComponent(() => import('./components/sections/ImplementationSection.vue')),
   UsageSection: defineAsyncComponent(() => import('./components/sections/UsageSection.vue')),
   ApiListSection: defineAsyncComponent(() => import('./components/sections/ApiListSection.vue')),
@@ -44,45 +45,46 @@ const sectionComponents = {
 
 const sections = ref([
   { id: 'intro', title: '1. Giới thiệu', component: 'IntroductionSection', subs: [] },
+  { id: 'installation', title: '2. Cài đặt', component: 'InstallationSection', subs: [] },
   { 
-    id: 'implementation', title: '2. Hướng dẫn Triển khai', component: 'ImplementationSection', 
+    id: 'implementation', title: '3. Hướng dẫn Triển khai', component: 'ImplementationSection', 
     subs: [
-      { id: 'step2-1', title: '2.1. Định nghĩa Entity' },
-      { id: 'step2-2', title: '2.2. Tạo Repository' },
-      { id: 'step2-3', title: '2.3. Service Interface' },
-      { id: 'step2-4', title: '2.4. Service Impl' }
+      { id: 'step2-1', title: '3.1. Định nghĩa Entity' },
+      { id: 'step2-2', title: '3.2. Tạo Repository' },
+      { id: 'step2-3', title: '3.3. Service Interface' },
+      { id: 'step2-4', title: '3.4. Service Impl' }
     ]
   },
   { 
-    id: 'usage', title: '3. Hướng dẫn sử dụng', component: 'UsageSection', 
+    id: 'usage', title: '4. Hướng dẫn sử dụng', component: 'UsageSection', 
     subs: [
-      { id: 'usage-3-1', title: '3.1. Request DTO' },
-      { id: 'usage-3-2', title: '3.2. Response DTO' },
-      { id: 'usage-3-3', title: '3.3. Controller' }
+      { id: 'usage-3-1', title: '4.1. Request DTO' },
+      { id: 'usage-3-2', title: '4.2. Response DTO' },
+      { id: 'usage-3-3', title: '4.3. Controller' }
     ]
   },
   { 
-    id: 'abservice-methods', title: '4. Danh sách hàm (API)', component: 'ApiListSection', 
+    id: 'abservice-methods', title: '5. Danh sách hàm (API)', component: 'ApiListSection', 
     subs: [
-      { id: 'api-read-single', title: '4.1. Read (Single)' },
-      { id: 'api-read-list', title: '4.2. Read (List)' },
-      { id: 'api-write', title: '4.3. Write (C/U/D)' }
+      { id: 'api-read-single', title: '5.1. Read (Single)' },
+      { id: 'api-read-list', title: '5.2. Read (List)' },
+      { id: 'api-write', title: '5.3. Write (C/U/D)' }
       // Đã chuyển 4.4 sang mục 6
     ]
   },
   { 
-    id: 'spec-examples', title: '5. Ví dụ Specification', component: 'SpecificationSection', 
+    id: 'spec-examples', title: '6. Ví dụ Specification', component: 'SpecificationSection', 
     subs: [
-      { id: 'spec-search', title: '5.1. Tìm kiếm cơ bản' },
-      { id: 'spec-pageable', title: '5.2. Phân trang & Sắp xếp' }
+      { id: 'spec-search', title: '6.1. Tìm kiếm cơ bản' },
+      { id: 'spec-pageable', title: '6.2. Phân trang & Sắp xếp' }
     ]
   },
   { 
-    id: 'notes', title: '6. Lưu ý quan trọng', component: 'NotesSection', 
+    id: 'notes', title: '7. Lưu ý quan trọng', component: 'NotesSection', 
     subs: [
-      { id: 'notes-common', title: '6.1. Lỗi thường gặp' },
-      { id: 'notes-n1', title: '6.2. Ưu điểm & N+1' },
-      { id: 'notes-tips', title: '6.3. Mẹo tối ưu' }
+      { id: 'notes-common', title: '7.1. Lỗi thường gặp' },
+      { id: 'notes-n1', title: '7.2. Ưu điểm & N+1' },
+      { id: 'notes-tips', title: '7.3. Mẹo tối ưu' }
     ] 
   }
 ]);
