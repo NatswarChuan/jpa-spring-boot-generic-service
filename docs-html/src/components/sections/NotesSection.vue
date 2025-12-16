@@ -1,11 +1,11 @@
 <template>
   <section id="notes" class="scroll-mt-20 mb-16">
-    <h2 class="text-3xl font-bold text-red-600 border-b border-red-200 pb-4 mb-8">6. Lưu ý quan trọng & Tips</h2>
+    <h2 class="text-3xl font-bold text-red-600 border-b border-red-200 pb-4 mb-8">7. Lưu ý quan trọng & Tips</h2>
     
     <!-- 6.1 Common Errors -->
     <article id="notes-common" class="mb-10 scroll-mt-24">
       <h3 class="text-xl font-bold text-slate-800 mb-4 flex items-center">
-        <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm mr-3">6.1</span>
+        <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm mr-3">7.1</span>
         Các lỗi thường gặp
       </h3>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
@@ -34,7 +34,7 @@
     <!-- 6.2 Pros/Cons & N+1 -->
     <article id="notes-n1" class="mb-10 scroll-mt-24">
       <h3 class="text-xl font-bold text-slate-800 mb-4 flex items-center">
-        <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm mr-3">6.2</span>
+        <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm mr-3">7.2</span>
         Ưu điểm & Cách phòng tránh lỗi N+1
       </h3>
 
@@ -114,7 +114,7 @@
     <!-- 6.3 Tips -->
     <article id="notes-tips" class="mb-10 scroll-mt-24">
       <h3 class="text-xl font-bold text-slate-800 mb-4 flex items-center">
-        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">6.3</span>
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">7.3</span>
         Mẹo tối ưu cho Developer
       </h3>
       <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 shadow-sm">

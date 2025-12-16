@@ -1,6 +1,6 @@
 <template>
   <section id="abservice-methods" class="scroll-mt-20 mb-16">
-    <h2 class="text-3xl font-bold text-slate-900 border-b pb-4 mb-8">4. Danh sách hàm API (AbService)</h2>
+    <h2 class="text-3xl font-bold text-slate-900 border-b pb-4 mb-8">5. Danh sách hàm API (AbService)</h2>
     <p class="text-slate-600 mb-6">
       Dưới đây là danh sách đầy đủ các phương thức có sẵn trong <code>AbService</code> mà bạn có thể sử dụng ngay lập tức mà không cần viết thêm code.
     </p>
@@ -8,7 +8,7 @@
     <!-- 4.1 Read Single -->
     <article id="api-read-single" class="mb-10 scroll-mt-24">
       <h3 class="text-xl font-bold text-slate-800 mb-4 flex items-center">
-        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">4.1</span>
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">5.1</span>
         Truy vấn đơn (Read Single)
       </h3>
       <div class="overflow-x-auto rounded-lg border border-slate-200 shadow-sm">
@@ -63,7 +63,7 @@
     <!-- 4.2 Read List -->
     <article id="api-read-list" class="mb-10 scroll-mt-24">
       <h3 class="text-xl font-bold text-slate-800 mb-4 flex items-center">
-        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">4.2</span>
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">5.2</span>
         Truy vấn danh sách (Read List & Pagination)
       </h3>
 
@@ -162,7 +162,7 @@
     <!-- 4.3 Write -->
     <article id="api-write" class="mb-10 scroll-mt-24">
       <h3 class="text-xl font-bold text-slate-800 mb-4 flex items-center">
-        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">4.3</span>
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">5.3</span>
         Ghi dữ liệu (Create / Update / Delete)
       </h3>
       <div class="overflow-x-auto rounded-lg border border-slate-200 shadow-sm">

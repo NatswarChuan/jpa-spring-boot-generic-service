@@ -1,16 +1,16 @@
 <template>
   <section id="spec-examples" class="scroll-mt-20 mb-16">
-    <h2 class="text-3xl font-bold text-slate-900 border-b pb-4 mb-8">5. Ví dụ nâng cao: Specification</h2>
+    <h2 class="text-3xl font-bold text-slate-900 border-b pb-4 mb-8">6. Ví dụ nâng cao: Specification</h2>
     <p class="text-slate-600 mb-6">Sử dụng <code>Specification</code> để xây dựng các bộ lọc động phức tạp.</p>
 
     <article id="spec-search" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-3">5.1. Tìm kiếm cơ bản</h3>
+      <h3 class="text-xl font-bold text-slate-800 mb-3">6.1. Tìm kiếm cơ bản</h3>
       <CodeBlock filename="ProductController.java" :code="searchCode" />
     </article>
 
     <!-- Đã sửa tiêu đề từ 5.4 -> 5.2 -->
     <article id="spec-pageable" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-3">5.2. Phân trang & Sắp xếp</h3>
+      <h3 class="text-xl font-bold text-slate-800 mb-3">6.2. Phân trang & Sắp xếp</h3>
       <p class="text-slate-600 mb-3">Kết hợp <code>PageRequest</code> và <code>Sort</code>.</p>
       <CodeBlock filename="ProductController.java" :code="pageableCode" />
     </article>

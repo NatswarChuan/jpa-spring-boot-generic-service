@@ -1,22 +1,22 @@
 <template>
   <section id="usage" class="scroll-mt-20 mb-16">
-    <h2 class="text-3xl font-bold text-slate-900 border-b pb-4 mb-8">3. Hướng dẫn sử dụng (DTO Pattern)</h2>
+    <h2 class="text-3xl font-bold text-slate-900 border-b pb-4 mb-8">4. Hướng dẫn sử dụng (DTO Pattern)</h2>
     
     <article id="usage-3-1" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-3">3.1. Request DTO (Create/Update)</h3>
+      <h3 class="text-xl font-bold text-slate-800 mb-3">4.1. Request DTO (Create/Update)</h3>
       <p class="text-slate-600 mb-3">Tách biệt DTO tạo mới và cập nhật để kiểm soát dữ liệu đầu vào.</p>
       <CodeBlock filename="ProductCreateReq.java" :code="createReqCode" />
       <CodeBlock filename="ProductUpdateReq.java" :code="updateReqCode" />
     </article>
 
     <article id="usage-3-2" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-3">3.2. Response DTO</h3>
+      <h3 class="text-xl font-bold text-slate-800 mb-3">4.2. Response DTO</h3>
       <p class="text-slate-600 mb-3">Dữ liệu trả về cho client. Cần override <code>fromEntity</code>.</p>
       <CodeBlock filename="ProductResponse.java" :code="resCode" />
     </article>
 
     <article id="usage-3-3" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-3">3.3. Controller Injection</h3>
+      <h3 class="text-xl font-bold text-slate-800 mb-3">4.3. Controller Injection</h3>
       <p class="text-slate-600 mb-3">Inject Interface thay vì Class Implementation.</p>
       <CodeBlock filename="ProductController.java" :code="ctrlCode" />
     </article>
