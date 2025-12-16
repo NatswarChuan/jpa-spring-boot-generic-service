@@ -1,3 +1,5 @@
+package com.natswarchuan.genericservice;
+
 import java.util.Collection;
 import java.util.List;
 import org.springframework.data.domain.Page;
@@ -217,14 +219,14 @@ public interface IService<E, ID> {
    * @see #findAll(int, int, Specification, Class, String)
    */
   <S extends IDto<E>> Page<S> findAll(int page, int size, Specification<E> spec, Class<S> dtoClass);
-  
+
   /**
    * Tìm kiếm và phân trang các thực thể dựa trên các tiêu chí lọc, có hỗ trợ đa ngôn ngữ, sử dụng
    * đối tượng {@link Pageable}.
    *
    * @param <S> Kiểu của DTO, phải triển khai {@link IDto}.
-   * @param pageable Đối tượng {@link Pageable} chứa thông tin phân trang (số trang, kích thước,
-   *     sắp xếp).
+   * @param pageable Đối tượng {@link Pageable} chứa thông tin phân trang (số trang, kích thước, sắp
+   *     xếp).
    * @param spec Đối tượng {@link Specification} chứa các điều kiện lọc.
    * @param dtoClass Lớp của DTO để chuyển đổi.
    * @param languageCode Mã ngôn ngữ (ví dụ: "vi", "en") để lấy dữ liệu tương ứng.
@@ -232,20 +234,20 @@ public interface IService<E, ID> {
    */
   <S extends IDto<E>> Page<S> findAll(
       Pageable pageable, Specification<E> spec, Class<S> dtoClass, String languageCode);
-  
+
   /**
    * Tìm kiếm và phân trang các thực thể dựa trên các tiêu chí lọc, sử dụng đối tượng {@link
    * Pageable}.
    *
    * @param <S> Kiểu của DTO, phải triển khai {@link IDto}.
-   * @param pageable Đối tượng {@link Pageable} chứa thông tin phân trang (số trang, kích thước,
-   *     sắp xếp).
+   * @param pageable Đối tượng {@link Pageable} chứa thông tin phân trang (số trang, kích thước, sắp
+   *     xếp).
    * @param spec Đối tượng {@link Specification} chứa các điều kiện lọc.
    * @param dtoClass Lớp của DTO để chuyển đổi.
    * @return Một trang {@link Page} chứa các DTO đã được chuyển đổi.
    */
   <S extends IDto<E>> Page<S> findAll(Pageable pageable, Specification<E> spec, Class<S> dtoClass);
-  
+
   /**
    * Lấy một thực thể theo khóa chính (ID), chuyển đổi thành DTO và có hỗ trợ đa ngôn ngữ.
    *
@@ -257,7 +259,7 @@ public interface IService<E, ID> {
    * @throws HttpException Nếu không tìm thấy thực thể hoặc có lỗi khi chuyển đổi.
    */
   <S extends IDto<E>> S findById(ID id, Class<S> dtoClass, String language);
-  
+
   /**
    * Tìm kiếm và phân trang các thực thể (không chuyển đổi sang DTO) dựa trên các tiêu chí lọc.
    *
@@ -268,7 +270,7 @@ public interface IService<E, ID> {
    * @return Một trang {@link Page} chứa các thực thể {@code E} thô.
    */
   <S extends IDto<E>> Page<E> findAll(Pageable pageable, Specification<E> spec);
-  
+
   /**
    * Tìm một thực thể duy nhất dựa trên ID và các tiêu chí lọc, sau đó chuyển đổi sang DTO với hỗ
    * trợ đa ngôn ngữ.
@@ -283,7 +285,7 @@ public interface IService<E, ID> {
    * @throws HttpException Nếu không tìm thấy thực thể nào khớp với tiêu chí.
    */
   <S extends IDto<E>> S findById(ID id, Class<S> dtoClass, Specification<E> spec, String language);
-  
+
   /**
    * Tìm một thực thể duy nhất dựa trên ID và các tiêu chí lọc, sau đó chuyển đổi sang DTO.
    *
@@ -295,7 +297,7 @@ public interface IService<E, ID> {
    * @throws HttpException Nếu không tìm thấy thực thể nào khớp với tiêu chí.
    */
   <S extends IDto<E>> S findById(ID id, Class<S> dtoClass, Specification<E> spec);
-  
+
   /**
    * Lấy danh sách tất cả các thực thể, chuyển đổi sang DTO và có hỗ trợ đa ngôn ngữ.
    *
@@ -305,4 +307,54 @@ public interface IService<E, ID> {
    * @return Danh sách các DTO đã được chuyển đổi.
    */
   <S extends IDto<E>> List<S> findAll(Class<S> dtoClass, String language);
+
+  /**
+   * Tìm một thực thể duy nhất dựa trên các tiêu chí lọc và chuyển đổi sang DTO.
+   *
+   * @param <S> Kiểu của DTO, phải triển khai {@link IDto}.
+   * @param dtoClass Lớp của DTO để chuyển đổi.
+   * @param spec Đối tượng {@link Specification} chứa các điều kiện lọc.
+   * @return DTO tương ứng với thực thể tìm thấy.
+   * @throws HttpException Nếu không tìm thấy thực thể nào khớp với tiêu chí ({@code
+   *     HttpStatus.NOT_FOUND}) hoặc có lỗi khi chuyển đổi entity sang DTO ({@code
+   *     HttpStatus.INTERNAL_SERVER_ERROR}).
+   */
+  <S extends IDto<E>> S findOne(Class<S> dtoClass, Specification<E> spec);
+
+  /**
+   * Tìm một thực thể duy nhất dựa trên các tiêu chí lọc và chuyển đổi sang DTO, có hỗ trợ đa ngôn
+   * ngữ.
+   *
+   * @param <S> Kiểu của DTO, phải triển khai {@link IDto}.
+   * @param dtoClass Lớp của DTO để chuyển đổi.
+   * @param spec Đối tượng {@link Specification} chứa các điều kiện lọc.
+   * @param language Mã ngôn ngữ (ví dụ: "vi", "en") để lấy dữ liệu tương ứng.
+   * @return DTO tương ứng với thực thể tìm thấy.
+   * @throws HttpException Nếu không tìm thấy thực thể nào khớp với tiêu chí ({@code
+   *     HttpStatus.NOT_FOUND}) hoặc có lỗi khi chuyển đổi entity sang DTO ({@code
+   *     HttpStatus.INTERNAL_SERVER_ERROR}).
+   */
+  <S extends IDto<E>> S findOne(Class<S> dtoClass, Specification<E> spec, String language);
+
+  /**
+   * Tìm một thực thể duy nhất dựa trên các tiêu chí lọc.
+   *
+   * @param spec Đối tượng {@link Specification} chứa các điều kiện lọc.
+   * @return Thực thể tìm thấy.
+   * @throws HttpException Nếu không tìm thấy thực thể nào khớp với tiêu chí ({@code
+   *     HttpStatus.NOT_FOUND}).
+   */
+  E findOne(Specification<E> spec);
+
+  /**
+   * Tìm tất cả các thực thể dựa trên các tiêu chí lọc và chuyển đổi sang danh sách DTO.
+   *
+   * @param <S> Kiểu của DTO, phải triển khai {@link IDto}.
+   * @param dtoClass Lớp của DTO để chuyển đổi.
+   * @param spec Đối tượng {@link Specification} chứa các điều kiện lọc.
+   * @return Danh sách các DTO tương ứng với các thực thể tìm thấy.
+   * @throws HttpException Nếu có lỗi khi chuyển đổi entity sang DTO ({@code
+   *     HttpStatus.INTERNAL_SERVER_ERROR}).
+   */
+  <S extends IDto<E>> List<S> findAll(Class<S> dtoClass, Specification<E> spec);
 }

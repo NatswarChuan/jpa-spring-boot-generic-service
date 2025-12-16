@@ -1,3 +1,4 @@
+package com.natswarchuan.genericservice;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,15 +17,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Lớp trừu tượng cơ sở cung cấp các triển khai mặc định cho các thao tác CRUD (Create, Read,
+ * Lớp trừu tượng cơ sở cung cấp các triển khai mặc định cho các thao tác CRUD
+ * (Create, Read,
  * Update, Delete) và các phương thức tiện ích chung cho các service.
  *
- * <p>Lớp này triển khai giao diện {@link IService} và sử dụng một {@link JpaRepository} để tương
- * tác với tầng dữ liệu. Các service cụ thể nên kế thừa từ lớp này để tái sử dụng logic chung và chỉ
- * cần triển khai các phương thức trừu tượng hoặc ghi đè các phương thức hiện có nếu cần logic tùy
+ * <p>
+ * Lớp này triển khai giao diện {@link IService} và sử dụng một
+ * {@link JpaRepository} để tương
+ * tác với tầng dữ liệu. Các service cụ thể nên kế thừa từ lớp này để tái sử
+ * dụng logic chung và chỉ
+ * cần triển khai các phương thức trừu tượng hoặc ghi đè các phương thức hiện có
+ * nếu cần logic tùy
  * chỉnh.
  *
- * @param <E> Kiểu dữ liệu của thực thể (entity).
+ * @param <E>  Kiểu dữ liệu của thực thể (entity).
  * @param <ID> Kiểu dữ liệu của khóa chính (ID).
  * @author NatswarChuan
  */
@@ -33,7 +39,8 @@ import org.springframework.transaction.annotation.Transactional;
 public abstract class AbService<E, ID> implements IService<E, ID> {
 
   /**
-   * Repository JPA được sử dụng để thực hiện các thao tác truy cập dữ liệu. Được inject tự động bởi
+   * Repository JPA được sử dụng để thực hiện các thao tác truy cập dữ liệu. Được
+   * inject tự động bởi
    * Spring.
    */
   protected final JpaRepository<E, ID> repository;
@@ -50,8 +57,9 @@ public abstract class AbService<E, ID> implements IService<E, ID> {
   /**
    * {@inheritDoc}
    *
-   * @throws HttpException nếu danh sách thực thể trống (HttpStatus.BAD_REQUEST) hoặc có lỗi khi tạo
-   *     instance DTO (HttpStatus.INTERNAL_SERVER_ERROR).
+   * @throws HttpException nếu danh sách thực thể trống (HttpStatus.BAD_REQUEST)
+   *                       hoặc có lỗi khi tạo
+   *                       instance DTO (HttpStatus.INTERNAL_SERVER_ERROR).
    */
   @Override
   public <S extends IDto<E>> List<S> findAll(Class<S> dtoClass) {
@@ -72,8 +80,10 @@ public abstract class AbService<E, ID> implements IService<E, ID> {
   /**
    * {@inheritDoc}
    *
-   * @throws HttpException nếu không tìm thấy thực thể với ID cung cấp (HttpStatus.BAD_REQUEST) hoặc
-   *     có lỗi khi tạo instance DTO (HttpStatus.INTERNAL_SERVER_ERROR).
+   * @throws HttpException nếu không tìm thấy thực thể với ID cung cấp
+   *                       (HttpStatus.BAD_REQUEST) hoặc
+   *                       có lỗi khi tạo instance DTO
+   *                       (HttpStatus.INTERNAL_SERVER_ERROR).
    */
   @Override
   public <S extends IDto<E>> S findById(ID id, Class<S> dtoClass) {
@@ -116,8 +126,10 @@ public abstract class AbService<E, ID> implements IService<E, ID> {
   /**
    * {@inheritDoc}
    *
-   * @throws HttpException nếu danh sách thực thể trống (HttpStatus.BAD_REQUEST) hoặc có lỗi khi
-   *     chuyển đổi entity sang DTO (HttpStatus.INTERNAL_SERVER_ERROR).
+   * @throws HttpException nếu danh sách thực thể trống (HttpStatus.BAD_REQUEST)
+   *                       hoặc có lỗi khi
+   *                       chuyển đổi entity sang DTO
+   *                       (HttpStatus.INTERNAL_SERVER_ERROR).
    */
   @Override
   public <S extends IDto<E>> Page<S> findAll(int page, int size, Class<S> dtoClass) {
@@ -140,7 +152,8 @@ public abstract class AbService<E, ID> implements IService<E, ID> {
   /**
    * {@inheritDoc}
    *
-   * @throws HttpException nếu không tìm thấy thực thể với ID cung cấp (HttpStatus.BAD_REQUEST).
+   * @throws HttpException nếu không tìm thấy thực thể với ID cung cấp
+   *                       (HttpStatus.BAD_REQUEST).
    */
   @Override
   public E findById(ID id) {
@@ -154,7 +167,9 @@ public abstract class AbService<E, ID> implements IService<E, ID> {
   /**
    * {@inheritDoc}
    *
-   * <p>Lưu ý: Phương thức này không trả về thực thể đã được lưu. Nếu cần thực thể sau khi lưu (ví
+   * <p>
+   * Lưu ý: Phương thức này không trả về thực thể đã được lưu. Nếu cần thực thể
+   * sau khi lưu (ví
    * dụ để lấy ID được tạo tự động), hãy sử dụng {@link #create(Object)}.
    */
   @Override
@@ -166,8 +181,11 @@ public abstract class AbService<E, ID> implements IService<E, ID> {
   /**
    * {@inheritDoc}
    *
-   * <p>Đầu tiên, phương thức này kiểm tra sự tồn tại của thực thể bằng {@link #findById(ID)}. Nếu
-   * không tìm thấy, một {@link HttpException} (HttpStatus.BAD_REQUEST) sẽ được ném ra.
+   * <p>
+   * Đầu tiên, phương thức này kiểm tra sự tồn tại của thực thể bằng
+   * {@link #findById(ID)}. Nếu
+   * không tìm thấy, một {@link HttpException} (HttpStatus.BAD_REQUEST) sẽ được
+   * ném ra.
    */
   @Override
   public <S extends IDto<E>> void update(S updateEntity, ID id) {
@@ -178,8 +196,11 @@ public abstract class AbService<E, ID> implements IService<E, ID> {
   /**
    * {@inheritDoc}
    *
-   * <p>Đầu tiên, phương thức này kiểm tra sự tồn tại của thực thể bằng {@link #findById(ID)}. Nếu
-   * không tìm thấy, một {@link HttpException} (HttpStatus.BAD_REQUEST) sẽ được ném ra.
+   * <p>
+   * Đầu tiên, phương thức này kiểm tra sự tồn tại của thực thể bằng
+   * {@link #findById(ID)}. Nếu
+   * không tìm thấy, một {@link HttpException} (HttpStatus.BAD_REQUEST) sẽ được
+   * ném ra.
    */
   @Override
   public <S extends IDto<E>> void delete(S deleteEntity, ID id) {
@@ -191,7 +212,9 @@ public abstract class AbService<E, ID> implements IService<E, ID> {
   /**
    * {@inheritDoc}
    *
-   * <p>Lưu ý: Phương thức này không trả về thực thể đã được lưu. Nếu cần thực thể sau khi lưu (ví
+   * <p>
+   * Lưu ý: Phương thức này không trả về thực thể đã được lưu. Nếu cần thực thể
+   * sau khi lưu (ví
    * dụ để lấy ID được tạo tự động), hãy sử dụng {@link #save(Object)}.
    */
   @Override
@@ -202,8 +225,11 @@ public abstract class AbService<E, ID> implements IService<E, ID> {
   /**
    * {@inheritDoc}
    *
-   * <p>Đầu tiên, phương thức này kiểm tra sự tồn tại của thực thể bằng {@link #findById(ID)}. Nếu
-   * không tìm thấy, một {@link HttpException} (HttpStatus.BAD_REQUEST) sẽ được ném ra.
+   * <p>
+   * Đầu tiên, phương thức này kiểm tra sự tồn tại của thực thể bằng
+   * {@link #findById(ID)}. Nếu
+   * không tìm thấy, một {@link HttpException} (HttpStatus.BAD_REQUEST) sẽ được
+   * ném ra.
    */
   @Override
   public void update(E updateEntity, ID id) {
@@ -214,8 +240,11 @@ public abstract class AbService<E, ID> implements IService<E, ID> {
   /**
    * {@inheritDoc}
    *
-   * <p>Đầu tiên, phương thức này kiểm tra sự tồn tại của thực thể bằng {@link #findById(ID)}. Nếu
-   * không tìm thấy, một {@link HttpException} (HttpStatus.BAD_REQUEST) sẽ được ném ra.
+   * <p>
+   * Đầu tiên, phương thức này kiểm tra sự tồn tại của thực thể bằng
+   * {@link #findById(ID)}. Nếu
+   * không tìm thấy, một {@link HttpException} (HttpStatus.BAD_REQUEST) sẽ được
+   * ném ra.
    */
   @Override
   public void delete(E deleteEntity, ID id) {
@@ -226,7 +255,9 @@ public abstract class AbService<E, ID> implements IService<E, ID> {
   /**
    * {@inheritDoc}
    *
-   * <p>Đầu tiên, phương thức này tìm thực thể bằng {@link #findById(ID)}. Nếu không tìm thấy, một
+   * <p>
+   * Đầu tiên, phương thức này tìm thực thể bằng {@link #findById(ID)}. Nếu không
+   * tìm thấy, một
    * {@link HttpException} (HttpStatus.BAD_REQUEST) sẽ được ném ra.
    */
   @Override
@@ -238,13 +269,17 @@ public abstract class AbService<E, ID> implements IService<E, ID> {
   /**
    * Lưu (tạo mới hoặc cập nhật) một thực thể.
    *
-   * <p>Phương thức này sử dụng phương thức {@code save} của {@link JpaRepository} được inject. Nếu
-   * thực thể có một khóa chính đã tồn tại trong cơ sở dữ liệu, nó sẽ được cập nhật. Nếu thực thể là
+   * <p>
+   * Phương thức này sử dụng phương thức {@code save} của {@link JpaRepository}
+   * được inject. Nếu
+   * thực thể có một khóa chính đã tồn tại trong cơ sở dữ liệu, nó sẽ được cập
+   * nhật. Nếu thực thể là
    * mới (ví dụ: khóa chính là null hoặc không tồn tại), nó sẽ được tạo.
    *
    * @param entity Thực thể cần được lưu. Không được là {@code null}.
-   * @return Thực thể đã được lưu, có thể chứa các thay đổi được thực hiện bởi persistence provider
-   *     (ví dụ: khóa chính được tạo tự động nếu áp dụng).
+   * @return Thực thể đã được lưu, có thể chứa các thay đổi được thực hiện bởi
+   *         persistence provider
+   *         (ví dụ: khóa chính được tạo tự động nếu áp dụng).
    * @see JpaRepository#save(Object)
    */
   public E save(E entity) {
@@ -254,7 +289,9 @@ public abstract class AbService<E, ID> implements IService<E, ID> {
   /**
    * {@inheritDoc}
    *
-   * <p>Trả về một danh sách rỗng nếu tập hợp {@code ids} là {@code null} hoặc rỗng. Không ném ngoại
+   * <p>
+   * Trả về một danh sách rỗng nếu tập hợp {@code ids} là {@code null} hoặc rỗng.
+   * Không ném ngoại
    * lệ nếu một số ID không tìm thấy, chỉ trả về các thực thể tìm được.
    */
   @Override
@@ -268,7 +305,9 @@ public abstract class AbService<E, ID> implements IService<E, ID> {
   /**
    * {@inheritDoc}
    *
-   * <p>Triển khai này chuyển đổi DTO đầu vào thành thực thể, lưu nó vào cơ sở dữ liệu, sau đó
+   * <p>
+   * Triển khai này chuyển đổi DTO đầu vào thành thực thể, lưu nó vào cơ sở dữ
+   * liệu, sau đó
    * chuyển đổi thực thể đã lưu thành DTO đầu ra.
    */
   @Override
@@ -287,8 +326,11 @@ public abstract class AbService<E, ID> implements IService<E, ID> {
   /**
    * {@inheritDoc}
    *
-   * <p>Triển khai này tìm thực thể hiện có theo ID, sử dụng DTO yêu cầu để cập nhật các trường của
-   * thực thể, lưu lại, và cuối cùng chuyển đổi thực thể đã cập nhật thành DTO phản hồi.
+   * <p>
+   * Triển khai này tìm thực thể hiện có theo ID, sử dụng DTO yêu cầu để cập nhật
+   * các trường của
+   * thực thể, lưu lại, và cuối cùng chuyển đổi thực thể đã cập nhật thành DTO
+   * phản hồi.
    */
   @Override
   public <RQ extends IDto<E>, RP extends IDto<E>> RP update(
@@ -308,7 +350,9 @@ public abstract class AbService<E, ID> implements IService<E, ID> {
   /**
    * {@inheritDoc}
    *
-   * <p>Triển khai này lấy một trang thực thể và ánh xạ từng thực thể sang DTO tương ứng, có áp dụng
+   * <p>
+   * Triển khai này lấy một trang thực thể và ánh xạ từng thực thể sang DTO tương
+   * ứng, có áp dụng
    * logic đa ngôn ngữ.
    */
   @Override
@@ -333,8 +377,11 @@ public abstract class AbService<E, ID> implements IService<E, ID> {
   /**
    * {@inheritDoc}
    *
-   * <p>Triển khai này sử dụng {@link JpaSpecificationExecutor} để truy vấn một trang thực thể dựa
-   * trên các tiêu chí lọc và sau đó ánh xạ kết quả sang DTO, có hỗ trợ đa ngôn ngữ.
+   * <p>
+   * Triển khai này sử dụng {@link JpaSpecificationExecutor} để truy vấn một trang
+   * thực thể dựa
+   * trên các tiêu chí lọc và sau đó ánh xạ kết quả sang DTO, có hỗ trợ đa ngôn
+   * ngữ.
    */
   public <S extends IDto<E>> Page<S> findAll(
       int page, int size, Specification<E> spec, Class<S> dtoClass, String language) {
@@ -360,7 +407,9 @@ public abstract class AbService<E, ID> implements IService<E, ID> {
   /**
    * {@inheritDoc}
    *
-   * <p>Triển khai này tương tự như {@link #findAll(int, int, Specification, Class, String)} nhưng
+   * <p>
+   * Triển khai này tương tự như
+   * {@link #findAll(int, int, Specification, Class, String)} nhưng
    * không có tham số ngôn ngữ, sử dụng phương thức chuyển đổi DTO mặc định.
    */
   public <S extends IDto<E>> Page<S> findAll(
@@ -388,15 +437,19 @@ public abstract class AbService<E, ID> implements IService<E, ID> {
   /**
    * {@inheritDoc}
    *
-   * <p>Triển khai này sử dụng {@link JpaSpecificationExecutor} để truy vấn một trang thực thể dựa
-   * trên các tiêu chí lọc và sau đó ánh xạ kết quả sang DTO, có hỗ trợ đa ngôn ngữ.
+   * <p>
+   * Triển khai này sử dụng {@link JpaSpecificationExecutor} để truy vấn một trang
+   * thực thể dựa
+   * trên các tiêu chí lọc và sau đó ánh xạ kết quả sang DTO, có hỗ trợ đa ngôn
+   * ngữ.
    *
-   * @param paging Đối tượng {@link Pageable} chứa thông tin phân trang.
-   * @param spec Đối tượng {@link Specification} chứa các điều kiện lọc.
-   * @param dtoClass Lớp của DTO để chuyển đổi.
+   * @param paging       Đối tượng {@link Pageable} chứa thông tin phân trang.
+   * @param spec         Đối tượng {@link Specification} chứa các điều kiện lọc.
+   * @param dtoClass     Lớp của DTO để chuyển đổi.
    * @param languageCode Mã ngôn ngữ (ví dụ: "vi", "en") để lấy dữ liệu phù hợp.
    * @return Một trang {@link Page} chứa các DTO đã được chuyển đổi.
-   * @throws HttpException Nếu có lỗi xảy ra trong quá trình chuyển đổi entity sang DTO.
+   * @throws HttpException Nếu có lỗi xảy ra trong quá trình chuyển đổi entity
+   *                       sang DTO.
    */
   public <S extends IDto<E>> Page<S> findAll(
       Pageable paging, Specification<E> spec, Class<S> dtoClass, String languageCode) {
@@ -422,14 +475,19 @@ public abstract class AbService<E, ID> implements IService<E, ID> {
   /**
    * {@inheritDoc}
    *
-   * <p>Triển khai này tìm một thực thể theo ID, sau đó chuyển đổi nó sang DTO, có áp dụng logic đa
+   * <p>
+   * Triển khai này tìm một thực thể theo ID, sau đó chuyển đổi nó sang DTO, có áp
+   * dụng logic đa
    * ngôn ngữ.
    *
-   * @param id Khóa chính của thực thể cần tìm.
+   * @param id       Khóa chính của thực thể cần tìm.
    * @param dtoClass Lớp của DTO để chuyển đổi.
    * @param language Mã ngôn ngữ (ví dụ: "vi", "en") để lấy dữ liệu phù hợp.
    * @return DTO tương ứng với thực thể được tìm thấy.
-   * @throws HttpException Nếu không tìm thấy thực thể ({@code HttpStatus.BAD_REQUEST}) hoặc có lỗi khi chuyển đổi entity sang DTO ({@code HttpStatus.INTERNAL_SERVER_ERROR}).
+   * @throws HttpException Nếu không tìm thấy thực thể
+   *                       ({@code HttpStatus.BAD_REQUEST}) hoặc có lỗi
+   *                       khi chuyển đổi entity sang DTO
+   *                       ({@code HttpStatus.INTERNAL_SERVER_ERROR}).
    */
   public <S extends IDto<E>> S findById(ID id, Class<S> dtoClass, String language) {
     Optional<E> result = repository.findById(id);
@@ -449,13 +507,16 @@ public abstract class AbService<E, ID> implements IService<E, ID> {
   /**
    * {@inheritDoc}
    *
-   * <p>Triển khai này lấy tất cả các thực thể từ repository, sau đó chuyển đổi từng thực thể sang
+   * <p>
+   * Triển khai này lấy tất cả các thực thể từ repository, sau đó chuyển đổi từng
+   * thực thể sang
    * DTO tương ứng, có áp dụng logic đa ngôn ngữ.
    *
    * @param dtoClass Lớp của DTO để chuyển đổi.
    * @param language Mã ngôn ngữ (ví dụ: "vi", "en") để lấy dữ liệu phù hợp.
    * @return Danh sách các DTO đã được chuyển đổi.
-   * @throws HttpException Nếu có lỗi xảy ra trong quá trình chuyển đổi entity sang DTO ({@code
+   * @throws HttpException Nếu có lỗi xảy ra trong quá trình chuyển đổi entity
+   *                       sang DTO ({@code
    *     HttpStatus.INTERNAL_SERVER_ERROR}).
    */
   public <S extends IDto<E>> List<S> findAll(Class<S> dtoClass, String language) {
@@ -480,14 +541,18 @@ public abstract class AbService<E, ID> implements IService<E, ID> {
   /**
    * {@inheritDoc}
    *
-   * <p>Triển khai này sử dụng {@link JpaSpecificationExecutor} để truy vấn một trang thực thể dựa
-   * trên các tiêu chí lọc và sau đó ánh xạ kết quả sang DTO, không có hỗ trợ đa ngôn ngữ.
+   * <p>
+   * Triển khai này sử dụng {@link JpaSpecificationExecutor} để truy vấn một trang
+   * thực thể dựa
+   * trên các tiêu chí lọc và sau đó ánh xạ kết quả sang DTO, không có hỗ trợ đa
+   * ngôn ngữ.
    *
-   * @param paging Đối tượng {@link Pageable} chứa thông tin phân trang.
-   * @param spec Đối tượng {@link Specification} chứa các điều kiện lọc.
+   * @param paging   Đối tượng {@link Pageable} chứa thông tin phân trang.
+   * @param spec     Đối tượng {@link Specification} chứa các điều kiện lọc.
    * @param dtoClass Lớp của DTO để chuyển đổi.
    * @return Một trang {@link Page} chứa các DTO đã được chuyển đổi.
-   * @throws HttpException Nếu có lỗi xảy ra trong quá trình chuyển đổi entity sang DTO.
+   * @throws HttpException Nếu có lỗi xảy ra trong quá trình chuyển đổi entity
+   *                       sang DTO.
    */
   public <S extends IDto<E>> Page<S> findAll(
       Pageable paging, Specification<E> spec, Class<S> dtoClass) {
@@ -513,13 +578,16 @@ public abstract class AbService<E, ID> implements IService<E, ID> {
   /**
    * {@inheritDoc}
    *
-   * <p>Triển khai này sử dụng {@link JpaSpecificationExecutor} để truy vấn một trang thực thể dựa
+   * <p>
+   * Triển khai này sử dụng {@link JpaSpecificationExecutor} để truy vấn một trang
+   * thực thể dựa
    * trên các tiêu chí lọc, trả về các thực thể thô mà không chuyển đổi sang DTO.
    *
    * @param pageable Đối tượng {@link Pageable} chứa thông tin phân trang.
-   * @param spec Đối tượng {@link Specification} chứa các điều kiện lọc.
+   * @param spec     Đối tượng {@link Specification} chứa các điều kiện lọc.
    * @return Một trang {@link Page} chứa các thực thể {@code E} thô.
-   * @throws HttpException (Các triển khai có thể ném nếu có lỗi truy cập dữ liệu).
+   * @throws HttpException (Các triển khai có thể ném nếu có lỗi truy cập dữ
+   *                       liệu).
    */
   public <S extends IDto<E>> Page<E> findAll(Pageable pageable, Specification<E> spec) {
     @SuppressWarnings("unchecked")
@@ -531,15 +599,20 @@ public abstract class AbService<E, ID> implements IService<E, ID> {
   /**
    * {@inheritDoc}
    *
-   * <p>Triển khai này tìm một thực thể duy nhất dựa trên các tiêu chí lọc được cung cấp, sau đó
+   * <p>
+   * Triển khai này tìm một thực thể duy nhất dựa trên các tiêu chí lọc được cung
+   * cấp, sau đó
    * chuyển đổi nó sang DTO, có áp dụng logic đa ngôn ngữ.
    *
-   * @param id Khóa chính của thực thể (có thể được sử dụng để xây dựng {@code spec}).
+   * @param id       Khóa chính của thực thể (có thể được sử dụng để xây dựng
+   *                 {@code spec}).
    * @param dtoClass Lớp của DTO để chuyển đổi.
-   * @param spec Đối tượng {@link Specification} chứa các điều kiện lọc bổ sung.
+   * @param spec     Đối tượng {@link Specification} chứa các điều kiện lọc bổ
+   *                 sung.
    * @param language Mã ngôn ngữ (ví dụ: "vi", "en") để lấy dữ liệu phù hợp.
    * @return DTO tương ứng với thực thể tìm thấy.
-   * @throws HttpException Nếu không tìm thấy thực thể nào khớp với tiêu chí ({@code
+   * @throws HttpException Nếu không tìm thấy thực thể nào khớp với tiêu chí
+   *                       ({@code
    *     HttpStatus.NOT_FOUND}) hoặc có lỗi khi chuyển đổi entity sang DTO ({@code
    *     HttpStatus.INTERNAL_SERVER_ERROR}).
    */
@@ -567,14 +640,19 @@ public abstract class AbService<E, ID> implements IService<E, ID> {
   /**
    * {@inheritDoc}
    *
-   * <p>Triển khai này tìm một thực thể duy nhất dựa trên các tiêu chí lọc được cung cấp, sau đó
+   * <p>
+   * Triển khai này tìm một thực thể duy nhất dựa trên các tiêu chí lọc được cung
+   * cấp, sau đó
    * chuyển đổi nó sang DTO, không có hỗ trợ đa ngôn ngữ.
    *
-   * @param id Khóa chính của thực thể (có thể được sử dụng để xây dựng {@code spec}).
+   * @param id       Khóa chính của thực thể (có thể được sử dụng để xây dựng
+   *                 {@code spec}).
    * @param dtoClass Lớp của DTO để chuyển đổi.
-   * @param spec Đối tượng {@link Specification} chứa các điều kiện lọc bổ sung.
+   * @param spec     Đối tượng {@link Specification} chứa các điều kiện lọc bổ
+   *                 sung.
    * @return DTO tương ứng với thực thể tìm thấy.
-   * @throws HttpException Nếu không tìm thấy thực thể nào khớp với tiêu chí ({@code
+   * @throws HttpException Nếu không tìm thấy thực thể nào khớp với tiêu chí
+   *                       ({@code
    *     HttpStatus.NOT_FOUND}) hoặc có lỗi khi chuyển đổi entity sang DTO ({@code
    *     HttpStatus.INTERNAL_SERVER_ERROR}).
    */
@@ -594,6 +672,128 @@ public abstract class AbService<E, ID> implements IService<E, ID> {
       return s;
     } catch (Exception ex) {
       throw new HttpException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * <p>
+   * Triển khai này tìm một thực thể duy nhất dựa trên các tiêu chí lọc
+   * {@link Specification} và
+   * chuyển đổi sang DTO.
+   *
+   * @throws HttpException Nếu không tìm thấy thực thể nào khớp với tiêu chí
+   *                       ({@code
+   *     HttpStatus.NOT_FOUND}) hoặc có lỗi khi chuyển đổi entity sang DTO ({@code
+   *     HttpStatus.INTERNAL_SERVER_ERROR}).
+   */
+  @Override
+  public <S extends IDto<E>> S findOne(Class<S> dtoClass, Specification<E> spec) {
+    @SuppressWarnings("unchecked")
+    JpaSpecificationExecutor<E> specExecutor = (JpaSpecificationExecutor<E>) repository;
+    Optional<E> result = specExecutor.findOne(spec);
+    if (result.isEmpty()) {
+      throw new HttpException(
+          HttpStatus.NOT_FOUND, "Không tìm thấy thực thể với tiêu chí cung cấp.");
+    }
+    try {
+      S s = dtoClass.getDeclaredConstructor().newInstance();
+      s.fromEntity(result.get());
+      return s;
+    } catch (Exception ex) {
+      throw new HttpException(
+          HttpStatus.INTERNAL_SERVER_ERROR,
+          "Lỗi khi chuyển đổi entity sang DTO: " + ex.getMessage());
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * <p>
+   * Triển khai này tìm một thực thể duy nhất dựa trên các tiêu chí lọc
+   * {@link Specification}.
+   *
+   * @throws HttpException Nếu không tìm thấy thực thể nào khớp với tiêu chí
+   *                       ({@code
+   *     HttpStatus.NOT_FOUND}).
+   */
+  @Override
+  public E findOne(Specification<E> spec) {
+    @SuppressWarnings("unchecked")
+    JpaSpecificationExecutor<E> specExecutor = (JpaSpecificationExecutor<E>) repository;
+    Optional<E> result = specExecutor.findOne(spec);
+    if (result.isEmpty()) {
+      throw new HttpException(
+          HttpStatus.NOT_FOUND, "Không tìm thấy thực thể với tiêu chí cung cấp.");
+    }
+    return result.get();
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * <p>
+   * Triển khai này tìm tất cả các thực thể dựa trên các tiêu chí lọc
+   * {@link Specification} và
+   * chuyển đổi sang danh sách DTO.
+   *
+   * @throws HttpException Nếu có lỗi khi chuyển đổi entity sang DTO ({@code
+   *     HttpStatus.INTERNAL_SERVER_ERROR}).
+   */
+  @Override
+  public <S extends IDto<E>> List<S> findAll(Class<S> dtoClass, Specification<E> spec) {
+    @SuppressWarnings("unchecked")
+    JpaSpecificationExecutor<E> specExecutor = (JpaSpecificationExecutor<E>) repository;
+    List<E> entities = specExecutor.findAll(spec);
+
+    return entities.stream()
+        .map(
+            entity -> {
+              try {
+                S dto = dtoClass.getDeclaredConstructor().newInstance();
+                dto.fromEntity(entity);
+                return dto;
+              } catch (Exception ex) {
+                throw new HttpException(
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    "Lỗi khi chuyển đổi entity sang DTO: " + ex.getMessage());
+              }
+            })
+        .collect(Collectors.toList());
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * <p>
+   * Triển khai này tìm một thực thể duy nhất dựa trên các tiêu chí lọc
+   * {@link Specification} và
+   * chuyển đổi sang DTO, có hỗ trợ đa ngôn ngữ.
+   *
+   * @throws HttpException Nếu không tìm thấy thực thể nào khớp với tiêu chí
+   *                       ({@code
+   *     HttpStatus.NOT_FOUND}) hoặc có lỗi khi chuyển đổi entity sang DTO ({@code
+   *     HttpStatus.INTERNAL_SERVER_ERROR}).
+   */
+  @Override
+  public <S extends IDto<E>> S findOne(Class<S> dtoClass, Specification<E> spec, String language) {
+    @SuppressWarnings("unchecked")
+    JpaSpecificationExecutor<E> specExecutor = (JpaSpecificationExecutor<E>) repository;
+    Optional<E> result = specExecutor.findOne(spec);
+    if (result.isEmpty()) {
+      throw new HttpException(
+          HttpStatus.NOT_FOUND, "Không tìm thấy thực thể với tiêu chí cung cấp.");
+    }
+    try {
+      S s = dtoClass.getDeclaredConstructor().newInstance();
+      s.fromEntity(result.get(), language);
+      return s;
+    } catch (Exception ex) {
+      throw new HttpException(
+          HttpStatus.INTERNAL_SERVER_ERROR,
+          "Lỗi khi chuyển đổi entity sang DTO: " + ex.getMessage());
     }
   }
 }

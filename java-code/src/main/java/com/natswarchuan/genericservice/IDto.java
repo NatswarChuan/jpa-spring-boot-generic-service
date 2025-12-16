@@ -1,3 +1,5 @@
+package com.natswarchuan.genericservice;
+
 /**
  * Giao diện đại diện cho một DTO (Data Transfer Object).
  *
