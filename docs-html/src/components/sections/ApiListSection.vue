@@ -176,47 +176,97 @@
           <tbody class="divide-y divide-slate-100">
             <!-- CREATE -->
             <tr class="bg-white hover:bg-slate-50 transition-colors">
-              <td class="px-6 py-4 font-mono font-medium text-slate-900">create(S newEntity, Class&lt;D&gt; outClass)</td>
+              <td class="px-6 py-4 font-mono font-medium text-slate-900">create(Class&lt;S&gt; dtoClass, E entity)</td>
               <td class="px-6 py-4">
                 <span class="bg-purple-100 text-purple-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded border border-purple-200">DTO</span>
-                <strong class="text-green-600">Khuyên dùng.</strong> Input DTO -> Save -> Output DTO.
+                Lưu Entity và trả về DTO kết quả.
+              </td>
+            </tr>
+            <tr class="bg-white hover:bg-slate-50 transition-colors">
+              <td class="px-6 py-4 font-mono font-medium text-slate-900">create(Class&lt;S&gt; dtoClass, T dto)</td>
+              <td class="px-6 py-4">
+                <span class="bg-purple-100 text-purple-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded border border-purple-200">DTO</span>
+                Nhận DTO đầu vào, lưu và trả về DTO kết quả.
               </td>
             </tr>
             <tr class="bg-white hover:bg-slate-50 transition-colors">
               <td class="px-6 py-4 font-mono font-medium text-slate-900">create(S newEntity)</td>
               <td class="px-6 py-4">
-                <span class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded border border-red-200">Void</span>
-                Tạo mới từ DTO nhưng không trả về gì.
+                <span class="bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded border border-gray-200">Entity</span>
+                Tạo mới từ DTO và trả về Entity đã lưu.
               </td>
             </tr>
             <tr class="bg-white hover:bg-slate-50 transition-colors">
               <td class="px-6 py-4 font-mono font-medium text-slate-900">create(E newEntity)</td>
               <td class="px-6 py-4">
-                <span class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded border border-red-200">Void</span>
-                Tạo mới trực tiếp từ Entity.
+                <span class="bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded border border-gray-200">Entity</span>
+                Lưu Entity mới và trả về chính nó.
               </td>
             </tr>
-            <tr class="bg-white hover:bg-slate-50 transition-colors">
+
+            <!-- SAVE -->
+             <tr class="bg-white hover:bg-slate-50 transition-colors">
               <td class="px-6 py-4 font-mono font-medium text-slate-900">save(E entity)</td>
               <td class="px-6 py-4">
                 <span class="bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded border border-gray-200">Entity</span>
-                Lưu và trả về Entity (giống <code>repo.save</code>).
+                Lưu (Insert/Update) và trả về Entity.
+              </td>
+            </tr>
+            <tr class="bg-white hover:bg-slate-50 transition-colors">
+              <td class="px-6 py-4 font-mono font-medium text-slate-900">save(Class&lt;S&gt; dtoClass, E entity)</td>
+              <td class="px-6 py-4">
+                <span class="bg-purple-100 text-purple-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded border border-purple-200">DTO</span>
+                Lưu Entity và trả về DTO.
+              </td>
+            </tr>
+            <tr class="bg-white hover:bg-slate-50 transition-colors">
+              <td class="px-6 py-4 font-mono font-medium text-slate-900">save(Class&lt;S&gt; dtoClass, T dto)</td>
+              <td class="px-6 py-4">
+                <span class="bg-purple-100 text-purple-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded border border-purple-200">DTO</span>
+                Lưu DTO và trả về DTO kết quả.
               </td>
             </tr>
 
             <!-- UPDATE -->
-            <tr class="bg-white hover:bg-slate-50 transition-colors">
-              <td class="px-6 py-4 font-mono font-medium text-slate-900">update(RQ req, ID id, Class&lt;RP&gt; res)</td>
-              <td class="px-6 py-4">
-                <span class="bg-purple-100 text-purple-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded border border-purple-200">DTO</span>
-                <strong class="text-green-600">Khuyên dùng.</strong> Update từ DTO -> Save -> Output DTO.
-              </td>
+            <tr class="bg-slate-50/50">
+              <td class="px-6 py-4 font-mono font-medium text-slate-900 text-xs italic" colspan="2">Cập nhật theo ID (Check existence)</td>
             </tr>
             <tr class="bg-white hover:bg-slate-50 transition-colors">
               <td class="px-6 py-4 font-mono font-medium text-slate-900">update(S updateEntity, ID id)</td>
               <td class="px-6 py-4">
-                <span class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded border border-red-200">Void</span>
-                Update từ DTO nhưng không trả về gì.
+                <span class="bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded border border-gray-200">Entity</span>
+                Update từ DTO vào Entity hiện có (tìm theo ID) và trả về Entity.
+              </td>
+            </tr>
+             <tr class="bg-white hover:bg-slate-50 transition-colors">
+              <td class="px-6 py-4 font-mono font-medium text-slate-900">update(E updateEntity, ID id)</td>
+              <td class="px-6 py-4">
+                <span class="bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded border border-gray-200">Entity</span>
+                Kiểm tra tồn tại và update Entity.
+              </td>
+            </tr>
+            <tr class="bg-slate-50/50">
+              <td class="px-6 py-4 font-mono font-medium text-slate-900 text-xs italic" colspan="2">Cập nhật trực tiếp</td>
+            </tr>
+            <tr class="bg-white hover:bg-slate-50 transition-colors">
+              <td class="px-6 py-4 font-mono font-medium text-slate-900">update(E entity)</td>
+              <td class="px-6 py-4">
+                <span class="bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded border border-gray-200">Entity</span>
+                Lưu thay đổi của Entity.
+              </td>
+            </tr>
+            <tr class="bg-white hover:bg-slate-50 transition-colors">
+              <td class="px-6 py-4 font-mono font-medium text-slate-900">update(Class&lt;S&gt; dtoClass, E entity)</td>
+              <td class="px-6 py-4">
+                <span class="bg-purple-100 text-purple-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded border border-purple-200">DTO</span>
+                Update Entity và trả về DTO.
+              </td>
+            </tr>
+            <tr class="bg-white hover:bg-slate-50 transition-colors">
+              <td class="px-6 py-4 font-mono font-medium text-slate-900">update(Class&lt;S&gt; dtoClass, T dto)</td>
+              <td class="px-6 py-4">
+                <span class="bg-purple-100 text-purple-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded border border-purple-200">DTO</span>
+                Update DTO và trả về DTO kết quả.
               </td>
             </tr>
 
@@ -225,21 +275,28 @@
               <td class="px-6 py-4 font-mono font-medium text-slate-900">delete(ID id)</td>
               <td class="px-6 py-4">
                 <span class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded border border-red-200">Void</span>
-                Xóa theo ID.
+                Xóa theo ID (có kiểm tra tồn tại).
+              </td>
+            </tr>
+            <tr class="bg-white hover:bg-slate-50 transition-colors">
+              <td class="px-6 py-4 font-mono font-medium text-slate-900">delete(Class&lt;S&gt; dtoClass, E entity)</td>
+              <td class="px-6 py-4">
+                <span class="bg-purple-100 text-purple-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded border border-purple-200">DTO</span>
+                Xóa Entity và trả về DTO của nó.
+              </td>
+            </tr>
+            <tr class="bg-white hover:bg-slate-50 transition-colors">
+              <td class="px-6 py-4 font-mono font-medium text-slate-900">delete(Class&lt;S&gt; dtoClass, T dto)</td>
+              <td class="px-6 py-4">
+                <span class="bg-purple-100 text-purple-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded border border-purple-200">DTO</span>
+                Xóa theo DTO và trả về DTO kết quả.
               </td>
             </tr>
             <tr class="bg-white hover:bg-slate-50 transition-colors">
               <td class="px-6 py-4 font-mono font-medium text-slate-900">delete(S dto, ID id)</td>
               <td class="px-6 py-4">
                 <span class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded border border-red-200">Void</span>
-                Xóa (có truyền DTO nhưng thường ít dùng).
-              </td>
-            </tr>
-            <tr class="bg-white hover:bg-slate-50 transition-colors">
-              <td class="px-6 py-4 font-mono font-medium text-slate-900">delete(E entity, ID id)</td>
-              <td class="px-6 py-4">
-                <span class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded border border-red-200">Void</span>
-                Xóa (truyền Entity).
+                Xóa theo ID (truyền DTO để logic).
               </td>
             </tr>
           </tbody>

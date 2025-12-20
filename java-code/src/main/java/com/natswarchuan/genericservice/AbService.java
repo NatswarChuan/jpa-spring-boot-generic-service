@@ -168,14 +168,12 @@ public abstract class AbService<E, ID> implements IService<E, ID> {
    * {@inheritDoc}
    *
    * <p>
-   * Lưu ý: Phương thức này không trả về thực thể đã được lưu. Nếu cần thực thể
-   * sau khi lưu (ví
-   * dụ để lấy ID được tạo tự động), hãy sử dụng {@link #create(Object)}.
+   * Chuyển đổi DTO đầu vào thành thực thể và lưu vào cơ sở dữ liệu.
    */
   @Override
-  public <S extends IDto<E>> void create(S newEntity) {
+  public <S extends IDto<E>> E create(S newEntity) {
     E ent = newEntity.toEntity();
-    repository.save(ent);
+    return repository.save(ent);
   }
 
   /**
@@ -188,9 +186,9 @@ public abstract class AbService<E, ID> implements IService<E, ID> {
    * ném ra.
    */
   @Override
-  public <S extends IDto<E>> void update(S updateEntity, ID id) {
+  public <S extends IDto<E>> E update(S updateEntity, ID id) {
     E ent = updateEntity.updateEntity(this.findById(id));
-    repository.save(ent);
+    return repository.save(ent);
   }
 
   /**
@@ -213,13 +211,11 @@ public abstract class AbService<E, ID> implements IService<E, ID> {
    * {@inheritDoc}
    *
    * <p>
-   * Lưu ý: Phương thức này không trả về thực thể đã được lưu. Nếu cần thực thể
-   * sau khi lưu (ví
-   * dụ để lấy ID được tạo tự động), hãy sử dụng {@link #save(Object)}.
+   * Lưu thực thể mới vào hệ thống và trả về thực thể sau khi lưu.
    */
   @Override
-  public void create(E newEntity) {
-    repository.save(newEntity);
+  public E create(E newEntity) {
+    return repository.save(newEntity);
   }
 
   /**
@@ -232,9 +228,9 @@ public abstract class AbService<E, ID> implements IService<E, ID> {
    * ném ra.
    */
   @Override
-  public void update(E updateEntity, ID id) {
+  public E update(E updateEntity, ID id) {
     this.findById(id);
-    repository.save(updateEntity);
+    return repository.save(updateEntity);
   }
 
   /**
@@ -282,6 +278,7 @@ public abstract class AbService<E, ID> implements IService<E, ID> {
    *         (ví dụ: khóa chính được tạo tự động nếu áp dụng).
    * @see JpaRepository#save(Object)
    */
+  @Override
   public E save(E entity) {
     return repository.save(entity);
   }
@@ -795,5 +792,164 @@ public abstract class AbService<E, ID> implements IService<E, ID> {
           HttpStatus.INTERNAL_SERVER_ERROR,
           "Lỗi khi chuyển đổi entity sang DTO: " + ex.getMessage());
     }
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * <p>
+   * Triển khai này sử dụng {@link JpaSpecificationExecutor} để thực hiện truy vấn
+   * với các tiêu chí lọc.
+   */
+  @Override
+  public List<E> findAll(Specification<E> spec) {
+    @SuppressWarnings("unchecked")
+    JpaSpecificationExecutor<E> specExecutor = (JpaSpecificationExecutor<E>) repository;
+    return specExecutor.findAll(spec);
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * <p>
+   * Phương thức này thực hiện lưu thực thể và sau đó khởi tạo một instance DTO
+   * mới để ánh xạ dữ liệu.
+   *
+   * @throws HttpException Nếu có lỗi khi khởi tạo DTO hoặc ánh xạ dữ liệu
+   *                       (HttpStatus.INTERNAL_SERVER_ERROR).
+   */
+  @Override
+  public <S extends IDto<E>> S save(Class<S> dtoClass, E entity) {
+    E saved = repository.save(entity);
+    try {
+      S s = dtoClass.getDeclaredConstructor().newInstance();
+      s.fromEntity(saved);
+      return s;
+    } catch (Exception ex) {
+      throw new HttpException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * <p>
+   * Chuyển đổi DTO đầu vào thành thực thể, lưu nó, và trả về kết quả dưới dạng
+   * DTO.
+   */
+  @Override
+  public <S extends IDto<E>, T extends IDto<E>> S save(Class<S> dtoClass, T dto) {
+    E entity = dto.toEntity();
+    return this.save(dtoClass, entity);
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * <p>
+   * Cập nhật toàn bộ thực thể vào cơ sở dữ liệu.
+   */
+  @Override
+  public E update(E entity) {
+    return repository.save(entity);
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * <p>
+   * Cập nhật thực thể và trả về DTO tương ứng.
+   *
+   * @throws HttpException Nếu có lỗi khi khởi tạo DTO hoặc ánh xạ dữ liệu
+   *                       (HttpStatus.INTERNAL_SERVER_ERROR).
+   */
+  @Override
+  public <S extends IDto<E>> S update(Class<S> dtoClass, E entity) {
+    E saved = repository.save(entity);
+    try {
+      S s = dtoClass.getDeclaredConstructor().newInstance();
+      s.fromEntity(saved);
+      return s;
+    } catch (Exception ex) {
+      throw new HttpException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * <p>
+   * Ánh xạ thông tin từ DTO đầu vào lên thực thể và cập nhật vào cơ sở dữ liệu.
+   */
+  @Override
+  public <S extends IDto<E>, T extends IDto<E>> S update(Class<S> dtoClass, T dto) {
+    E entity = dto.toEntity();
+    return this.update(dtoClass, entity);
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * <p>
+   * Tạo mới thực thể và trả về DTO tương ứng.
+   *
+   * @throws HttpException Nếu có lỗi khi khởi tạo DTO hoặc ánh xạ dữ liệu
+   *                       (HttpStatus.INTERNAL_SERVER_ERROR).
+   */
+  @Override
+  public <S extends IDto<E>> S create(Class<S> dtoClass, E entity) {
+    E saved = repository.save(entity);
+    try {
+      S s = dtoClass.getDeclaredConstructor().newInstance();
+      s.fromEntity(saved);
+      return s;
+    } catch (Exception ex) {
+      throw new HttpException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * <p>
+   * Chuyển đổi DTO đầu vào thành thực thể mới và lưu vào hệ thống.
+   */
+  @Override
+  public <S extends IDto<E>, T extends IDto<E>> S create(Class<S> dtoClass, T dto) {
+    E entity = dto.toEntity();
+    return this.create(dtoClass, entity);
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * <p>
+   * Xóa thực thể khỏi cơ sở dữ liệu và chuyển đổi thực thể đã xóa sang DTO.
+   *
+   * @throws HttpException Nếu có lỗi khi khởi tạo DTO hoặc ánh xạ dữ liệu
+   *                       (HttpStatus.INTERNAL_SERVER_ERROR).
+   */
+  @Override
+  public <S extends IDto<E>> S delete(Class<S> dtoClass, E entity) {
+    repository.delete(entity);
+    try {
+      S s = dtoClass.getDeclaredConstructor().newInstance();
+      s.fromEntity(entity);
+      return s;
+    } catch (Exception ex) {
+      throw new HttpException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * <p>
+   * Sử dụng thông tin từ DTO để xác định và xóa thực thể tương ứng.
+   */
+  @Override
+  public <S extends IDto<E>, T extends IDto<E>> S delete(Class<S> dtoClass, T dto) {
+    E entity = dto.toEntity();
+    return this.delete(dtoClass, entity);
   }
 }

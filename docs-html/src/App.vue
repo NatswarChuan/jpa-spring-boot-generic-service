@@ -40,6 +40,8 @@ const sectionComponents = {
   UsageSection: defineAsyncComponent(() => import('./components/sections/UsageSection.vue')),
   ApiListSection: defineAsyncComponent(() => import('./components/sections/ApiListSection.vue')),
   SpecificationSection: defineAsyncComponent(() => import('./components/sections/SpecificationSection.vue')),
+  ValidationSection: defineAsyncComponent(() => import('./components/sections/ValidationSection.vue')),
+  ResponseSection: defineAsyncComponent(() => import('./components/sections/ResponseSection.vue')),
   NotesSection: defineAsyncComponent(() => import('./components/sections/NotesSection.vue')),
 };
 
@@ -69,7 +71,6 @@ const sections = ref([
       { id: 'api-read-single', title: '5.1. Read (Single)' },
       { id: 'api-read-list', title: '5.2. Read (List)' },
       { id: 'api-write', title: '5.3. Write (C/U/D)' }
-      // Đã chuyển 4.4 sang mục 6
     ]
   },
   { 
@@ -79,12 +80,30 @@ const sections = ref([
       { id: 'spec-pageable', title: '6.2. Phân trang & Sắp xếp' }
     ]
   },
+
   { 
-    id: 'notes', title: '7. Lưu ý quan trọng', component: 'NotesSection', 
+    id: 'validation', title: '7. Validation Annotations', component: 'ValidationSection', 
     subs: [
-      { id: 'notes-common', title: '7.1. Lỗi thường gặp' },
-      { id: 'notes-n1', title: '7.2. Ưu điểm & N+1' },
-      { id: 'notes-tips', title: '7.3. Mẹo tối ưu' }
+      { id: 'val-basic', title: '7.1. Validation Cơ bản' },
+      { id: 'val-spec', title: '7.2. Advanced Specification Validation' },
+      { id: 'val-dto', title: '7.3. DTO Level Validation' }
+    ]
+  },
+  { 
+    id: 'response-wrappers', title: '8. Cấu trúc phản hồi', component: 'ResponseSection', 
+    subs: [
+      { id: 'res-http', title: '8.1. HttpApiResponse' },
+      { id: 'res-paged', title: '8.2. PagedResponse' }
+    ]
+  },
+  { 
+    id: 'notes', title: '9. Lưu ý quan trọng', component: 'NotesSection', 
+    subs: [
+      { id: 'notes-common', title: '9.1. Lỗi thường gặp' },
+      { id: 'notes-n1', title: '9.2. Ưu điểm & N+1' },
+      { id: 'notes-validation-perf', title: '9.3. Hiệu năng Validation' },
+      { id: 'notes-tips', title: '9.4. Mẹo tối ưu' },
+      { id: 'notes-exception', title: '9.5. Xử lý lỗi' }
     ] 
   }
 ]);

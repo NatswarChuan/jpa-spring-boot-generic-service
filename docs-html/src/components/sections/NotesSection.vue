@@ -1,12 +1,12 @@
 <template>
   <section id="notes" class="scroll-mt-20 mb-16">
-    <h2 class="text-3xl font-bold text-red-600 border-b border-red-200 pb-4 mb-8">7. Lưu ý quan trọng & Tips</h2>
+    <h2 class="text-3xl font-bold text-red-600 border-b border-red-200 pb-4 mb-8">9. Lưu ý quan trọng</h2>
     
-    <!-- 6.1 Common Errors -->
+    <!-- 9.1 Common Errors -->
     <article id="notes-common" class="mb-10 scroll-mt-24">
       <h3 class="text-xl font-bold text-slate-800 mb-4 flex items-center">
-        <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm mr-3">7.1</span>
-        Các lỗi thường gặp
+        <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm mr-3">9.1</span>
+        Lỗi thường gặp
       </h3>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <div class="bg-red-50 p-6 rounded-lg border-l-4 border-red-500 shadow-sm">
@@ -31,11 +31,11 @@
       </div>
     </article>
 
-    <!-- 6.2 Pros/Cons & N+1 -->
+    <!-- 9.2 Pros/Cons & N+1 -->
     <article id="notes-n1" class="mb-10 scroll-mt-24">
       <h3 class="text-xl font-bold text-slate-800 mb-4 flex items-center">
-        <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm mr-3">7.2</span>
-        Ưu điểm & Cách phòng tránh lỗi N+1
+        <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm mr-3">9.2</span>
+        Ưu điểm & N+1
       </h3>
 
       <!-- Strengths/Weaknesses Grid (Giữ nguyên) -->
@@ -111,11 +111,44 @@
       </div>
     </article>
 
-    <!-- 6.3 Tips -->
+    <!-- 9.3 Validation Performance -->
+    <article id="notes-validation-perf" class="mb-10 scroll-mt-24">
+      <h3 class="text-xl font-bold text-slate-800 mb-4 flex items-center">
+        <span class="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-sm mr-3">9.3</span>
+        Hiệu năng Validation
+      </h3>
+      <p class="text-slate-600 mb-6">
+        Các validation logic liên quan đến DB (<code>@Exists</code>, <code>@Unique</code>, <code>@SpecValidation</code>) tuy tiện lợi nhưng có thể gây ảnh hưởng hiệu năng nếu dùng sai cách.
+      </p>
+
+      <div class="space-y-6">
+        <div class="bg-orange-50 border-l-4 border-orange-400 p-4 shadow-sm">
+           <h4 class="font-bold text-orange-800 mb-2 text-sm"><i class="fas fa-exclamation-triangle mr-1"></i> Vấn đề: N+1 trên List</h4>
+           <div class="text-sm text-slate-700">
+             <p class="mb-2">Nếu bạn validate một List có 1000 item, và mỗi item đều có <code>@Exists</code>, hệ thống sẽ bắn <strong>1000 câu query</strong> kiểm tra tồn tại vào DB.</p>
+             <p><strong>Giải pháp:</strong></p>
+             <ul class="list-disc list-inside ml-2 text-slate-600">
+               <li>Dùng <code>@DtoSpecValidation</code> để validate cả list 1 lần (nếu logic cho phép).</li>
+               <li>Hoặc viết Custom Validator nhận vào cả List để query bằng <code>WHERE id IN (...)</code>.</li>
+             </ul>
+           </div>
+        </div>
+
+        <div class="bg-blue-50 border-l-4 border-blue-400 p-4 shadow-sm">
+           <h4 class="font-bold text-blue-800 mb-2 text-sm"><i class="fas fa-database mr-1"></i> Vấn đề: Indexing</h4>
+           <div class="text-sm text-slate-700">
+             <p class="mb-2">Các cột được dùng trong <code>@Unique</code> hoặc <code>@Exists</code> thường nằm trong mệnh đề WHERE.</p>
+             <p><strong>Giải pháp:</strong> Đảm bảo các cột này đã được đánh Index trong Database để query nhanh nhất.</p>
+           </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 9.4 Tips -->
     <article id="notes-tips" class="mb-10 scroll-mt-24">
       <h3 class="text-xl font-bold text-slate-800 mb-4 flex items-center">
-        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">7.3</span>
-        Mẹo tối ưu cho Developer
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">9.4</span>
+        Mẹo tối ưu
       </h3>
       <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 shadow-sm">
         <div class="space-y-4">
@@ -133,6 +166,31 @@
               <p class="text-sm text-slate-600 mt-1">Mặc định nên là LAZY cho mọi quan hệ to-Many.</p>
             </div>
           </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 9.5 Exception Handling -->
+    <article id="notes-exception" class="mb-10 scroll-mt-24">
+      <h3 class="text-xl font-bold text-slate-800 mb-4 flex items-center">
+        <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm mr-3">9.5</span>
+        Xử lý lỗi
+      </h3>
+      <p class="text-slate-600 mb-6">
+        Framework cung cấp sẵn <code>HttpException</code> và <code>GlobalExceptionHandler</code> để chuẩn hóa phản hồi lỗi về dạng <code>HttpApiResponse</code>.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div class="bg-slate-50 p-6 rounded-lg border border-slate-200 shadow-sm">
+          <h4 class="text-lg font-bold text-slate-800 mb-2 font-mono text-sm">Ném ngoại lệ (Throwing)</h4>
+          <p class="text-xs text-slate-600 mb-4">Bạn có thể ném lỗi ở bất kỳ đâu (Controller, Service) mà không cần try-catch.</p>
+          <CodeBlock filename="UserService.java" :code="throwExceptionCode" />
+        </div>
+
+        <div class="bg-slate-50 p-6 rounded-lg border border-slate-200 shadow-sm">
+          <h4 class="text-lg font-bold text-slate-800 mb-2 font-mono text-sm">Handler Framework</h4>
+          <p class="text-xs text-slate-600 mb-4"><code>GlobalExceptionHandler</code> sẽ tự động bắt và format response.</p>
+          <CodeBlock filename="Response Format" :code="exceptionResponseFormat" />
         </div>
       </div>
     </article>
@@ -202,5 +260,28 @@ public class UserDetail extends User { // Class Con: Chứa cột nặng
 
 // Khi dùng UserRepository (trả về User), Hibernate chỉ select id, name.
 // Khi dùng UserDetailRepository, Hibernate select id, name, avatar, bio.
+`);
+
+const throwExceptionCode = ref(`
+// Ném lỗi với mã trạng thái và thông điệp tùy chỉnh
+throw new HttpException(
+    HttpStatus.NOT_FOUND, 
+    "Không tìm thấy người dùng với ID: " + id
+);
+
+// Ném lỗi kèm dữ liệu bổ sung
+throw new HttpException(
+    HttpStatus.BAD_REQUEST, 
+    "Dữ liệu không hợp lệ", 
+    validationErrors
+);
+`);
+
+const exceptionResponseFormat = ref(`
+{
+  "status": 404,
+  "message": "Không tìm thấy người dùng với ID: 123",
+  "data": null
+}
 `);
 </script>

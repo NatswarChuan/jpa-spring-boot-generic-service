@@ -19,8 +19,14 @@
         Hệ thống <strong>Generic Service</strong> ra đời để giải quyết triệt để vấn đề này. Bằng cách tận dụng sức mạnh của Java Generics và Reflection, framework cung cấp một lớp nền tảng (Base Service) đã được cài đặt sẵn mọi logic nghiệp vụ cốt lõi.
       </p>
       <p class="text-slate-700 mt-2">
-        Giờ đây, bạn chỉ cần <strong>kế thừa</strong> và tập trung hoàn toàn vào các nghiệp vụ đặc thù (Business Logic) thay vì sa đà vào các tác vụ lặp lại nhàm chán.
+        Giờ đây, bạn chỉ cần <strong>kế thừa</strong> và tập trung hoàn toàn vào các nghiệp vụ đặc thù (Business Logic). Framework cung cấp sẵn:
       </p>
+      <ul class="list-disc list-inside mt-3 space-y-1 text-slate-700 ml-2">
+        <li><strong>CRUD toàn diện:</strong> Tự động hóa các thao tác cơ sở dữ liệu.</li>
+        <li><strong>Validation mạnh mẽ:</strong> Tích hợp các Annotation kiểm tra dữ liệu và logic nghiệp vụ phức tạp.</li>
+        <li><strong>Tra cứu linh hoạt:</strong> Hỗ trợ tìm kiếm động với JPA Specification.</li>
+        <li><strong>Đa ngôn ngữ:</strong> Xử lý Localization ngay từ tầng Service.</li>
+      </ul>
     </div>
     
     <!-- Key Benefits Grid -->

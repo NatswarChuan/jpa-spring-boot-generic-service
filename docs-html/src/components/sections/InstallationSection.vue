@@ -29,7 +29,7 @@
 &lt;dependency&gt;
     &lt;groupId&gt;com.github.NatswarChuan&lt;/groupId&gt;
     &lt;artifactId&gt;jpa-spring-boot-generic-service&lt;/artifactId&gt;
-    &lt;version&gt;v1.0.0&lt;/version&gt;
+    &lt;version&gt;LATEST_VERSION&lt;/version&gt; &lt;!-- Thay thế bằng version mới nhất trên GitHub --&gt;
 &lt;/dependency&gt;</pre>
       </div>
     </div>
@@ -55,14 +55,17 @@ allprojects {
         <p class="text-slate-400 text-sm mb-2 font-mono">// 2. Thêm dependency</p>
         <pre class="text-green-400 font-mono text-sm">
 dependencies {
-    implementation 'com.github.NatswarChuan:jpa-spring-boot-generic-service:v1.0.0'
+    implementation 'com.github.NatswarChuan:jpa-spring-boot-generic-service:LATEST_VERSION' // Thay thế bằng version mới nhất
 }</pre>
       </div>
     </div>
 
     <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-r-lg">
       <p class="text-yellow-800">
-        <strong>Lưu ý:</strong> Thay thế <code>v1.0.0</code> bằng phiên bản mới nhất mà bạn muốn sử dụng. Kiểm tra các phiên bản tại <a href="https://github.com/NatswarChuan/jpa-spring-boot-generic-service/releases" target="_blank" class="underline font-bold">GitHub Releases</a>.
+        <strong>Quan trọng:</strong> Hãy kiểm tra và sử dụng phiên bản (Release Tag) mới nhất tại 
+        <a href="https://github.com/NatswarChuan/jpa-spring-boot-generic-service/releases" target="_blank" class="underline font-bold text-blue-700">
+          GitHub Releases <i class="fas fa-external-link-alt ml-1"></i>
+        </a>
       </p>
     </div>
   </section>
