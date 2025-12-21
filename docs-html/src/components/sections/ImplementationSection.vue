@@ -56,6 +56,87 @@
         </p>
       </div>
     </article>
+
+    <article id="framework-spec" class="mb-10 scroll-mt-24">
+      <h3 class="text-xl font-bold text-slate-800 mb-3">3.4. Đặc tả Framework & Phân cấp lớp</h3>
+      <p class="text-slate-600 mb-4">
+        Framework được thiết kế theo mô hình phân tầng (Layered Inheritance), phân chia rạch ròi trách nhiệm giữa các loại thao tác.
+      </p>
+      
+      <div class="mb-6 bg-white border border-slate-200 rounded-lg p-6 shadow-sm overflow-x-auto">
+        <h4 class="font-bold text-slate-700 mb-4 flex items-center">
+          <i class="fas fa-sitemap mr-2 text-blue-500"></i> Class Hierarchy (Service Layer)
+        </h4>
+        <div class="space-y-2 font-mono text-sm">
+          <div class="flex items-center">
+            <span class="bg-blue-600 text-white px-3 py-1 rounded">AbService</span>
+            <span class="mx-2 text-slate-400">→ Cung cấp full CRUD + Spec</span>
+          </div>
+          <div class="ml-8 border-l-2 border-slate-200 pl-4 space-y-2">
+             <div class="flex items-center">
+               <span class="bg-indigo-500 text-white px-3 py-1 rounded">AbDeleteService</span>
+               <span class="mx-2 text-slate-400">→ Xử lý logic Xóa (Delete)</span>
+             </div>
+             <div class="ml-8 border-l-2 border-slate-200 pl-4 space-y-2">
+                <div class="flex items-center">
+                  <span class="bg-purple-500 text-white px-3 py-1 rounded">AbUpdateService</span>
+                  <span class="mx-2 text-slate-400">→ Xử lý logic Cập nhật & Lưu (Update/Save)</span>
+                </div>
+                <div class="ml-8 border-l-2 border-slate-200 pl-4 space-y-2">
+                  <div class="flex items-center">
+                    <span class="bg-pink-500 text-white px-3 py-1 rounded">AbCreateService</span>
+                    <span class="mx-2 text-slate-400">→ Xử lý logic Tạo mới (Create)</span>
+                  </div>
+                  <div class="ml-8 border-l-2 border-slate-200 pl-4 space-y-2">
+                    <div class="flex items-center">
+                      <span class="bg-orange-500 text-white px-3 py-1 rounded">AbReadDetailService</span>
+                      <span class="mx-2 text-slate-400">→ Xử lý logic Đọc chi tiết (FindOne/ById)</span>
+                    </div>
+                    <div class="ml-8 border-l-2 border-slate-200 pl-4 space-y-2">
+                       <div class="flex items-center">
+                         <span class="bg-amber-500 text-white px-3 py-1 rounded">AbReadSummaryService</span>
+                         <span class="mx-2 text-slate-400">→ Xử lý logic Đọc danh sách (FindAll/Paging)</span>
+                       </div>
+                       <div class="ml-8 border-l-2 border-slate-200 pl-4">
+                          <div class="flex items-center">
+                            <span class="bg-slate-500 text-white px-3 py-1 rounded">AbBaseService</span>
+                            <span class="mx-2 text-slate-400">→ Chứa Utils (Mapping, Logging, Base Fields)</span>
+                          </div>
+                       </div>
+                    </div>
+                  </div>
+                </div>
+             </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="p-5 bg-slate-50 border border-slate-200 rounded-lg">
+          <h4 class="font-bold text-slate-800 mb-2">Package Structure</h4>
+          <ul class="text-sm space-y-1 text-slate-600 font-mono">
+            <li><i class="fas fa-folder text-yellow-500 mr-2"></i>.controller</li>
+            <li class="pl-4">└── AbController.java</li>
+            <li><i class="fas fa-folder text-yellow-500 mr-2"></i>.dto</li>
+            <li class="pl-4">└── IDto.java</li>
+            <li><i class="fas fa-folder text-yellow-500 mr-2"></i>.service</li>
+            <li class="pl-4">├── IService.java</li>
+            <li class="pl-4">└── AbService.java (và các Base Classes)</li>
+            <li><i class="fas fa-folder text-yellow-500 mr-2"></i>.payload</li>
+            <li class="pl-4">├── .request (BaseRequestParam)</li>
+            <li class="pl-4">└── .response (HttpApiResponse, PagedResponse)</li>
+          </ul>
+        </div>
+        <div class="p-5 bg-blue-50 border border-blue-100 rounded-lg">
+          <h4 class="font-bold text-blue-900 mb-2">Core Principles</h4>
+          <ul class="text-sm space-y-2 text-blue-800">
+            <li class="flex items-start"><i class="fas fa-check mt-1 mr-2 opacity-50"></i> <strong>Generics Everywhere:</strong> Sử dụng triệt để Generics &lt;E, ID&gt; để đảm bảo type-safe.</li>
+            <li class="flex items-start"><i class="fas fa-check mt-1 mr-2 opacity-50"></i> <strong>Separation of Concerns:</strong> DTO gánh vác việc giao tiếp API, Entity gánh vác việc lưu trữ DB.</li>
+            <li class="flex items-start"><i class="fas fa-check mt-1 mr-2 opacity-50"></i> <strong>Hook-based Extension:</strong> Mở rộng tính năng qua các "Life-cycle hooks" thay vì sửa code lõi.</li>
+          </ul>
+        </div>
+      </div>
+    </article>
   </section>
 </template>
 
@@ -148,7 +229,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProductController extends AbController<
     Product, 
     Long, 
-    ProductResponse,       // R
     ProductCreateReq,      // C
     ProductUpdateReq       // U
 > {
@@ -158,15 +238,22 @@ public class ProductController extends AbController<
     }
 
     @Override
-    protected Class<ProductResponse> getResponseDtoClass() {
+    protected Class<ProductResponse> getResponseSummaryDtoClass() {
+        return ProductResponse.class;
+    }
+
+    @Override
+    protected Class<ProductResponse> getResponseDetailDtoClass() {
         return ProductResponse.class;
     }
 
     // Quan trọng: Override findAll để Spring bind đúng fields của ProductRequestParam
     @Override
     @GetMapping
-    public ResponseEntity<HttpApiResponse<PagedResponse<ProductResponse>>> findAll(ProductRequestParam requestParam) {
-        return super.findAll(requestParam);
+    public ResponseEntity<HttpApiResponse<PagedResponse<ProductResponse>>> findAll(
+            ProductRequestParam requestParam,
+            @RequestHeader(name = "Accept-Language", defaultValue = "en") String language) {
+        return super.findAll(requestParam, language);
     }
 
     // Override để thêm custom logic filter

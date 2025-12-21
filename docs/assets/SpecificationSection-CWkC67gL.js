@@ -1,4 +1,4 @@
-import{_ as r}from"./CodeBlock-DBZk2lcI.js";import{r as a,c as l,o as c,b as o,d as t,e as i}from"./index-B66TvSSb.js";const p={id:"specifications",class:"scroll-mt-20 mb-16"},m={id:"spec-basic",class:"mb-10 scroll-mt-24"},d={id:"spec-adv",class:"mb-10 scroll-mt-24"},P={__name:"SpecificationSection",setup(g){const n=a(`package com.example.demo.controller;
+import{_ as r}from"./CodeBlock-rhId-KlK.js";import{r as a,c as l,o as c,b as o,d as t,e as i}from"./index-NytfIO67.js";const p={id:"specifications",class:"scroll-mt-20 mb-16"},m={id:"spec-basic",class:"mb-10 scroll-mt-24"},d={id:"spec-adv",class:"mb-10 scroll-mt-24"},P={__name:"SpecificationSection",setup(g){const n=a(`package com.example.demo.controller;
 
 import com.example.demo.dto.ProductResponse;
 import com.example.demo.entity.Product;

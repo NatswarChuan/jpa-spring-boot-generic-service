@@ -1,7 +1,6 @@
 package com.natswarchuan.genericservice.payload.response;
 
-import lombok.Builder;
-import lombok.Data;
+import org.springframework.http.HttpStatus;
 
 /**
  * Lớp đại diện cho phản hồi HTTP chuẩn hóa của ứng dụng.
@@ -13,8 +12,6 @@ import lombok.Data;
  * @param <T> Kiểu dữ liệu của nội dung phản hồi (body).
  * @author NatswarChuan
  */
-@Data
-@Builder
 public class HttpApiResponse<T> {
     /** Mã trạng thái HTTP (ví dụ: 200, 400, 500). */
     private int status;
@@ -26,65 +23,197 @@ public class HttpApiResponse<T> {
     private T data;
 
     /**
-     * Tạo một phản hồi thành công với dữ liệu được cung cấp và mã trạng thái mặc
-     * định là 200 (OK).
+     * Khởi tạo mặc định.
+     */
+    public HttpApiResponse() {
+    }
+
+    /**
+     * Khởi tạo với đầy đủ thông tin.
      *
-     * @param <T>  Kiểu của dữ liệu.
-     * @param data Dữ liệu cần bao bọc trong phản hồi.
-     * @return Một instance của {@link HttpApiResponse} đại diện cho phản hồi thành
-     *         công.
+     * @param status  Mã trạng thái.
+     * @param message Thông điệp.
+     * @param data    Dữ liệu.
+     */
+    public HttpApiResponse(int status, String message, T data) {
+        this.status = status;
+        this.message = message;
+        this.data = data;
+    }
+
+    /**
+     * Lấy mã trạng thái.
+     *
+     * @return Mã trạng thái.
+     */
+    public int getStatus() {
+        return status;
+    }
+
+    /**
+     * Thiết lập mã trạng thái.
+     *
+     * @param status Mã trạng thái.
+     */
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    /**
+     * Lấy thông điệp.
+     *
+     * @return Thông điệp.
+     */
+    public String getMessage() {
+        return message;
+    }
+
+    /**
+     * Thiết lập thông điệp.
+     *
+     * @param message Thông điệp.
+     */
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    /**
+     * Lấy dữ liệu phản hồi.
+     *
+     * @return Dữ liệu.
+     */
+    public T getData() {
+        return data;
+    }
+
+    /**
+     * Thiết lập dữ liệu phản hồi.
+     *
+     * @param data Dữ liệu.
+     */
+    public void setData(T data) {
+        this.data = data;
+    }
+
+    /**
+     * Tạo Builder cho HttpApiResponse.
+     *
+     * @param <T> Kiểu dữ liệu.
+     * @return Builder.
+     */
+    public static <T> HttpApiResponseBuilder<T> builder() {
+        return new HttpApiResponseBuilder<>();
+    }
+
+    /**
+     * Lớp Builder giúp xây dựng đối tượng HttpApiResponse dễ dàng hơn.
+     *
+     * @param <T> Kiểu dữ liệu.
+     */
+    public static class HttpApiResponseBuilder<T> {
+        private int status;
+        private String message;
+        private T data;
+
+        /**
+         * Thiết lập mã trạng thái.
+         *
+         * @param status Mã trạng thái.
+         * @return Builder.
+         */
+        public HttpApiResponseBuilder<T> status(int status) {
+            this.status = status;
+            return this;
+        }
+
+        /**
+         * Thiết lập thông điệp.
+         *
+         * @param message Thông điệp.
+         * @return Builder.
+         */
+        public HttpApiResponseBuilder<T> message(String message) {
+            this.message = message;
+            return this;
+        }
+
+        /**
+         * Thiết lập dữ liệu.
+         *
+         * @param data Dữ liệu.
+         * @return Builder.
+         */
+        public HttpApiResponseBuilder<T> data(T data) {
+            this.data = data;
+            return this;
+        }
+
+        /**
+         * Xây dựng đối tượng HttpApiResponse.
+         *
+         * @return HttpApiResponse.
+         */
+        public HttpApiResponse<T> build() {
+            return new HttpApiResponse<>(status, message, data);
+        }
+    }
+
+    /**
+     * Tạo phản hồi thành công với dữ liệu.
+     *
+     * @param <T>  Kiểu dữ liệu.
+     * @param data Dữ liệu trả về.
+     * @return HttpApiResponse thành công (200 OK).
      */
     public static <T> HttpApiResponse<T> success(T data) {
-        return HttpApiResponse.<T>builder().status(200).message("Success").data(data).build();
+        return HttpApiResponse.<T>builder().status(HttpStatus.OK.value()).message("Success").data(data).build();
     }
 
     /**
-     * Tạo một phản hồi thành công với dữ liệu và mã trạng thái tùy chỉnh.
+     * Tạo phản hồi thành công với dữ liệu và mã trạng thái tùy chỉnh.
      *
-     * @param <T>    Kiểu của dữ liệu.
-     * @param data   Dữ liệu cần bao bọc trong phản hồi.
-     * @param status Mã trạng thái HTTP tùy chỉnh.
-     * @return Một instance của {@link HttpApiResponse} đại diện cho phản hồi thành
-     *         công.
+     * @param <T>    Kiểu dữ liệu.
+     * @param data   Dữ liệu trả về.
+     * @param status Mã trạng thái HTTP.
+     * @return HttpApiResponse thành công.
      */
-    public static <T> HttpApiResponse<T> success(T data, int status) {
-        return HttpApiResponse.<T>builder().status(status).message("Success").data(data).build();
+    public static <T> HttpApiResponse<T> success(T data, HttpStatus status) {
+        return HttpApiResponse.<T>builder().status(status.value()).message("Success").data(data).build();
     }
 
     /**
-     * Tạo một phản hồi lỗi với thông điệp được chỉ định và mã trạng thái mặc định
-     * là 400 (Bad Request).
+     * Tạo phản hồi lỗi với thông điệp.
      *
-     * @param <T>     Kiểu generic (thường là null cho phản hồi lỗi).
-     * @param message Thông điệp mô tả lỗi.
-     * @return Một instance của {@link HttpApiResponse} đại diện cho phản hồi lỗi.
+     * @param <T>     Kiểu dữ liệu.
+     * @param message Thông điệp lỗi.
+     * @return HttpApiResponse lỗi (400 Bad Request).
      */
     public static <T> HttpApiResponse<T> error(String message) {
-        return HttpApiResponse.<T>builder().status(400).message(message).build();
+        return HttpApiResponse.<T>builder().status(HttpStatus.BAD_REQUEST.value()).message(message).build();
     }
 
     /**
-     * Tạo một phản hồi lỗi với thông điệp và mã trạng thái tùy chỉnh.
+     * Tạo phản hồi lỗi với thông điệp và mã trạng thái tùy chỉnh.
      *
-     * @param <T>     Kiểu generic.
-     * @param message Thông điệp mô tả lỗi.
-     * @param status  Mã trạng thái HTTP tùy chỉnh (ví dụ: 404, 500).
-     * @return Một instance của {@link HttpApiResponse} đại diện cho phản hồi lỗi.
+     * @param <T>     Kiểu dữ liệu.
+     * @param message Thông điệp lỗi.
+     * @param status  Mã trạng thái HTTP.
+     * @return HttpApiResponse lỗi.
      */
-    public static <T> HttpApiResponse<T> error(String message, int status) {
-        return HttpApiResponse.<T>builder().status(status).message(message).build();
+    public static <T> HttpApiResponse<T> error(String message, HttpStatus status) {
+        return HttpApiResponse.<T>builder().status(status.value()).message(message).build();
     }
 
     /**
-     * Tạo một phản hồi lỗi với thông điệp, mã trạng thái và dữ liệu bổ sung.
+     * Tạo phản hồi lỗi với thông điệp, mã trạng thái và dữ liệu bổ sung.
      *
-     * @param <T>     Kiểu dữ liệu đính kèm.
-     * @param message Thông điệp mô tả lỗi.
-     * @param status  Mã trạng thái HTTP tùy chỉnh.
-     * @param data    Dữ liệu bổ sung đi kèm với lỗi.
-     * @return Một instance của {@link HttpApiResponse} đại diện cho phản hồi lỗi.
+     * @param <T>     Kiểu dữ liệu.
+     * @param message Thông điệp lỗi.
+     * @param status  Mã trạng thái HTTP.
+     * @param data    Dữ liệu bổ sung (nếu có).
+     * @return HttpApiResponse lỗi.
      */
-    public static <T> HttpApiResponse<T> error(String message, int status, T data) {
-        return HttpApiResponse.<T>builder().status(status).message(message).data(data).build();
+    public static <T> HttpApiResponse<T> error(String message, HttpStatus status, T data) {
+        return HttpApiResponse.<T>builder().status(status.value()).message(message).data(data).build();
     }
 }

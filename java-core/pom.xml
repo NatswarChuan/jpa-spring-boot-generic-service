@@ -4,11 +4,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.natswarchuan</groupId>
-  <artifactId>generic-service</artifactId>
-  <version>1.2.3</version>
+  <artifactId>jpa-spring-boot-generic-service</artifactId>
+  <version>1.2.4</version>
   <packaging>jar</packaging>
 
-  <name>generic-service</name>
+  <name>jpa-spring-boot-generic-service</name>
   <description>Generic Service Framework for Spring Boot</description>
 
   <properties>
@@ -54,14 +54,21 @@
     </dependency>
   </dependencies>
 
-
-
   <build>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.11.0</version>
+        <configuration>
+          <annotationProcessorPaths>
+            <path>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+              <version>1.18.30</version>
+            </path>
+          </annotationProcessorPaths>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

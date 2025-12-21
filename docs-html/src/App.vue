@@ -64,7 +64,7 @@ const sections = ref([
     ]
   },
   { 
-    id: 'api-list', title: '5. Base Service APIs', component: 'ApiListSection', 
+    id: 'api-list', title: '5. Base Service Methods', component: 'ApiListSection', 
     subs: [
       { id: 'api-read', title: '5.1. Read Operations' },
       { id: 'api-write', title: '5.2. Write Operations' }

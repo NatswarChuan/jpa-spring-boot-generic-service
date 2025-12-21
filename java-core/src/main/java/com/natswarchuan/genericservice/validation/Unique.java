@@ -50,7 +50,17 @@ public @interface Unique {
    */
   String message() default "Giá trị đã tồn tại trong hệ thống";
 
+  /**
+   * Nhóm các ràng buộc (groups).
+   *
+   * @return Mảng các class group.
+   */
   Class<?>[] groups() default {};
 
+  /**
+   * Payload bổ sung.
+   *
+   * @return Mảng các class payload.
+   */
   Class<? extends Payload>[] payload() default {};
 }

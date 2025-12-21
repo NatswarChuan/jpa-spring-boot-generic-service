@@ -29,34 +29,79 @@
       </ul>
     </div>
     
-    <!-- Key Benefits Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-      <!-- Card 1: Speed -> Implementation -->
-      <a href="#implementation" class="block bg-white p-6 rounded-lg border border-slate-200 shadow-sm hover:shadow-md transition-all hover:border-blue-400 group cursor-pointer no-underline">
-        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4 text-blue-600 group-hover:scale-110 transition-transform">
-          <i class="fas fa-bolt text-xl"></i>
+    <!-- Detailed Features -->
+    <div class="mt-12">
+      <h3 class="text-2xl font-bold text-slate-800 mb-6">Các chức năng chính</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
+        <div class="flex items-start">
+          <div class="text-blue-500 mt-1 mr-4"><i class="fas fa-check-circle text-lg"></i></div>
+          <div>
+            <h4 class="font-bold text-slate-800">Generic CRUD Operations</h4>
+            <p class="text-slate-600">Cung cấp đầy đủ các thao tác Thêm, Đọc, Sửa, Xóa cơ bản cho cả Entity và DTO.</p>
+          </div>
         </div>
-        <h3 class="text-lg font-bold text-slate-800 mb-2 group-hover:text-blue-700 transition-colors">Tốc độ vượt trội</h3>
-        <p class="text-sm text-slate-600">Triển khai toàn bộ API CRUD chuẩn mực cho một Entity mới chỉ trong vài phút.</p>
-      </a>
-
-      <!-- Card 2: Standardization -> API Methods -->
-      <a href="#abservice-methods" class="block bg-white p-6 rounded-lg border border-slate-200 shadow-sm hover:shadow-md transition-all hover:border-green-400 group cursor-pointer no-underline">
-        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4 text-green-600 group-hover:scale-110 transition-transform">
-          <i class="fas fa-code text-xl"></i>
+        <div class="flex items-start">
+          <div class="text-green-500 mt-1 mr-4"><i class="fas fa-check-circle text-lg"></i></div>
+          <div>
+            <h4 class="font-bold text-slate-800">Dynamic Filtering (JPA Spec)</h4>
+            <p class="text-slate-600">Tích hợp sẵn Generic Specification cho phép lọc dữ liệu động cực kỳ linh hoạt.</p>
+          </div>
         </div>
-        <h3 class="text-lg font-bold text-slate-800 mb-2 group-hover:text-green-700 transition-colors">Chuẩn hóa Code</h3>
-        <p class="text-sm text-slate-600">Mã nguồn đồng nhất giữa các module, dễ đọc, dễ hiểu và cực kỳ dễ bảo trì.</p>
-      </a>
-
-      <!-- Card 3: Auto DTO -> Usage -->
-      <a href="#usage" class="block bg-white p-6 rounded-lg border border-slate-200 shadow-sm hover:shadow-md transition-all hover:border-purple-400 group cursor-pointer no-underline">
-        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4 text-purple-600 group-hover:scale-110 transition-transform">
-          <i class="fas fa-layer-group text-xl"></i>
+        <div class="flex items-start">
+          <div class="text-purple-500 mt-1 mr-4"><i class="fas fa-check-circle text-lg"></i></div>
+          <div>
+            <h4 class="font-bold text-slate-800">Automatic DTO Mapping</h4>
+            <p class="text-slate-600">Chuyển đổi DTO - Entity hai chiều tự động, tách biệt hoàn toàn lớp Response và Database.</p>
+          </div>
         </div>
-        <h3 class="text-lg font-bold text-slate-800 mb-2 group-hover:text-purple-700 transition-colors">Auto DTO Mapping</h3>
-        <p class="text-sm text-slate-600">Tự động chuyển đổi dữ liệu hai chiều giữa Entity và DTO một cách thông minh.</p>
-      </a>
+        <div class="flex items-start">
+          <div class="text-orange-500 mt-1 mr-4"><i class="fas fa-check-circle text-lg"></i></div>
+          <div>
+            <h4 class="font-bold text-slate-800">Multi-language (I18n)</h4>
+            <p class="text-slate-600">Hỗ trợ trả về dữ liệu theo ngôn ngữ yêu cầu (Localization) ngay tại tầng Service.</p>
+          </div>
+        </div>
+        <div class="flex items-start">
+          <div class="text-indigo-500 mt-1 mr-4"><i class="fas fa-check-circle text-lg"></i></div>
+          <div>
+            <h4 class="font-bold text-slate-800">Service Hooks</h4>
+            <p class="text-slate-600">Cung cấp các điểm can thiệp (before/after hooks) để tùy biến logic nghiệp vụ dễ dàng.</p>
+          </div>
+        </div>
+        <div class="flex items-start">
+          <div class="text-red-500 mt-1 mr-4"><i class="fas fa-check-circle text-lg"></i></div>
+          <div>
+            <h4 class="font-bold text-slate-800">Standardized Error Handling</h4>
+            <p class="text-slate-600">Xử lý ngoại lệ tập trung, đảm bảo mọi API luôn trả về format lỗi đồng nhất.</p>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <!-- Pros and Cons -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-16">
+      <div class="bg-emerald-50 rounded-xl p-8 border border-emerald-100">
+        <h3 class="text-xl font-bold text-emerald-900 mb-4 flex items-center">
+          <i class="fas fa-plus-circle mr-2"></i> Ưu điểm
+        </h3>
+        <ul class="space-y-3 text-emerald-800">
+          <li class="flex items-start"><i class="fas fa-caret-right mt-1.5 mr-2 opacity-50"></i> <strong>Giảm 80% boilerplate code:</strong> Không còn phải viết hàng ngàn dòng code CRUD lặp lại.</li>
+          <li class="flex items-start"><i class="fas fa-caret-right mt-1.5 mr-2 opacity-50"></i> <strong>Tính nhất quán cao:</strong> Toàn bộ team sử dụng chung một cấu trúc chuẩn mực.</li>
+          <li class="flex items-start"><i class="fas fa-caret-right mt-1.5 mr-2 opacity-50"></i> <strong>Dễ bảo trì:</strong> Logic CRUD tập trung tại framework, fix một nơi - áp dụng everywhere.</li>
+          <li class="flex items-start"><i class="fas fa-caret-right mt-1.5 mr-2 opacity-50"></i> <strong>Mở rộng linh hoạt:</strong> Override bất kỳ phương thức nào khi cần nghiệp vụ phức tạp.</li>
+        </ul>
+      </div>
+      <div class="bg-rose-50 rounded-xl p-8 border border-rose-100">
+        <h3 class="text-xl font-bold text-rose-900 mb-4 flex items-center">
+          <i class="fas fa-minus-circle mr-2"></i> Nhược điểm
+        </h3>
+        <ul class="space-y-3 text-rose-800">
+          <li class="flex items-start"><i class="fas fa-caret-right mt-1.5 mr-2 opacity-50"></i> <strong>Đường cong học tập:</strong> Cần hiểu về Java Generics và cấu trúc hooks của framework.</li>
+          <li class="flex items-start"><i class="fas fa-caret-right mt-1.5 mr-2 opacity-50"></i> <strong>Trừu tượng hóa cao:</strong> Đôi khi gây khó khăn cho việc debug nếu không quen với base code.</li>
+          <li class="flex items-start"><i class="fas fa-caret-right mt-1.5 mr-2 opacity-50"></i> <strong>Hạn chế khi quá phức tạp:</strong> Các nghiệp vụ cực kỳ đặc thù vẫn cần viết service riêng biệt.</li>
+        </ul>
+      </div>
+    </div>
+
   </section>
 </template>

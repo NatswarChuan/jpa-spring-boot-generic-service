@@ -36,6 +36,29 @@ public class HttpException extends RuntimeException {
     private final Object data;
 
     /**
+     * Lấy mã trạng thái HTTP.
+     *
+     * @return {@link HttpStatus}.
+     */
+    public HttpStatus getStatus() {
+        return status;
+    }
+
+    /**
+     * Lấy dữ liệu bổ sung đi kèm.
+     *
+     * @return Dữ liệu bổ sung.
+     */
+    public Object getData() {
+        return data;
+    }
+
+    @Override
+    public String getMessage() {
+        return message;
+    }
+
+    /**
      * Khởi tạo một {@code HttpException} mới với trạng thái và thông điệp được chỉ
      * định. Thông điệp
      * cũng được truyền cho superclass {@link RuntimeException}.

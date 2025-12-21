@@ -11,14 +11,23 @@
 
     <article id="dto-response" class="mb-10 scroll-mt-24">
       <h3 class="text-xl font-bold text-slate-800 mb-3">4.2. Response DTO (Auto Mapping)</h3>
-      <p class="text-slate-600 mb-3">Dữ liệu trả về cho client.</p>
+      <p class="text-slate-600 mb-3">Dữ liệu trả về cho client. Hỗ trợ tự động map từ Entity sang DTO.</p>
       <CodeBlock filename="ProductResponse.java" :code="resCode" />
 
-      <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4 mt-4 text-sm text-blue-800">
+      <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4 mt-4 text-sm text-blue-800 shadow-sm">
         <strong>Tips:</strong> <code>IDto</code> mặc định sử dụng <code>BeanUtils.copyProperties</code>. 
         Nếu tên field của DTO trùng với Entity, bạn <strong>KHÔNG CẦN</strong> viết code mapping thủ công nữa.
       </div>
     </article>
+
+    <article id="dto-i18n" class="mb-10 scroll-mt-24">
+      <h3 class="text-xl font-bold text-slate-800 mb-3">4.3. Multi-language Support (I18n)</h3>
+      <p class="text-slate-600 mb-3">
+        Framework hỗ trợ đa ngôn ngữ ngay khi chuyển đổi DTO. Bạn có thể override hàm <code>fromEntity</code> có tham số <code>language</code>.
+      </p>
+      <CodeBlock filename="ProductResponse.java" :code="i18nCode" />
+    </article>
+
   </section>
 </template>
 
@@ -82,8 +91,21 @@ public class ProductResponse implements IDto<Product> {
     private String name;
     private Double price;
 
-    // KHÔNG cần override fromEntity nếu field name trùng khớp
     // IDto tự động dùng BeanUtils.copyProperties(entity, this)
+}
+`);
+
+const i18nCode = ref(`@Override
+public void fromEntity(Product entity, String language) {
+    // Gọi hàm cha để copy fields cơ bản
+    IDto.super.fromEntity(entity, language);
+    
+    // Xử lý logic đa ngôn ngữ custom
+    if ("vi".equals(language)) {
+        this.name = entity.getNameVi();
+    } else {
+        this.name = entity.getNameEn();
+    }
 }
 `);
 </script>

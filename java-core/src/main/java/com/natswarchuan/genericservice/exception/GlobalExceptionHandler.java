@@ -1,6 +1,7 @@
 package com.natswarchuan.genericservice.exception;
 
 import com.natswarchuan.genericservice.payload.response.HttpApiResponse;
+import org.springframework.http.HttpStatus;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +37,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<HttpApiResponse<Object>> handleHttpException(HttpException ex) {
         HttpApiResponse<Object> response = HttpApiResponse.error(
                 ex.getMessage(),
-                ex.getStatus().value(),
+                ex.getStatus(),
                 ex.getData());
         return new ResponseEntity<>(response, ex.getStatus());
     }
@@ -62,7 +63,7 @@ public class GlobalExceptionHandler {
 
         HttpApiResponse<Object> response = HttpApiResponse.error(
                 "Dữ liệu đầu vào không hợp lệ",
-                400,
+                HttpStatus.BAD_REQUEST,
                 errors);
         return ResponseEntity.badRequest().body(response);
     }
@@ -82,7 +83,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<HttpApiResponse<Object>> handleGeneralException(Exception ex) {
         HttpApiResponse<Object> response = HttpApiResponse.error(
                 "Đã xảy ra lỗi hệ thống không mong muốn: " + ex.getMessage(),
-                500);
+                HttpStatus.INTERNAL_SERVER_ERROR);
         return ResponseEntity.internalServerError().body(response);
     }
 }

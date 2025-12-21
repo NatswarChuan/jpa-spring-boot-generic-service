@@ -29,7 +29,7 @@
 &lt;dependency&gt;
     &lt;groupId&gt;com.github.NatswarChuan&lt;/groupId&gt;
     &lt;artifactId&gt;jpa-spring-boot-generic-service&lt;/artifactId&gt;
-    &lt;version&gt;LATEST_VERSION&lt;/version&gt; &lt;!-- Thay thế bằng version mới nhất trên GitHub --&gt;
+    &lt;version&gt;1.2.4&lt;/version&gt; &lt;!-- Thay thế bằng version mới nhất trên GitHub --&gt;
 &lt;/dependency&gt;</pre>
       </div>
     </div>
@@ -55,7 +55,7 @@ allprojects {
         <p class="text-slate-400 text-sm mb-2 font-mono">// 2. Thêm dependency</p>
         <pre class="text-green-400 font-mono text-sm">
 dependencies {
-    implementation 'com.github.NatswarChuan:jpa-spring-boot-generic-service:LATEST_VERSION' // Thay thế bằng version mới nhất
+    implementation 'com.github.NatswarChuan:jpa-spring-boot-generic-service:1.2.4' // Thay thế bằng version mới nhất
 }</pre>
       </div>
     </div>

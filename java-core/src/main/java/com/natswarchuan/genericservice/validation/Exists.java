@@ -27,13 +27,38 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Exists {
 
+  /**
+   * Class Entity cần kiểm tra tồn tại.
+   *
+   * @return Class của Entity (ví dụ: User.class).
+   */
   Class<?> entity();
 
+  /**
+   * Tên trường trong Entity dùng để truy vấn (thường là "id").
+   *
+   * @return Tên trường (mặc định là "id").
+   */
   String field() default "id";
 
+  /**
+   * Thông báo lỗi nếu giá trị không tồn tại.
+   *
+   * @return Chuỗi thông báo lỗi.
+   */
   String message() default "Dữ liệu không tồn tại trong hệ thống";
 
+  /**
+   * Nhóm validation.
+   *
+   * @return Mảng các class nhóm.
+   */
   Class<?>[] groups() default {};
 
+  /**
+   * Payload bổ sung.
+   *
+   * @return Mảng các class payload.
+   */
   Class<? extends Payload>[] payload() default {};
 }

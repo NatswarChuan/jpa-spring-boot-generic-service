@@ -1,6 +1,6 @@
 <template>
   <section id="api-list" class="scroll-mt-20 mb-16">
-    <h2 class="text-3xl font-bold text-slate-900 border-b pb-4 mb-8">5. Base Service APIs (AbService)</h2>
+    <h2 class="text-3xl font-bold text-slate-900 border-b pb-4 mb-8">5. Base Service Methods (AbService)</h2>
     <p class="text-slate-600 mb-6">
       Dưới đây là danh sách đầy đủ các phương thức có sẵn trong <code>AbService</code> mà bạn có thể sử dụng ngay lập tức.
     </p>
@@ -26,14 +26,13 @@
               <td class="px-6 py-4">
                 <span class="bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded border border-gray-200">Entity</span>
                 Lấy Entity gốc. Ném lỗi <code>HttpException</code> (400) nếu không tìm thấy.
-                <br><span class="text-xs text-slate-500 italic">Hỗ trợ header Accept-Language nếu cần.</span>
               </td>
             </tr>
             <tr class="bg-white hover:bg-slate-50 transition-colors">
               <td class="px-6 py-4 font-mono font-medium text-slate-900">findById(ID id, Class&lt;S&gt; dtoClass)</td>
               <td class="px-6 py-4">
                 <span class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded border border-blue-200">DTO</span>
-                Tìm kiếm và tự động chuyển đổi sang DTO bằng Reflection.
+                Tìm kiếm và tự động chuyển đổi sang DTO.
               </td>
             </tr>
             <tr class="bg-white hover:bg-slate-50 transition-colors">
@@ -48,6 +47,13 @@
               <td class="px-6 py-4">
                 <span class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded border border-blue-200">DTO</span>
                 Tìm một bản ghi theo điều kiện Spec.
+              </td>
+            </tr>
+             <tr class="bg-white hover:bg-slate-50 transition-colors">
+              <td class="px-6 py-4 font-mono font-medium text-slate-900">findOne(Specification&lt;E&gt; spec)</td>
+              <td class="px-6 py-4">
+                <span class="bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded border border-gray-200">Entity</span>
+                Tìm một Entity theo điều kiện Spec.
               </td>
             </tr>
           </tbody>
@@ -74,7 +80,7 @@
               <td class="px-6 py-4">
                 <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded border border-green-200">Page&lt;DTO&gt;</span>
                 <strong class="text-blue-600 block mb-1">★ KHUYÊN DÙNG</strong>
-                Hỗ trợ đầy đủ: Phân trang + Sắp xếp (Sort) + Lọc (Spec) + DTO + <strong>Đa ngôn ngữ (Accept-Language)</strong>.
+                Hỗ trợ đầy đủ: Phân trang + Sắp xếp (Sort) + Lọc (Spec) + DTO + <strong>Đa ngôn ngữ</strong>.
               </td>
             </tr>
             <tr class="bg-white hover:bg-slate-50 transition-colors">
@@ -98,6 +104,41 @@
                 Lấy toàn bộ và convert sang DTO.
               </td>
             </tr>
+            <tr class="bg-white hover:bg-slate-50 transition-colors">
+              <td class="px-6 py-4 font-mono font-medium text-slate-900">findAll(Spec spec)</td>
+              <td class="px-6 py-4">
+                <span class="bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded border border-gray-200">List&lt;Entity&gt;</span>
+                Lấy danh sách thỏa mãn điều kiện Spec.
+              </td>
+            </tr>
+            <tr class="bg-white hover:bg-slate-50 transition-colors">
+              <td class="px-6 py-4 font-mono font-medium text-slate-900">findAll(Class&lt;S&gt; dto, Spec spec)</td>
+              <td class="px-6 py-4">
+                <span class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded border border-blue-200">List&lt;DTO&gt;</span>
+                Lấy danh sách DTO thỏa mãn điều kiện Spec.
+              </td>
+            </tr>
+            <tr class="bg-white hover:bg-slate-50 transition-colors">
+              <td class="px-6 py-4 font-mono font-medium text-slate-900">findAllById(Collection&lt;ID&gt; ids)</td>
+              <td class="px-6 py-4">
+                <span class="bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded border border-gray-200">List&lt;Entity&gt;</span>
+                Lấy danh sách theo list ID.
+              </td>
+            </tr>
+             <tr class="bg-white hover:bg-slate-50 transition-colors">
+              <td class="px-6 py-4 font-mono font-medium text-slate-900">count(Spec spec)</td>
+              <td class="px-6 py-4">
+                <span class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded border border-yellow-200">long</span>
+                Đếm số bản ghi thỏa mãn điều kiện.
+              </td>
+            </tr>
+            <tr class="bg-white hover:bg-slate-50 transition-colors">
+              <td class="px-6 py-4 font-mono font-medium text-slate-900">exists(Spec spec)</td>
+              <td class="px-6 py-4">
+                <span class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded border border-yellow-200">boolean</span>
+                Kiểm tra tồn tại bản ghi theo điều kiện.
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -108,7 +149,7 @@
         <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">5.2</span>
         Write Operations (Create / Update / Delete)
       </h3>
-      <div class="overflow-x-auto rounded-lg border border-slate-200 shadow-sm">
+      <div class="overflow-x-auto rounded-lg border border-slate-200 shadow-sm mb-8">
         <table class="w-full text-sm text-left text-slate-600 api-table">
           <thead class="text-xs text-slate-700 uppercase bg-slate-50 border-b border-slate-200">
             <tr>
@@ -117,36 +158,100 @@
             </tr>
           </thead>
           <tbody class="divide-y divide-slate-100">
-            <tr class="bg-white hover:bg-slate-50 transition-colors">
-              <td class="px-6 py-4 font-mono font-medium text-slate-900">create(Class&lt;S&gt; dtoClass, T dto)</td>
+            <tr class="bg-white hover:bg-slate-50 transition-colors font-bold">
+              <td class="px-6 py-4 font-mono text-slate-900">create(T dto, Class&lt;S&gt; resultDto)</td>
               <td class="px-6 py-4">
                 <span class="bg-purple-100 text-purple-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded border border-purple-200">DTO</span>
-                Nhận DTO đầu vào, lưu và trả về DTO kết quả.
-              </td>
-            </tr>
-             <tr class="bg-white hover:bg-slate-50 transition-colors">
-              <td class="px-6 py-4 font-mono font-medium text-slate-900">save(E entity)</td>
-              <td class="px-6 py-4">
-                <span class="bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded border border-gray-200">Entity</span>
-                Lưu (Insert/Update) và trả về Entity.
+                Tạo mới từ DTO và trả về kết quả dưới dạng DTO.
               </td>
             </tr>
             <tr class="bg-white hover:bg-slate-50 transition-colors">
-              <td class="px-6 py-4 font-mono font-medium text-slate-900">update(S updateEntity, ID id)</td>
+              <td class="px-6 py-4 font-mono text-slate-900">create(E entity)</td>
               <td class="px-6 py-4">
                 <span class="bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded border border-gray-200">Entity</span>
-                Update từ DTO vào Entity hiện có (tìm theo ID) và trả về Entity.
+                Lưu thẳng Entity vào database.
+              </td>
+            </tr>
+            <tr class="bg-white hover:bg-slate-50 transition-colors font-bold">
+              <td class="px-6 py-4 font-mono text-slate-900">update(T dto, ID id, Class&lt;S&gt; resDto)</td>
+              <td class="px-6 py-4">
+                <span class="bg-purple-100 text-purple-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded border border-purple-200">DTO</span>
+                Cập nhật thông tin từ DTO vào Entity (theo ID) và trả về DTO.
               </td>
             </tr>
             <tr class="bg-white hover:bg-slate-50 transition-colors">
-              <td class="px-6 py-4 font-mono font-medium text-slate-900">delete(ID id)</td>
+              <td class="px-6 py-4 font-mono text-slate-900">save(E entity)</td>
+              <td class="px-6 py-4">
+                <span class="bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded border border-gray-200">Entity</span>
+                Lưu hoặc Cập nhật Entity.
+              </td>
+            </tr>
+            <tr class="bg-white hover:bg-slate-50 transition-colors">
+              <td class="px-6 py-4 font-mono text-slate-900">delete(ID id)</td>
               <td class="px-6 py-4">
                 <span class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded border border-red-200">Void</span>
-                Xóa theo ID.
+                Xóa bản ghi theo ID.
+              </td>
+            </tr>
+            <tr class="bg-white hover:bg-slate-50 transition-colors">
+              <td class="px-6 py-4 font-mono text-slate-900">delete(ID id, Class&lt;S&gt; dtoClass)</td>
+              <td class="px-6 py-4">
+                <span class="bg-purple-100 text-purple-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded border border-purple-200">DTO</span>
+                Xóa và trả về thông tin bản ghi đã xóa dưới dạng DTO.
+              </td>
+            </tr>
+            <tr class="bg-white hover:bg-slate-50 transition-colors">
+              <td class="px-6 py-4 font-mono text-slate-900">delete(Specification&lt;E&gt; spec)</td>
+              <td class="px-6 py-4">
+                <span class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded border border-red-200">Void</span>
+                Xóa hàng loạt (Bulk Delete) theo điều kiện lọc.
               </td>
             </tr>
           </tbody>
         </table>
+      </div>
+    </article>
+
+    <article id="api-hooks" class="mb-10 scroll-mt-24">
+      <h3 class="text-xl font-bold text-slate-800 mb-4 flex items-center">
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">5.3</span>
+        Service Hooks (Callbacks)
+      </h3>
+      <p class="text-slate-600 mb-4">
+        Các hooks cho phép bạn can thiệp vào quy trình CRUD mà không cần override toàn bộ phương thức. Hãy override chúng trong <code>ServiceImpl</code> của bạn.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="p-4 bg-emerald-50 border border-emerald-100 rounded-lg">
+          <h4 class="font-bold text-emerald-900 mb-2 border-b border-emerald-200 pb-1">Create Hooks</h4>
+          <ul class="text-xs font-mono space-y-2 text-emerald-800">
+            <li>protected void <strong>beforeCreate</strong>(E entity)</li>
+            <li>protected void <strong>afterCreate</strong>(E entity)</li>
+          </ul>
+        </div>
+        <div class="p-4 bg-amber-50 border border-amber-100 rounded-lg">
+          <h4 class="font-bold text-amber-900 mb-2 border-b border-amber-200 pb-1">Update Hooks</h4>
+          <ul class="text-xs font-mono space-y-2 text-amber-800">
+            <li>protected void <strong>beforeUpdate</strong>(E ent, E old)</li>
+            <li>protected void <strong>afterUpdate</strong>(E ent, E old)</li>
+          </ul>
+        </div>
+        <div class="p-4 bg-rose-50 border border-rose-100 rounded-lg">
+          <h4 class="font-bold text-rose-900 mb-2 border-b border-rose-200 pb-1">Delete Hooks</h4>
+          <ul class="text-xs font-mono space-y-2 text-rose-800">
+            <li>protected void <strong>beforeDelete</strong>(E entity)</li>
+            <li>protected void <strong>afterDelete</strong>(E entity)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="mt-4 p-4 bg-slate-50 rounded-lg border border-slate-200 text-sm text-slate-600">
+        <pre class="font-mono text-xs">
+@Override
+protected void beforeCreate(Product entity) {
+    // Custom logic: check business constraints, set default values...
+    if (entity.getPrice() < 0) throw new HttpException("Price must be positive", HttpStatus.BAD_REQUEST);
+}</pre>
       </div>
     </article>
   </section>

@@ -92,7 +92,6 @@ Nơi định nghĩa API Endpoint. Kế thừa `AbController` để có ngay 5 AP
 public class ProductController extends AbController<
     Product,            // Entity
     Long,               // ID Type
-    ProductResponse,    // Response DTO (R)
     ProductCreateReq,   // Create Request (C)
     ProductUpdateReq    // Update Request (U)
 > {
@@ -101,7 +100,12 @@ public class ProductController extends AbController<
     }
 
     @Override
-    protected Class<ProductResponse> getResponseDtoClass() {
+    protected Class<ProductResponse> getResponseSummaryDtoClass() {
+        return ProductResponse.class;
+    }
+
+    @Override
+    protected Class<ProductResponse> getResponseDetailDtoClass() {
         return ProductResponse.class;
     }
 }

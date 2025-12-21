@@ -1,4 +1,5 @@
 package com.example.demo.dto.res;
+// Trigger recompile
 
 import com.natswarchuan.genericservice.dto.IDto;
 import com.example.demo.entity.Product;
