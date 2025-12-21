@@ -26,6 +26,8 @@ import org.springframework.data.jpa.domain.Specification;
  */
 public class GenericSpecification<E> implements Specification<E> {
 
+    private static final long serialVersionUID = 1L;
+
     /** Tham số yêu cầu chứa thông tin tìm kiếm. */
     private final BaseRequestParam requestParam;
 
@@ -48,6 +50,7 @@ public class GenericSpecification<E> implements Specification<E> {
      * @return {@link Predicate} đại diện cho điều kiện lọc.
      */
     @Override
+    @SuppressWarnings("null")
     public Predicate toPredicate(Root<E> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
         if (requestParam.getSearch() != null && !requestParam.getSearch().isEmpty() &&
                 requestParam.getSearchField() != null && !requestParam.getSearchField().isEmpty()) {

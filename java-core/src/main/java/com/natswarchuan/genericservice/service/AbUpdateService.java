@@ -28,7 +28,7 @@ public abstract class AbUpdateService<E, ID> extends AbCreateService<E, ID> impl
 
     /** {@inheritDoc} */
     @Override
-    public E update(E updateEntity, ID id) {
+    public E update(@NonNull E updateEntity, ID id) {
         E oldEntity = this.findById(id);
         beforeUpdate(updateEntity, oldEntity);
         E savedEntity = repository.save(updateEntity);
@@ -56,6 +56,7 @@ public abstract class AbUpdateService<E, ID> extends AbCreateService<E, ID> impl
 
     /** {@inheritDoc} */
     @Override
+    @SuppressWarnings("null")
     public <S extends IDto<E>> E update(@NonNull S updateEntity, @NonNull ID id) {
         E oldEntity = this.findById(id);
         E ent = updateEntity.updateEntity(oldEntity);
@@ -85,6 +86,7 @@ public abstract class AbUpdateService<E, ID> extends AbCreateService<E, ID> impl
 
     /** {@inheritDoc} */
     @Override
+    @SuppressWarnings("null")
     public <S extends IDto<E>, T extends IDto<E>> S update(@NonNull Class<S> dtoClass, @NonNull T dto) {
         E entity = dto.toEntity();
         beforeUpdate(entity, null);
@@ -95,6 +97,7 @@ public abstract class AbUpdateService<E, ID> extends AbCreateService<E, ID> impl
 
     /** {@inheritDoc} */
     @Override
+    @SuppressWarnings("null")
     public <S extends IDto<E>, T extends IDto<E>> S save(@NonNull Class<S> dtoClass, @NonNull T dto) {
         E entity = dto.toEntity();
         beforeUpdate(entity, null);
@@ -105,6 +108,7 @@ public abstract class AbUpdateService<E, ID> extends AbCreateService<E, ID> impl
 
     /** {@inheritDoc} */
     @Override
+    @SuppressWarnings("null")
     public <RQ extends IDto<E>, RP extends IDto<E>> RP update(
             @NonNull RQ updateEntity, @NonNull ID id, @NonNull Class<RP> rsClass) {
         E oldEntity = this.findById(id);

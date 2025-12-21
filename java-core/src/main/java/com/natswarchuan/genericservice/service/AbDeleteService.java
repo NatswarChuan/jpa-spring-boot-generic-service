@@ -14,6 +14,7 @@ import org.springframework.lang.NonNull;
  * @param <ID> Kiểu khóa chính của thực thể.
  * @author NatswarChuan
  */
+    @SuppressWarnings("null")
 public abstract class AbDeleteService<E, ID> extends AbUpdateService<E, ID> implements IDeleteService<E, ID> {
 
     /**

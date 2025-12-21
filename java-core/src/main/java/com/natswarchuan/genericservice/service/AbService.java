@@ -1,10 +1,7 @@
 package com.natswarchuan.genericservice.service;
 
-import com.natswarchuan.genericservice.dto.IDto;
-import com.natswarchuan.genericservice.exception.HttpException;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 
 /**

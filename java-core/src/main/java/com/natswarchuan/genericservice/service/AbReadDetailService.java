@@ -16,6 +16,7 @@ import org.springframework.lang.NonNull;
  * @param <ID> Kiểu khóa chính của thực thể.
  * @author NatswarChuan
  */
+    @SuppressWarnings("null")
 public abstract class AbReadDetailService<E, ID> extends AbReadSummaryService<E, ID>
         implements IReadDetailService<E, ID> {
 

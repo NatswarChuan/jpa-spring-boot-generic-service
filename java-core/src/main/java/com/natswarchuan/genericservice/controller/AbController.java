@@ -14,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.lang.NonNull;
+
 /**
  * Controller trừu tượng (Abstract Controller) cung cấp các API CRUD cơ bản và
  * chuẩn hóa.
@@ -33,6 +35,7 @@ import org.springframework.web.bind.annotation.*;
  * @param <U>  Kiểu DTO dùng cho yêu cầu cập nhật (Update Request).
  * @author NatswarChuan
  */
+    @SuppressWarnings("null")
 public abstract class AbController<E, ID, C extends IDto<E>, U extends IDto<E>> {
 
     /** Service xử lý logic nghiệp vụ. */
@@ -138,7 +141,7 @@ public abstract class AbController<E, ID, C extends IDto<E>, U extends IDto<E>> 
      * @return DTO chi tiết của thực thể vừa được tạo.
      */
     @PostMapping
-    public <R extends IDto<E>> ResponseEntity<HttpApiResponse<R>> create(@RequestBody @Valid C dto) {
+    public <R extends IDto<E>> ResponseEntity<HttpApiResponse<R>> create(@RequestBody @Valid @NonNull C dto) {
         R result = service.create(dto, getResponseDetailDtoClass());
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(HttpApiResponse.success(result, HttpStatus.CREATED));
@@ -154,7 +157,7 @@ public abstract class AbController<E, ID, C extends IDto<E>, U extends IDto<E>> 
      */
     @PutMapping("/{id}")
     public <R extends IDto<E>> ResponseEntity<HttpApiResponse<R>> update(@PathVariable ID id,
-            @RequestBody @Valid U dto) {
+            @RequestBody @Valid @NonNull U dto) {
         R result = service.update(dto, id, getResponseDetailDtoClass());
         return ResponseEntity.ok(HttpApiResponse.success(result, HttpStatus.ACCEPTED));
     }

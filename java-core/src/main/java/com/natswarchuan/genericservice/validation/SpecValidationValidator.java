@@ -13,6 +13,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import com.natswarchuan.genericservice.exception.HttpException;
+import org.springframework.http.HttpStatus;
 
 /**
  * Lớp Validator cho annotation {@link SpecValidation}.
@@ -66,7 +68,7 @@ public class SpecValidationValidator implements ConstraintValidator<SpecValidati
    */
   @Override
   @Transactional(readOnly = true)
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "null" })
   public boolean isValid(Object value, ConstraintValidatorContext context) {
     if (value == null) {
       return true;
@@ -83,8 +85,7 @@ public class SpecValidationValidator implements ConstraintValidator<SpecValidati
 
       CriteriaBuilder cb = entityManager.getCriteriaBuilder();
       CriteriaQuery<Long> query = cb.createQuery(Long.class);
-      @SuppressWarnings("rawtypes")
-      Root root = query.from(entityClass);
+      Root<Object> root = (Root<Object>) query.from(entityClass);
 
       Predicate predicate = ((Specification<Object>) spec).toPredicate(root, query, cb);
 
@@ -103,6 +104,9 @@ public class SpecValidationValidator implements ConstraintValidator<SpecValidati
       }
 
     } catch (Exception e) {
+      if (e instanceof HttpException) {
+        throw (HttpException) e;
+      }
       e.printStackTrace();
       return false;
     }
@@ -114,16 +118,16 @@ public class SpecValidationValidator implements ConstraintValidator<SpecValidati
    * @return Instance hợp lệ của SpecificationLoader.
    * @throws RuntimeException Nếu không thể khởi tạo instance.
    */
+  @SuppressWarnings("null")
   private SpecificationLoader<?, ?> getLoaderInstance() {
     try {
-
       return applicationContext.getBean(loaderClass);
     } catch (Exception e) {
-
       try {
         return loaderClass.getDeclaredConstructor().newInstance();
       } catch (Exception ex) {
-        throw new RuntimeException("Cannot instantiate SpecificationLoader: " + loaderClass.getName(), ex);
+        throw new HttpException(HttpStatus.INTERNAL_SERVER_ERROR, ex,
+            "Không thể khởi tạo SpecificationLoader: " + loaderClass.getName());
       }
     }
   }

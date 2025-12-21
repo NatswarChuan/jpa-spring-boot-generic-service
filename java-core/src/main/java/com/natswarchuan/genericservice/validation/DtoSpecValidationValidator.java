@@ -17,6 +17,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.natswarchuan.genericservice.dto.IDto;
+import com.natswarchuan.genericservice.exception.HttpException;
+import org.springframework.http.HttpStatus;
 
 /**
  * Lớp Validator cho annotation {@link DtoSpecValidation}.
@@ -76,15 +78,15 @@ public class DtoSpecValidationValidator
    */
   @Override
   @Transactional(readOnly = true)
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "null" })
   public boolean isValid(Object value, ConstraintValidatorContext context) {
     if (value == null) {
       return true;
     }
 
     if (!(value instanceof IDto)) {
-      throw new IllegalArgumentException(
-          "Object validated by @DtoSpecValidation must implement IDto interface. Type: "
+      throw new HttpException(HttpStatus.INTERNAL_SERVER_ERROR,
+          "Đối tượng được validate bởi @DtoSpecValidation phải triển khai interface IDto. Kiểu: "
               + value.getClass().getName());
     }
 
@@ -93,8 +95,8 @@ public class DtoSpecValidationValidator
       Class<?> entityClass = ResolvableType.forClass(value.getClass()).as(IDto.class).getGeneric(0).resolve();
 
       if (entityClass == null) {
-        throw new IllegalArgumentException(
-            "Could not resolve generic Entity type from IDto for class: "
+        throw new HttpException(HttpStatus.INTERNAL_SERVER_ERROR,
+            "Không thể xác định kiểu Entity generic từ IDto cho lớp: "
                 + value.getClass().getName());
       }
 
@@ -107,7 +109,7 @@ public class DtoSpecValidationValidator
         params[i] = fields[i].get(value);
       }
 
-      Specification<Object> spec = (Specification<Object>) loader.getSpecification(params);
+      Specification<Object> spec = loader.getSpecification(params);
       if (spec == null) {
         return true;
       }
@@ -133,8 +135,8 @@ public class DtoSpecValidationValidator
       }
 
     } catch (Exception e) {
-      if (e instanceof IllegalArgumentException) {
-        throw (IllegalArgumentException) e;
+      if (e instanceof HttpException) {
+        throw (HttpException) e;
       }
       e.printStackTrace();
 
@@ -153,6 +155,7 @@ public class DtoSpecValidationValidator
    * @return Instance của SpecificationLoader.
    * @throws RuntimeException Nếu không thể khởi tạo instance.
    */
+  @SuppressWarnings("null")
   private SpecificationLoader<?, ?> getLoaderInstance() {
     try {
       return applicationContext.getBean(loaderClass);
@@ -160,8 +163,8 @@ public class DtoSpecValidationValidator
       try {
         return loaderClass.getDeclaredConstructor().newInstance();
       } catch (Exception ex) {
-        throw new RuntimeException(
-            "Cannot instantiate SpecificationLoader: " + loaderClass.getName(), ex);
+        throw new HttpException(HttpStatus.INTERNAL_SERVER_ERROR, ex,
+            "Không thể khởi tạo SpecificationLoader: " + loaderClass.getName());
       }
     }
   }

@@ -12,6 +12,7 @@ import org.springframework.lang.NonNull;
  * @param <ID> Kiểu khóa chính của thực thể.
  * @author NatswarChuan
  */
+    @SuppressWarnings("null")
 public abstract class AbCreateService<E, ID> extends AbReadDetailService<E, ID> implements ICreateService<E, ID> {
 
     /**
@@ -26,7 +27,7 @@ public abstract class AbCreateService<E, ID> extends AbReadDetailService<E, ID> 
 
     /** {@inheritDoc} */
     @Override
-    public E create(E newEntity) {
+    public E create(@NonNull E newEntity) {
         beforeCreate(newEntity);
         E savedEntity = repository.save(newEntity);
         afterCreate(savedEntity);
@@ -45,7 +46,7 @@ public abstract class AbCreateService<E, ID> extends AbReadDetailService<E, ID> 
 
     /** {@inheritDoc} */
     @Override
-    public <S extends IDto<E>> S create(Class<S> dtoClass, E entity) {
+    public <S extends IDto<E>> S create(Class<S> dtoClass, @NonNull E entity) {
         beforeCreate(entity);
         E savedEntity = repository.save(entity);
         afterCreate(savedEntity);

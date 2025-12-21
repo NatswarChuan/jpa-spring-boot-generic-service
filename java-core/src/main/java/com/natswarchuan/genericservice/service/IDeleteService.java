@@ -3,6 +3,7 @@ package com.natswarchuan.genericservice.service;
 import com.natswarchuan.genericservice.dto.IDto;
 import com.natswarchuan.genericservice.exception.HttpException;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.lang.NonNull;
 
 /**
  * Giao diện dịch vụ cho các thao tác xóa (Delete).
@@ -34,7 +35,7 @@ public interface IDeleteService<E, ID> {
      *                       có lỗi xảy ra trong
      *                       quá trình xóa.
      */
-    void delete(E deleteEntity, ID id);
+    void delete(@NonNull E deleteEntity, @NonNull ID id);
 
     /**
      * Xóa một thực thể dựa trên thông tin từ DTO và ID.
@@ -48,7 +49,7 @@ public interface IDeleteService<E, ID> {
      *                       có lỗi xảy ra trong
      *                       quá trình xóa.
      */
-    <S extends IDto<E>> void delete(S deleteEntity, ID id);
+    <S extends IDto<E>> void delete(@NonNull S deleteEntity, @NonNull ID id);
 
     /**
      * Xóa một thực thể và trả về DTO đại diện cho thực thể đã bị xóa.
@@ -64,7 +65,7 @@ public interface IDeleteService<E, ID> {
      * @throws HttpException Nếu có lỗi trong quá trình xóa hoặc chuyển đổi sang
      *                       DTO.
      */
-    <S extends IDto<E>> S delete(Class<S> dtoClass, E entity);
+    <S extends IDto<E>> S delete(@NonNull Class<S> dtoClass, @NonNull E entity);
 
     /**
      * Xóa một thực thể dựa trên DTO dữ liệu cung cấp và trả về DTO kết quả.
@@ -80,7 +81,7 @@ public interface IDeleteService<E, ID> {
      * @return DTO của thực thể đã xóa thành công.
      * @throws HttpException Nếu có lỗi khi tìm, xóa hoặc chuyển đổi DTO.
      */
-    <S extends IDto<E>, T extends IDto<E>> S delete(Class<S> dtoClass, T dto);
+    <S extends IDto<E>, T extends IDto<E>> S delete(@NonNull Class<S> dtoClass, @NonNull T dto);
 
     /**
      * Xóa một thực thể dựa trên khóa chính (ID) và trả về DTO của thực thể đã xóa.
@@ -91,7 +92,7 @@ public interface IDeleteService<E, ID> {
      * @return DTO của thực thể đã xóa thành công.
      * @throws HttpException Nếu không tìm thấy thực thể.
      */
-    <S extends IDto<E>> S delete(ID id, Class<S> dtoClass);
+    <S extends IDto<E>> S delete(@NonNull ID id, @NonNull Class<S> dtoClass);
 
     /**
      * Xóa các thực thể khớp với tiêu chí lọc.
@@ -99,5 +100,5 @@ public interface IDeleteService<E, ID> {
      * @param spec Đối tượng {@link Specification} chứa các điều kiện lọc các thực
      *             thể cần xóa.
      */
-    void delete(Specification<E> spec);
+    void delete(@NonNull Specification<E> spec);
 }

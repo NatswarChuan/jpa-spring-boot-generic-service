@@ -20,6 +20,7 @@ import org.springframework.lang.NonNull;
  * @param <ID> Kiểu khóa chính của thực thể.
  * @author NatswarChuan
  */
+    @SuppressWarnings("null")
 public abstract class AbReadSummaryService<E, ID> extends AbBaseService<E, ID> implements IReadSummaryService<E, ID> {
 
     /**
@@ -41,7 +42,7 @@ public abstract class AbReadSummaryService<E, ID> extends AbBaseService<E, ID> i
 
     /** {@inheritDoc} */
     @Override
-    public List<E> findAllById(@NonNull Collection<ID> ids) {
+    public List<E> findAllById(Collection<ID> ids) {
         if (ids == null || ids.isEmpty()) {
             return Collections.emptyList();
         }
@@ -69,13 +70,13 @@ public abstract class AbReadSummaryService<E, ID> extends AbBaseService<E, ID> i
 
     /** {@inheritDoc} */
     @Override
-    public <S extends IDto<E>> Page<E> findAll(@NonNull Pageable pageable, @NonNull Specification<E> spec) {
+    public <S extends IDto<E>> Page<E> findAll(Pageable pageable, Specification<E> spec) {
         return specExecutor.findAll(spec, pageable);
     }
 
     /** {@inheritDoc} */
     @Override
-    public <S extends IDto<E>> List<S> findAll(@NonNull Class<S> dtoClass) {
+    public <S extends IDto<E>> List<S> findAll(Class<S> dtoClass) {
         List<E> data = repository.findAll();
         return data.stream()
                 .map(e -> mapToDto(e, dtoClass))
@@ -84,7 +85,7 @@ public abstract class AbReadSummaryService<E, ID> extends AbBaseService<E, ID> i
 
     /** {@inheritDoc} */
     @Override
-    public <S extends IDto<E>> List<S> findAll(@NonNull Class<S> dtoClass, String language) {
+    public <S extends IDto<E>> List<S> findAll(Class<S> dtoClass, String language) {
         List<E> entities = repository.findAll();
         return entities.stream()
                 .map(entity -> mapToDto(entity, dtoClass, language))
@@ -93,7 +94,7 @@ public abstract class AbReadSummaryService<E, ID> extends AbBaseService<E, ID> i
 
     /** {@inheritDoc} */
     @Override
-    public <S extends IDto<E>> List<S> findAllById(@NonNull Collection<ID> ids, @NonNull Class<S> dtoClass) {
+    public <S extends IDto<E>> List<S> findAllById(Collection<ID> ids, Class<S> dtoClass) {
         return findAllById(ids, dtoClass, null);
     }
 
@@ -108,7 +109,7 @@ public abstract class AbReadSummaryService<E, ID> extends AbBaseService<E, ID> i
 
     /** {@inheritDoc} */
     @Override
-    public <S extends IDto<E>> List<S> findAll(@NonNull Class<S> dtoClass, @NonNull Specification<E> spec) {
+    public <S extends IDto<E>> List<S> findAll(Class<S> dtoClass, Specification<E> spec) {
         List<E> entities = specExecutor.findAll(spec);
         return entities.stream()
                 .map(entity -> mapToDto(entity, dtoClass))
@@ -117,7 +118,7 @@ public abstract class AbReadSummaryService<E, ID> extends AbBaseService<E, ID> i
 
     /** {@inheritDoc} */
     @Override
-    public <S extends IDto<E>> Page<S> findAll(int page, int size, @NonNull Class<S> dtoClass) {
+    public <S extends IDto<E>> Page<S> findAll(int page, int size, Class<S> dtoClass) {
         Pageable paging = PageRequest.of(page, size);
         Page<E> entityPage = repository.findAll(paging);
         return entityPage.map(entity -> mapToDto(entity, dtoClass));
@@ -125,7 +126,7 @@ public abstract class AbReadSummaryService<E, ID> extends AbBaseService<E, ID> i
 
     /** {@inheritDoc} */
     @Override
-    public <S extends IDto<E>> Page<S> findAll(int page, int size, @NonNull Class<S> dtoClass, String language) {
+    public <S extends IDto<E>> Page<S> findAll(int page, int size, Class<S> dtoClass, String language) {
         Pageable paging = PageRequest.of(page, size);
         Page<E> entityPage = repository.findAll(paging);
         return entityPage.map(entity -> mapToDto(entity, dtoClass, language));
@@ -157,8 +158,8 @@ public abstract class AbReadSummaryService<E, ID> extends AbBaseService<E, ID> i
 
     /** {@inheritDoc} */
     @Override
-    public <S extends IDto<E>> Page<S> findAll(@NonNull Pageable paging, @NonNull Specification<E> spec,
-            @NonNull Class<S> dtoClass, String languageCode) {
+    public <S extends IDto<E>> Page<S> findAll(Pageable paging, Specification<E> spec,
+            Class<S> dtoClass, String languageCode) {
         Page<E> entityPage = specExecutor.findAll(spec, paging);
         return entityPage.map(entity -> mapToDto(entity, dtoClass, languageCode));
     }

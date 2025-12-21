@@ -3,6 +3,7 @@ package com.natswarchuan.genericservice.service;
 import com.natswarchuan.genericservice.dto.IDto;
 import com.natswarchuan.genericservice.exception.HttpException;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.lang.NonNull;
 
 /**
  * Giao diện dịch vụ cho các thao tác cập nhật (Update) và lưu (Save).
@@ -18,13 +19,13 @@ public interface IUpdateService<E, ID> {
      *
      * @param updateEntity Thực thể chứa thông tin cập nhật.
      * @param id           Khóa chính (ID) của thực thể cần cập nhật (dùng để kiểm
-     * tra sự tồn tại).
+     *                     tra sự tồn tại).
      * @return Thực thể sau khi cập nhật.
      * @throws HttpException Nếu không tìm thấy thực thể với ID cung cấp, hoặc nếu
-     * có lỗi xảy ra trong
-     * quá trình cập nhật.
+     *                       có lỗi xảy ra trong
+     *                       quá trình cập nhật.
      */
-    E update(E updateEntity, ID id);
+    E update(@NonNull E updateEntity, ID id);
 
     /**
      * Cập nhật một thực thể hiện có.
@@ -35,7 +36,7 @@ public interface IUpdateService<E, ID> {
      * @param entity Thực thể chứa các thông tin cập nhật.
      * @return Thực thể sau khi đã cập nhật thành công vào cơ sở dữ liệu.
      */
-    E update(E entity);
+    E update(@NonNull E entity);
 
     /**
      * Lưu một thực thể (tạo mới hoặc cập nhật).
@@ -47,21 +48,21 @@ public interface IUpdateService<E, ID> {
      * @param entity Thực thể cần lưu.
      * @return Thực thể sau khi đã được lưu thành công vào cơ sở dữ liệu.
      */
-    E save(E entity);
+    E save(@NonNull E entity);
 
     /**
      * Cập nhật thông tin của một thực thể dựa trên thông tin từ DTO.
      *
      * @param <S>          Kiểu của DTO, phải triển khai {@link IDto} cho thực thể
-     * {@code E}.
+     *                     {@code E}.
      * @param updateEntity Đối tượng DTO chứa thông tin cập nhật.
      * @param id           Khóa chính (ID) của thực thể cần cập nhật.
      * @return Thực thể sau khi cập nhật.
      * @throws HttpException Nếu không tìm thấy thực thể với ID cung cấp, hoặc nếu
-     * có lỗi xảy ra trong
-     * quá trình chuyển đổi DTO hoặc cập nhật thực thể.
+     *                       có lỗi xảy ra trong
+     *                       quá trình chuyển đổi DTO hoặc cập nhật thực thể.
      */
-    <S extends IDto<E>> E update(S updateEntity, ID id);
+    <S extends IDto<E>> E update(@NonNull S updateEntity, @NonNull ID id);
 
     /**
      * Cập nhật một thực thể và trả về DTO kết quả.
@@ -75,9 +76,9 @@ public interface IUpdateService<E, ID> {
      * @param entity   Thực thể chứa các thông tin cập nhật.
      * @return DTO đại diện cho thực thể sau khi cập nhật thành công.
      * @throws HttpException Nếu có lỗi xảy ra trong quá trình cập nhật hoặc chuyển
-     * đổi sang DTO.
+     *                       đổi sang DTO.
      */
-    <S extends IDto<E>> S update(Class<S> dtoClass, E entity);
+    <S extends IDto<E>> S update(@NonNull Class<S> dtoClass, @NonNull E entity);
 
     /**
      * Lưu một thực thể và chuyển đổi kết quả sang DTO.
@@ -92,9 +93,9 @@ public interface IUpdateService<E, ID> {
      * @param entity   Thực thể cần lưu.
      * @return DTO đại diện cho thực thể sau khi lưu thành công.
      * @throws HttpException Nếu có lỗi xảy ra trong quá trình lưu hoặc chuyển đổi
-     * sang DTO.
+     *                       sang DTO.
      */
-    <S extends IDto<E>> S save(Class<S> dtoClass, E entity);
+    <S extends IDto<E>> S save(@NonNull Class<S> dtoClass, @NonNull E entity);
 
     /**
      * Cập nhật dữ liệu từ một DTO và trả về DTO kết quả.
@@ -110,7 +111,7 @@ public interface IUpdateService<E, ID> {
      * @return DTO đại diện cho thực thể sau khi cập nhật thành công.
      * @throws HttpException Nếu có lỗi khi ánh xạ DTO hoặc khi lưu dữ liệu.
      */
-    <S extends IDto<E>, T extends IDto<E>> S update(Class<S> dtoClass, T dto);
+    <S extends IDto<E>, T extends IDto<E>> S update(@NonNull Class<S> dtoClass, @NonNull T dto);
 
     /**
      * Lưu dữ liệu từ một DTO (tạo mới hoặc cập nhật) và trả về DTO kết quả.
@@ -126,28 +127,29 @@ public interface IUpdateService<E, ID> {
      * @param dto      DTO chứa dữ liệu cần lưu.
      * @return DTO đại diện cho thực thể sau khi lưu thành công.
      * @throws HttpException Nếu có lỗi xảy ra trong quá trình chuyển đổi giữa DTO
-     * và thực thể, hoặc
-     * khi lưu.
+     *                       và thực thể, hoặc
+     *                       khi lưu.
      */
-    <S extends IDto<E>, T extends IDto<E>> S save(Class<S> dtoClass, T dto);
+    <S extends IDto<E>, T extends IDto<E>> S save(@NonNull Class<S> dtoClass, @NonNull T dto);
 
     /**
      * Cập nhật một thực thể với dữ liệu từ một DTO yêu cầu và trả về một DTO phản
      * hồi.
      *
      * @param <RQ>         Kiểu của DTO yêu cầu (request), phải triển khai
-     * {@link IDto}.
+     *                     {@link IDto}.
      * @param <RP>         Kiểu của DTO phản hồi (response), phải triển khai
-     * {@link IDto}.
+     *                     {@link IDto}.
      * @param updateEntity DTO yêu cầu chứa dữ liệu cập nhật.
      * @param id           Khóa chính của thực thể cần cập nhật.
      * @param rsClass      Lớp của DTO phản hồi sẽ được trả về.
      * @return Một DTO phản hồi kiểu {@code RP} đại diện cho thực thể sau khi cập
-     * nhật.
+     *         nhật.
      * @throws HttpException Nếu không tìm thấy thực thể hoặc có lỗi xảy ra trong
-     * quá trình cập nhật.
+     *                       quá trình cập nhật.
      */
-    <RQ extends IDto<E>, RP extends IDto<E>> RP update(RQ updateEntity, ID id, Class<RP> rsClass);
+    <RQ extends IDto<E>, RP extends IDto<E>> RP update(@NonNull RQ updateEntity, @NonNull ID id,
+            @NonNull Class<RP> rsClass);
 
     /**
      * Cập nhật thông tin của một thực thể với dữ liệu từ một DTO yêu cầu và trả về
@@ -158,9 +160,9 @@ public interface IUpdateService<E, ID> {
      * @param id           Khóa chính của thực thể cần cập nhật.
      * @param dtoClass     Lớp của DTO phản hồi sẽ được trả về.
      * @return Một DTO phản hồi kiểu {@code S} đại diện cho thực thể sau khi cập
-     * nhật.
+     *         nhật.
      */
-    <S extends IDto<E>> S update(E updateEntity, ID id, Class<S> dtoClass);
+    <S extends IDto<E>> S update(@NonNull E updateEntity, @NonNull ID id, @NonNull Class<S> dtoClass);
 
     /**
      * Cập nhật các thực thể khớp với tiêu chí lọc.
@@ -171,10 +173,10 @@ public interface IUpdateService<E, ID> {
      * Cần cẩn trọng khi sử dụng.
      *
      * @param updateEntity Thực thể mẫu chứa các giá trị cần cập nhật (các trường
-     * khác null sẽ bị bỏ qua hoặc ghi đè tùy triển khai).
+     *                     khác null sẽ bị bỏ qua hoặc ghi đè tùy triển khai).
      * @param spec         Đối tượng {@link Specification} để lọc các thực thể cần
-     * cập nhật.
+     *                     cập nhật.
      * @return Danh sách các thực thể sau khi đã được cập nhật.
      */
-    java.util.List<E> update(E updateEntity, Specification<E> spec);
+    java.util.List<E> update(@NonNull E updateEntity, @NonNull Specification<E> spec);
 }

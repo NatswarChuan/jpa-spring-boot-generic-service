@@ -21,6 +21,7 @@ import org.springframework.data.domain.Sort;
  *
  * @author NatswarChuan
  */
+    @SuppressWarnings("null")
 public class BaseRequestParam {
     /**
      * Số trang cần lấy (0-based index).
