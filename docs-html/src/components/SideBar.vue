@@ -53,7 +53,7 @@
     <!-- Author Footer -->
     <div class="p-4 border-t border-slate-100 bg-slate-50 text-xs text-slate-500 text-center flex-shrink-0">
       <p>Tác giả: <strong class="text-slate-700">NatswarChuan</strong></p>
-      <p class="mt-1 opacity-75">&copy; 2024 Generic Service</p>
+      <p class="mt-1 opacity-75">&copy; 2025 Generic Service</p>
     </div>
   </aside>
 </template>

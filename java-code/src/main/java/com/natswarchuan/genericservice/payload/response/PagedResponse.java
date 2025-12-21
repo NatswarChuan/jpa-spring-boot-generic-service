@@ -1,4 +1,4 @@
-package com.natswarchuan.genericservice;
+package com.natswarchuan.genericservice.payload.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

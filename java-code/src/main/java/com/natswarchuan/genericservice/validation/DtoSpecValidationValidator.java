@@ -1,6 +1,5 @@
 package com.natswarchuan.genericservice.validation;
 
-import com.natswarchuan.genericservice.IDto;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -16,6 +15,8 @@ import org.springframework.core.ResolvableType;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.natswarchuan.genericservice.dto.IDto;
 
 /**
  * Lớp Validator cho annotation {@link DtoSpecValidation}.

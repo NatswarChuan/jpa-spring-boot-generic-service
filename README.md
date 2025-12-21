@@ -2,18 +2,23 @@
 
 **Thư viện Generic Service cho Spring Boot Application**
 
-Thư viện này cung cấp một tầng Service tiêu chuẩn hóa giúp tự động hóa các thao tác CRUD, tích hợp sẵn Validation mạnh mẽ và đơn giản hóa việc chuyển đổi DTO (Data Transfer Object). Được thiết kế để giảm thiểu boilerplate code và tăng tốc độ phát triển dự án.
+Thư viện này cung cấp một tầng Service & Controller tiêu chuẩn hóa giúp tự động hóa các thao tác CRUD, tích hợp sẵn Validation mạnh mẽ và hệ thống Specification Search động. Được thiết kế để giảm thiểu boilerplate code và tăng tốc độ phát triển dự án.
 
 ## ✨ Tính năng nổi bật
 
-*   **CRUD Toàn diện**: Cung cấp sẵn các phương thức `create`, `update`, `delete`, `findById`, `findAll` (có phân trang và không phân trang) ngay khi khởi tạo.
+*   **Clean Architecture**: Cấu trúc phân lớp rõ ràng (Controller -> Service -> Repository).
+*   **Zero-Boilerplate CRUD**:
+    *   `AbController`: Có sẵn API `create`, `update`, `delete`, `findById`, `findAll` (paging & search).
+    *   `AbService`: Xử lý logic nghiệp vụ, transaction và mapping DTO.
+*   **Tìm kiếm & Phân trang nâng cao**:
+    *   Tự động parse `page`, `size`, `sort`, `search` từ request.
+    *   Hỗ trợ Custom Specification dễ dàng.
 *   **Validation Mạnh mẽ**:
-    *   Tích hợp sẵn các Annotation: `@Exists`, `@Unique`, `@EnumValue`, `@PhoneNumber`, `@NoSpecialChars`.
-    *   Hỗ trợ Validation phức tạp với JPA Specification (`@DtoSpecValidation`).
-*   **Tìm kiếm Linh hoạt**: Tích hợp sâu với **JPA Specification** cho phép lọc và tìm kiếm dữ liệu động.
-*   **Auto DTO Mapping**: Cơ chế tự động chuyển đổi giữa Entity và DTO thông qua interface `IDto`.
-*   **Chuẩn hóa Phản hồi**: Cấu trúc `HttpApiResponse` và `PagedResponse` thống nhất cho toàn bộ hệ thống.
-*   **Đa ngôn ngữ**: Hỗ trợ Localization ngay từ tầng Service.
+    *   Tích hợp sẵn các Annotation: `@Exists`, `@Unique`, `@EnumValue`, `@PhoneNumber`.
+    *   Tự động validate DTO Input (`@Valid`).
+    *   Tự động validate DTO Input (`@Valid`).
+*   **Auto DTO Mapping (New)**: Interface `IDto` tích hợp sẵn `BeanUtils.copyProperties`.
+*   **Multi-language Support**: Tự động nhận diện header `Accept-Language` (vi, en,...) và truyền vào `IDto.fromEntity` để xử lý đa ngôn ngữ.
 
 ## 📦 Cài đặt
 
@@ -43,106 +48,93 @@ Thư viện được phân phối qua **JitPack**.
 </dependency>
 ```
 
-### Gradle
-1. Thêm vào `build.gradle` (root):
-```groovy
-allprojects {
-    repositories {
-        ...
-        maven { url 'https://jitpack.io' }
-    }
-}
-```
-
-2. Thêm dependency:
-```groovy
-dependencies {
-    implementation 'com.github.NatswarChuan:jpa-spring-boot-generic-service:LATEST_VERSION' // Thay thế bằng version mới nhất
-}
-```
-
-> **Lưu ý:** Vui lòng kiểm tra **GitHub Releases** để lấy version tag mới nhất.
-
 ## 🚀 Hướng dẫn nhanh
 
-### Bước 1: Định nghĩa Entity và DTO
-Entity của bạn cần implement interface `IDto<Entity>` để kích hoạt tính năng tự động mapping.
+### 1. Entity & Repository
+Định nghĩa thực thể và lớp truy cập dữ liệu. Repository buộc phải hỗ trợ `JpaSpecificationExecutor`.
 
 ```java
 @Entity
-public class User {
+@Data
+public class Product {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String username;
-    // getters, setters...
+    private String name;
+    private Double price;
 }
 
-public class UserRequest implements IDto<User> {
-    private String username;
-
-    @Override
-    public User toEntity() {
-        User user = new User();
-        user.setUsername(this.username);
-        return user;
-    }
-}
-```
-
-### Bước 2: Tạo Repository
-Kế thừa `IGenericRepository`.
-
-```java
 @Repository
-public interface UserRepository extends IGenericRepository<User, Long> {
+public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpecificationExecutor<Product> {
 }
 ```
 
-### Bước 3: Tạo Service
-Kế thừa `AbService`.
+### 2. Service Layer
+Chứa logic nghiệp vụ. Kế thừa `AbService` để tái sử dụng toàn bộ các hàm CRUD và Transaction standard.
 
 ```java
-@Service
-public class UserService extends AbService<User, Long, UserRepository> {
+public interface IProductService extends IService<Product, Long> {}
 
-    public UserService(UserRepository repository) {
+@Service
+@Transactional
+public class ProductServiceImpl extends AbService<Product, Long> implements IProductService {
+    public ProductServiceImpl(ProductRepository repository) {
         super(repository);
     }
 }
 ```
 
-### Bước 4: Sử dụng trong Controller
-Bây giờ bạn đã có đầy đủ các hàm CRUD!
+### 3. Controller Layer
+Nơi định nghĩa API Endpoint. Kế thừa `AbController` để có ngay 5 API chuẩn (List, Detail, Create, Update, Delete) mà không cần viết code.
 
 ```java
 @RestController
-@RequestMapping("/api/users")
-public class UserController {
-    
-    private final UserService service;
-
-    public UserController(UserService service) {
-        this.service = service;
+@RequestMapping("/api/products")
+public class ProductController extends AbController<
+    Product,            // Entity
+    Long,               // ID Type
+    ProductResponse,    // Response DTO (R)
+    ProductCreateReq,   // Create Request (C)
+    ProductUpdateReq    // Update Request (U)
+> {
+    public ProductController(IProductService service) {
+        super(service);
     }
 
-    @PostMapping
-    public HttpApiResponse<User> create(@RequestBody UserRequest request) {
-        return HttpApiResponse.success(service.save(request));
+    @Override
+    protected Class<ProductResponse> getResponseDtoClass() {
+        return ProductResponse.class;
     }
-    
-    @GetMapping
-    public HttpApiResponse<PagedResponse<User>> list(Pageable pageable) {
-        return HttpApiResponse.success(PagedResponse.of(service.findAll(pageable)));
+}
+```
+
+### 4. Custom Search (Optional)
+Nếu cần filter thêm field riêng (ví dụ `minPrice`), hãy override `findAll`:
+
+```java
+@Override
+@GetMapping
+public ResponseEntity<HttpApiResponse<PagedResponse<ProductResponse>>> findAll(ProductRequestParam requestParam) {
+    // Override để Spring bind đúng field trong ProductRequestParam
+    return super.findAll(requestParam);
+}
+
+@Override
+protected Specification<Product> getSpecification(BaseRequestParam baseParam) {
+    Specification<Product> spec = super.getSpecification(baseParam);
+    if (baseParam instanceof ProductRequestParam param && param.getMinPrice() != null) {
+        // Add custom logic
     }
+    return spec;
 }
 ```
 
 ## 📖 Tài liệu chi tiết
 
-Vui lòng tham khảo thư mục `docs` trong repository này hoặc trang tài liệu đi kèm để xem hướng dẫn chi tiết về:
-*   Các Annotation Validation (`@Exists`, `@Unique`,...).
-*   Cách sử dụng `SpecificationLoader`.
-*   Xử lý lỗi với `GlobalExceptionHandler`.
+Vui lòng tham khảo thư mục `docs-html` trong repository này. Đây là trang tài liệu đầy đủ được viết bằng Vue.js, bao gồm:
+*   **Core Architecture**: Sơ đồ luồng dữ liệu.
+*   **API List**: Danh sách API mặc định.
+*   **Specification**: Hướng dẫn dùng bộ lọc nâng cao.
+*   **Validation**: Cách sử dụng custom annotations.
 
 ## 👨‍💻 Tác giả
 

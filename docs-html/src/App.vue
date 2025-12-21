@@ -49,61 +49,53 @@ const sections = ref([
   { id: 'intro', title: '1. Giới thiệu', component: 'IntroductionSection', subs: [] },
   { id: 'installation', title: '2. Cài đặt', component: 'InstallationSection', subs: [] },
   { 
-    id: 'implementation', title: '3. Hướng dẫn Triển khai', component: 'ImplementationSection', 
+    id: 'core-arch', title: '3. Core Architecture', component: 'ImplementationSection', 
     subs: [
-      { id: 'step2-1', title: '3.1. Định nghĩa Entity' },
-      { id: 'step2-2', title: '3.2. Tạo Repository' },
-      { id: 'step2-3', title: '3.3. Service Interface' },
-      { id: 'step2-4', title: '3.4. Service Impl' }
+      { id: 'core-entity', title: '3.1. Entity & Repository' },
+      { id: 'core-service', title: '3.2. Service Layer' },
+      { id: 'core-controller', title: '3.3. Controller Layer' }
     ]
   },
   { 
-    id: 'usage', title: '4. Hướng dẫn sử dụng', component: 'UsageSection', 
+    id: 'dtos', title: '4. Data Transfer Objects', component: 'UsageSection', 
     subs: [
-      { id: 'usage-3-1', title: '4.1. Request DTO' },
-      { id: 'usage-3-2', title: '4.2. Response DTO' },
-      { id: 'usage-3-3', title: '4.3. Controller' }
+      { id: 'dto-request', title: '4.1. Request DTO' },
+      { id: 'dto-response', title: '4.2. Response DTO' }
     ]
   },
   { 
-    id: 'abservice-methods', title: '5. Danh sách hàm (API)', component: 'ApiListSection', 
+    id: 'api-list', title: '5. Base Service APIs', component: 'ApiListSection', 
     subs: [
-      { id: 'api-read-single', title: '5.1. Read (Single)' },
-      { id: 'api-read-list', title: '5.2. Read (List)' },
-      { id: 'api-write', title: '5.3. Write (C/U/D)' }
+      { id: 'api-read', title: '5.1. Read Operations' },
+      { id: 'api-write', title: '5.2. Write Operations' }
     ]
   },
   { 
-    id: 'spec-examples', title: '6. Ví dụ Specification', component: 'SpecificationSection', 
+    id: 'specifications', title: '6. Specification & Search', component: 'SpecificationSection', 
     subs: [
-      { id: 'spec-search', title: '6.1. Tìm kiếm cơ bản' },
-      { id: 'spec-pageable', title: '6.2. Phân trang & Sắp xếp' }
-    ]
-  },
-
-  { 
-    id: 'validation', title: '7. Validation Annotations', component: 'ValidationSection', 
-    subs: [
-      { id: 'val-basic', title: '7.1. Validation Cơ bản' },
-      { id: 'val-spec', title: '7.2. Advanced Specification Validation' },
-      { id: 'val-dto', title: '7.3. DTO Level Validation' }
+      { id: 'spec-basic', title: '6.1. Basic Search' },
+      { id: 'spec-adv', title: '6.2. Advanced Features' }
     ]
   },
   { 
-    id: 'response-wrappers', title: '8. Cấu trúc phản hồi', component: 'ResponseSection', 
+    id: 'validation', title: '7. Validation System', component: 'ValidationSection', 
     subs: [
-      { id: 'res-http', title: '8.1. HttpApiResponse' },
-      { id: 'res-paged', title: '8.2. PagedResponse' }
+      { id: 'val-basic', title: '7.1. Basic Constraints' },
+      { id: 'val-custom', title: '7.2. Custom Validators' }
     ]
   },
   { 
-    id: 'notes', title: '9. Lưu ý quan trọng', component: 'NotesSection', 
+    id: 'response-handling', title: '8. Response Handling', component: 'ResponseSection', 
     subs: [
-      { id: 'notes-common', title: '9.1. Lỗi thường gặp' },
-      { id: 'notes-n1', title: '9.2. Ưu điểm & N+1' },
-      { id: 'notes-validation-perf', title: '9.3. Hiệu năng Validation' },
-      { id: 'notes-tips', title: '9.4. Mẹo tối ưu' },
-      { id: 'notes-exception', title: '9.5. Xử lý lỗi' }
+      { id: 'res-structure', title: '8.1. Response Structure' },
+      { id: 'res-exception', title: '8.2. Exception Handling' }
+    ]
+  },
+  { 
+    id: 'notes', title: '9. Important Notes', component: 'NotesSection', 
+    subs: [
+      { id: 'notes-best-practices', title: '9.1. Best Practices' },
+      { id: 'notes-troubleshooting', title: '9.2. Troubleshooting' }
     ] 
   }
 ]);
