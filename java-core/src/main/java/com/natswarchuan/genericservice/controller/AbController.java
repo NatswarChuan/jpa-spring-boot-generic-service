@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
  */
 public abstract class AbController<E, ID, R extends IDto<E>, C extends IDto<E>, U extends IDto<E>> {
 
+    /** Service xử lý logic nghiệp vụ. */
     protected final IService<E, ID> service;
 
     /**
@@ -49,6 +50,8 @@ public abstract class AbController<E, ID, R extends IDto<E>, C extends IDto<E>, 
      * tùy chỉnh logic lọc.
      *
      * @param requestParam Object chứa các tham số tìm kiếm.
+     * @param <RQ>         Kiểu dữ liệu của request params (kế thừa
+     *                     BaseRequestParam).
      * @return Specification để query database.
      */
     protected <RQ extends BaseRequestParam> Specification<E> getSpecification(RQ requestParam) {
@@ -59,6 +62,8 @@ public abstract class AbController<E, ID, R extends IDto<E>, C extends IDto<E>, 
      * Lấy danh sách thực thể có hỗ trợ tìm kiếm và phân trang nâng cao.
      *
      * @param requestParam Object chứa các tham số phân trang và tìm kiếm.
+     * @param <RQ>         Kiểu dữ liệu của request params (kế thừa
+     *                     BaseRequestParam).
      * @param language     Mã ngôn ngữ (VD: "vi", "en") từ header Accept-Language.
      * @return PagedResponse chứa danh sách các DTO kiểu R.
      */

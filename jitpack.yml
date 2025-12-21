@@ -1,4 +1,4 @@
 jdk:
   - openjdk17
 install:
-  - mvn -f java-code/pom.xml clean install source:jar javadoc:jar -DskipTests
+  - mvn -f java-core/pom.xml clean install source:jar javadoc:jar -DskipTests

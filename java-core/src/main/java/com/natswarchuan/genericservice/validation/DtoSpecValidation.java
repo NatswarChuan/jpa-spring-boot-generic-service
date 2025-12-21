@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
  * Annotation validation ở mức class (Type Level).
  * <p>
  * Yêu cầu class được assign phải implement
- * {@link com.natswarchuan.genericservice.IDto}.
+ * {@link com.natswarchuan.genericservice.dto.IDto}.
  * Validator sẽ tự động lấy class Entity từ generic của IDto để thực hiện query.
  */
 @Documented
