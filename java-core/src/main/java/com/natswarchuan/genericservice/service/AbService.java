@@ -804,6 +804,35 @@ public abstract class AbService<E, ID> implements IService<E, ID> {
      * điều kiện động.
      */
     @Override
+    public <S extends IDto<E>> S delete(Class<S> dtoClass, E entity) {
+        repository.delete(entity);
+        try {
+            S s = dtoClass.getDeclaredConstructor().newInstance();
+            s.fromEntity(entity);
+            return s;
+        } catch (Exception ex) {
+            throw new HttpException(
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    "Lỗi khi chuyển đổi entity sang DTO: " + ex.getMessage());
+        }
+    }
+
+    @Override
+    public <S extends IDto<E>, T extends IDto<E>> S delete(Class<S> dtoClass, T dto) {
+        E entity = dto.toEntity();
+        repository.delete(entity);
+        try {
+            S s = dtoClass.getDeclaredConstructor().newInstance();
+            s.fromEntity(entity);
+            return s;
+        } catch (Exception ex) {
+            throw new HttpException(
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    "Lỗi khi chuyển đổi entity sang DTO: " + ex.getMessage());
+        }
+    }
+
+    @Override
     public List<E> findAll(Specification<E> spec) {
         @SuppressWarnings("unchecked")
         JpaSpecificationExecutor<E> specExecutor = (JpaSpecificationExecutor<E>) repository;
