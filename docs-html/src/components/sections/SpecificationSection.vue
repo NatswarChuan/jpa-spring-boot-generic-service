@@ -58,7 +58,7 @@ GET /api/products?page=0&size=20&sort=price&dir=desc&search=iphone&searchField=n
 import { ref } from 'vue';
 import CodeBlock from '../CodeBlock.vue';
 
-const customParamCode = ref(`package com.example.demo.payload.request;
+const customParamCode = ref(`package com.example.demo.dto.product;
 
 import com.natswarchuan.genericservice.payload.request.BaseRequestParam;
 import lombok.Data;
@@ -66,10 +66,11 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class ProductRequestParam extends BaseRequestParam {
+public class ProductFilterParam extends BaseRequestParam {
     private Double minPrice;
     private Double maxPrice;
-    private Long brandId;
+    private String brandName; // Lọc theo tên Brand (Join)
+    // Các field khác: modelId, categoryId...
 }
 `);
 
@@ -82,37 +83,20 @@ public class ProductController extends AbController<Product, Long, ProductCreate
     // 1. Override findAll để bind đúng class Param
     @Override
     @GetMapping
-    public ResponseEntity<HttpApiResponse<PagedResponse<ProductResponse>>> findAll(
-            ProductRequestParam requestParam, // <-- Dùng class con của bạn ở đây
+    public ResponseEntity<HttpApiResponse<PagedResponse<ProductRes>>> findAll(
+            ProductFilterParam requestParam, // <-- Dùng class custom param
             @RequestHeader(name = "Accept-Language", defaultValue = "en") String language) {
         return super.findAll(requestParam, language);
     }
 
-    // 2. Override getSpecification để xử lý logic filter custom
+    // 2. Override getSpecification để trả về Specification tùy chỉnh
     @Override
     protected Specification<Product> getSpecification(BaseRequestParam baseParam) {
-        // Lấy spec mặc định (xử lý search keyword)
-        Specification<Product> spec = super.getSpecification(baseParam);
-
-        // Cast về class con để lấy các field custom
-        if (baseParam instanceof ProductRequestParam param) {
-            
-            if (param.getMinPrice() != null) {
-                spec = spec.and((root, query, cb) -> 
-                    cb.ge(root.get("price"), param.getMinPrice()));
-            }
-
-            if (param.getMaxPrice() != null) {
-                spec = spec.and((root, query, cb) -> 
-                    cb.le(root.get("price"), param.getMaxPrice()));
-            }
-
-            if (param.getBrandId() != null) {
-                spec = spec.and((root, query, cb) -> 
-                    cb.equal(root.get("brand").get("id"), param.getBrandId()));
-            }
+        if (baseParam instanceof ProductFilterParam param) {
+            // Trả về ProductSpecification để xử lý logic lọc nâng cao (minPrice, brandName, etc)
+            return new ProductSpecification(param);
         }
-        return spec;
+        return super.getSpecification(baseParam);
     }
 }
 `);

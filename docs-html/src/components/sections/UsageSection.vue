@@ -35,150 +35,133 @@
 import { ref } from 'vue';
 import CodeBlock from '../CodeBlock.vue';
 
-const createReqCode = ref(`package com.example.demo.dto.req;
+const createReqCode = ref(`package com.example.demo.dto.product;
 
-import com.example.demo.dto.req.spec.ProductRelationshipConsistencySpec;
-import com.example.demo.entity.Product;
+import java.math.BigDecimal;
+import java.util.Set;
+import java.util.stream.Collectors;
+import org.springframework.beans.BeanUtils;
+
+import com.example.demo.domain.*;
+import com.example.demo.validation.specs.IdsInSpecLoader;
 import com.natswarchuan.genericservice.dto.IDto;
-import com.natswarchuan.genericservice.validation.DtoSpecValidation;
-import com.natswarchuan.genericservice.validation.Exists;
-import com.natswarchuan.genericservice.validation.NoSpecialChars;
-import com.natswarchuan.genericservice.validation.Unique;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
+import com.natswarchuan.genericservice.validation.*;
+
+import jakarta.validation.constraints.*;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
-@DtoSpecValidation(loader = ProductRelationshipConsistencySpec.class, mustExist = true, message = "Model và danh mục phải thuộc thương hiệu được chọn")
 public class ProductCreateReq implements IDto<Product> {
-    @NotBlank(message = "Tên sản phẩm không được để trống")
-    @Unique(entity = Product.class, message = "Tên sản phẩm đã tồn tại", field = "name")
-    @NoSpecialChars(message = "Tên sản phẩm không được chứa ký tự đặc biệt")
+
+    @NotBlank(message = "Name is required")
     private String name;
 
-    @Min(value = 0, message = "Giá sản phẩm phải lớn hơn 0")
-    private Double price;
+    @DecimalMin(value = "0.0", message = "Price must be non-negative")
+    private BigDecimal price;
 
-    private String description;
-
-    @Exists(entity = com.example.demo.entity.Category.class, message = "Danh mục không tồn tại", field = "id")
-    private Long categoryId;
-
-    @Exists(entity = com.example.demo.entity.Brand.class, message = "Thương hiệu không tồn tại", field = "id")
+    @Exists(entity = Brand.class)
     private Long brandId;
 
-    @Exists(entity = com.example.demo.entity.Model.class, message = "Model không tồn tại", field = "id")
+    @Exists(entity = Model.class)
     private Long modelId;
 
+    @Exists(entity = Store.class)
+    private Long storeId;
+
+    @SpecValidation(entity = Category.class, loader = IdsInSpecLoader.class, message = "Given categories do not exist")
+    private Set<Long> categoryIds;
+
+    /**
+     * Chuyển đổi sang Entity.
+     * <p>
+     * - Sử dụng BeanUtils.copyProperties cho các field đơn giản.
+     * - Xử lý thủ công cho categoryIds (Set<Long> -> Set<Category>).
+     */
     @Override
     public Product toEntity() {
         Product product = new Product();
-        org.springframework.beans.BeanUtils.copyProperties(this, product);
-
-        if (categoryId != null) {
-            com.example.demo.entity.Category category = new com.example.demo.entity.Category();
-            category.setId(categoryId);
-            product.setCategory(category);
+        BeanUtils.copyProperties(this, product, "categoryIds");
+        if (this.categoryIds != null) {
+            Set<Category> categories = this.categoryIds.stream()
+                    .map(id -> Category.builder().id(id).build())
+                    .collect(Collectors.toSet());
+            product.setCategories(categories);
         }
-
-        if (brandId != null) {
-            com.example.demo.entity.Brand brand = new com.example.demo.entity.Brand();
-            brand.setId(brandId);
-            product.setBrand(brand);
-        }
-
-        if (modelId != null) {
-            com.example.demo.entity.Model model = new com.example.demo.entity.Model();
-            model.setId(modelId);
-            product.setModel(model);
-        }
-
         return product;
     }
 }
 `);
 
-const updateReqCode = ref(`package com.example.demo.dto.req;
+const updateReqCode = ref(`package com.example.demo.dto.product;
 
-import com.example.demo.entity.Product;
+import java.math.BigDecimal;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import com.example.demo.domain.*;
+import com.example.demo.validation.specs.IdsInSpecLoader;
 import com.natswarchuan.genericservice.dto.IDto;
+import com.natswarchuan.genericservice.validation.*;
+
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 public class ProductUpdateReq implements IDto<Product> {
     private String name;
-    private Double price;
-    private String description;
+    private BigDecimal price;
 
-    // KHÔNG cần override updateEntity nếu field name trùng khớp
-    // IDto tự động dùng BeanUtils.copyProperties(this, entity)
-}
-`);
+    @Exists(entity = Brand.class)
+    private Long brandId;
 
-const resCode = ref(`package com.example.demo.dto.res;
+    @Exists(entity = Model.class)
+    private Long modelId;
 
-import org.springframework.beans.BeanUtils;
+    @Exists(entity = Store.class)
+    private Long storeId;
 
-import com.example.demo.entity.Product;
-import com.natswarchuan.genericservice.dto.IDto;
-
-import jakarta.annotation.Nonnull;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@NoArgsConstructor
-public class ProductResponse implements IDto<Product> {
-    private Long id;
-    private String name;
-    private Double price;
-    private String description;
-
-    private CategoryResponse category;
-    private BrandResponse brand;
-    private ModelResponse model;
+    @SpecValidation(entity = Category.class, loader = IdsInSpecLoader.class, message = "Given categories do not exist")
+    private Set<Long> categoryIds;
 
     @Override
-    @SuppressWarnings("null")
-    public void fromEntity(@Nonnull Product entity) {
-        BeanUtils.copyProperties(entity, this);
-
-        if (entity.getCategory() != null) {
-            CategoryResponse categoryRes = new CategoryResponse();
-            categoryRes.fromEntity(entity.getCategory());
-            this.category = categoryRes;
+    public Product updateEntity(Product entity) {
+        // Tận dụng default method để copy fields cơ bản
+        IDto.super.updateEntity(entity);
+        
+        // Cập nhật quan hệ Many-to-Many an toàn
+        if (this.categoryIds != null) {
+            Set<Category> categories = this.categoryIds.stream()
+                    .map(id -> Category.builder().id(id).build())
+                    .collect(Collectors.toSet());
+            entity.setCategories(categories); // Trigger clear() + addAll()
         }
-
-        if (entity.getBrand() != null) {
-            BrandResponse brandRes = new BrandResponse();
-            brandRes.fromEntity(entity.getBrand());
-            this.brand = brandRes;
-        }
-
-        if (entity.getModel() != null) {
-            ModelResponse modelRes = new ModelResponse();
-            modelRes.fromEntity(entity.getModel());
-            this.model = modelRes;
-        }
+        return entity;
     }
 }
 `);
 
-const i18nCode = ref(`@Override
+const resCode = ref(`package com.example.demo.dto.product;
+
+import java.math.BigDecimal;
+import com.example.demo.domain.Product;
+import com.natswarchuan.genericservice.dto.IDto;
+import lombok.Data;
+
+@Data
+public class ProductRes implements IDto<Product> {
+    private Long id;
+    private String name;
+    private BigDecimal price;
+
+    // IDto tự động hỗ trợ mapping từ Entity -> DTO thông qua BeanUtils
+    // nếu tên field trùng khớp (ví dụ: name, price).
+}
+`);
+
+const i18nCode = ref(`// Ví dụ override nếu muốn support đa ngôn ngữ
+@Override
 public void fromEntity(Product entity, String language) {
-    // Gọi hàm cha để copy fields cơ bản
     IDto.super.fromEntity(entity, language);
-    
-    // Xử lý logic đa ngôn ngữ custom
-    if ("vi".equals(language)) {
-        this.name = entity.getNameVi();
-    } else {
-        this.name = entity.getNameEn();
-    }
+    // Logic custom cho từng ngôn ngữ
 }
 `);
 </script>

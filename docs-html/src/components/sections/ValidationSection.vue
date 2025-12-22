@@ -43,7 +43,17 @@
       <CodeBlock filename="ProductCreateReq.java" :code="dtoSpecCode" />
       
       <p class="text-sm text-slate-600 mt-4 mb-2">Implement Loader:</p>
-      <CodeBlock filename="ProductRelationshipConsistencySpec.java" :code="loaderImplCode" />
+      <CodeBlock filename="ProductUniqueSpec.java" :code="loaderImplCode" />
+    </article>
+
+    <!-- 7.3 Cross-Entity Validator -->
+    <article id="val-cross" class="mb-10 scroll-mt-24">
+      <h3 class="text-xl font-bold text-slate-800 mb-3">7.3. Cross-Entity Validation</h3>
+      <p class="text-slate-600 mb-4">Validation phức tạp liên quan đến quan hệ giữa nhiều bảng (Brand - Model - Category).</p>
+
+      <h4 class="font-semibold text-slate-700 mt-4">@BrandModelCategoryValid</h4>
+      <p class="text-sm text-slate-600 mb-2">Đảm bảo tính nhất quán của dữ liệu quan hệ.</p>
+      <CodeBlock filename="BrandCreateReq.java" :code="crossValCode" />
     </article>
 
   </section>
@@ -103,86 +113,80 @@ public class ProfileRequest {
 }
 `);
 
-const specValCode = ref(`package com.example.demo.dto;
+const specValCode = ref(`package com.example.demo.dto.product;
 
-import com.example.demo.entity.Department;
-import com.example.demo.specification.ActiveDepartmentSpecLoader;
+import com.example.demo.domain.Category;
+import com.example.demo.validation.specs.IdsInSpecLoader;
 import com.natswarchuan.genericservice.validation.SpecValidation;
 import lombok.Data;
+import java.util.Set;
 
 @Data
-public class ProductDto {
-    // Kiểm tra departmentId phải thuộc về một Company đang Active
+public class ProductCreateReq {
+    // Validate danh sách ID có tồn tại trong DB không (dùng IN clause)
     @SpecValidation(
-        entity = Department.class, 
-        loader = ActiveDepartmentSpecLoader.class, 
-        message = "Phòng ban không hợp lệ hoặc không hoạt động"
+        entity = Category.class, 
+        loader = IdsInSpecLoader.class, 
+        message = "Một hoặc nhiều danh mục không tồn tại"
     )
-    private Long departmentId;
+    private Set<Long> categoryIds;
 }
 `);
 
-const dtoSpecCode = ref(`package com.example.demo.dto.req;
+const dtoSpecCode = ref(`package com.example.demo.dto.product;
 
-import com.example.demo.dto.req.spec.ProductRelationshipConsistencySpec;
-import com.example.demo.entity.Product;
+import com.example.demo.domain.Product;
+import com.example.demo.validation.specs.ProductUniqueSpec;
 import com.natswarchuan.genericservice.dto.IDto;
 import com.natswarchuan.genericservice.validation.DtoSpecValidation;
 import lombok.Data;
 
 @Data
 @DtoSpecValidation(
-    loader = ProductRelationshipConsistencySpec.class, 
-    mustExist = true, 
-    message = "Model và danh mục phải thuộc thương hiệu được chọn"
+    loader = ProductUniqueSpec.class, 
+    message = "Sản phẩm với tên này đã tồn tại trong cửa hàng được chọn"
 )
 public class ProductCreateReq implements IDto<Product> {
-    private Long categoryId;
-    private Long brandId;
-    private Long modelId;
-    // ... other fields
+    private String name;
+    private Long storeId;
+    // ...
 }
 `);
 
-const loaderImplCode = ref(`package com.example.demo.dto.req.spec;
+const loaderImplCode = ref(`package com.example.demo.validation.specs;
 
-import com.example.demo.dto.req.ProductCreateReq;
-import com.example.demo.entity.Product;
+import com.example.demo.domain.Product;
+import com.example.demo.dto.product.ProductCreateReq;
 import com.natswarchuan.genericservice.validation.SpecificationLoader;
-import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
-public class ProductRelationshipConsistencySpec implements SpecificationLoader<Object, Product> {
+public class ProductUniqueSpec implements SpecificationLoader<ProductCreateReq, Product> {
 
     @Override
-    public Specification<Product> getSpecification(Object... args) {
-        // args[0] = ProductCreateReq dto
-        ProductCreateReq dto = (ProductCreateReq) args[0];
-
-        return (root, query, cb) -> {
-            List<Predicate> predicates = new ArrayList<>();
-
-            // Validate model belongs to brand if both are specified
-            if (dto.getBrandId() != null && dto.getModelId() != null) {
-                var modelJoin = root.join("model");
-                var modelBrandJoin = modelJoin.join("brand");
-                predicates.add(cb.equal(modelBrandJoin.get("id"), dto.getBrandId()));
-            }
-
-            // Validate category belongs to brand if both are specified
-            if (dto.getBrandId() != null && dto.getCategoryId() != null) {
-                var categoryJoin = root.join("category");
-                var categoryBrandJoin = categoryJoin.join("brand");
-                predicates.add(cb.equal(categoryBrandJoin.get("id"), dto.getBrandId()));
-            }
-
-            return predicates.isEmpty() ? cb.conjunction() : cb.and(predicates.toArray(new Predicate[0]));
-        };
+    public Specification<Product> getSpecification(ProductCreateReq... args) {
+        ProductCreateReq req = args[0];
+        // Check duplicate: Same Name AND Same Store
+        return (root, query, cb) -> cb.and(
+                cb.equal(root.get("name"), req.getName()),
+                cb.equal(root.get("store").get("id"), req.getStoreId()));
     }
+}
+`);
+
+const crossValCode = ref(`package com.example.demo.dto.brand;
+
+import com.example.demo.validation.BrandModelCategoryValid;
+import lombok.Data;
+import java.util.Set;
+
+@Data
+@BrandModelCategoryValid(message = "Danh mục sản phẩm không thuộc về Model đã chọn")
+public class BrandCreateReq {
+    private Long modelId;
+    private Set<Long> categoryIds;
+    // ...
 }
 `);
 </script>

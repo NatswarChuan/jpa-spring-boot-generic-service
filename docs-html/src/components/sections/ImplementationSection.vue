@@ -138,33 +138,76 @@ import { ref } from 'vue';
 import CodeBlock from '../CodeBlock.vue';
 import ArchitectureDiagram from '../ArchitectureDiagram.vue';
 
-const entityCode = ref(`package com.example.demo.entity;
+const entityCode = ref(`package com.example.demo.domain;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
+import org.hibernate.annotations.Nationalized;
 
+import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+/**
+ * Entity đại diện cho Sản phẩm (Product).
+ */
 @Entity
-@Table(name = "products")
-@Data
+@Table(name = "products", indexes = {
+        @Index(name = "idx_product_brand", columnList = "brand_id"),
+        @Index(name = "idx_product_model", columnList = "model_id"),
+        @Index(name = "idx_product_store", columnList = "store_id")
+})
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Product {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Nationalized
+    @Column(nullable = false)
     private String name;
-    private Double price;
-    private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
+    @Column(precision = 19, scale = 4)
+    private BigDecimal price;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "brand_id")
     private Brand brand;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "model_id")
     private Model model;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "store_id")
+    private Store store;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private Set<ProductCategory> productCategories = new HashSet<>();
+
+    // Helper methods for safe relationship management
+    @Transient
+    public void setCategoryIds(Set<Long> categoryIds) {
+        if (this.productCategories == null) {
+            this.productCategories = new HashSet<>();
+        }
+        this.productCategories.clear();
+        if (categoryIds != null) {
+            this.productCategories.addAll(categoryIds.stream()
+                    .map(catId -> ProductCategory.builder()
+                            .product(this)
+                            .category(Category.builder().id(catId).build())
+                            .build())
+                    .collect(Collectors.toSet()));
+        }
+    }
 }
 `);
 

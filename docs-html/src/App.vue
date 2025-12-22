@@ -83,7 +83,8 @@ const sections = ref([
     id: 'validation', title: '7. Validation System', component: 'ValidationSection', 
     subs: [
       { id: 'val-basic', title: '7.1. Basic Constraints' },
-      { id: 'val-custom', title: '7.2. Custom Validators' }
+      { id: 'val-custom', title: '7.2. Custom Validators' },
+      { id: 'val-cross', title: '7.3. Cross-Entity Validators' }
     ]
   },
   { 
