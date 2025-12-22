@@ -6,6 +6,7 @@ import com.natswarchuan.genericservice.payload.response.HttpApiResponse;
 import com.natswarchuan.genericservice.payload.response.PagedResponse;
 import com.natswarchuan.genericservice.service.IService;
 import com.natswarchuan.genericservice.specification.GenericSpecification;
+import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,7 +36,7 @@ import org.springframework.lang.NonNull;
  * @param <U>  Kiểu DTO dùng cho yêu cầu cập nhật (Update Request).
  * @author NatswarChuan
  */
-    @SuppressWarnings("null")
+@SuppressWarnings("null")
 public abstract class AbController<E, ID, C extends IDto<E>, U extends IDto<E>> {
 
     /** Service xử lý logic nghiệp vụ. */
@@ -124,7 +125,7 @@ public abstract class AbController<E, ID, C extends IDto<E>, U extends IDto<E>> 
      */
     @GetMapping("/{id}")
     public <R extends IDto<E>> ResponseEntity<HttpApiResponse<R>> findById(
-            @PathVariable ID id,
+            @Parameter(description = "ID của thực thể cần lấy", required = true, example = "1") @PathVariable(name = "id") ID id,
             @RequestHeader(name = "Accept-Language", defaultValue = "en") String language) {
         if (language != null && language.length() > 2) {
             language = language.substring(0, 2);
@@ -156,7 +157,8 @@ public abstract class AbController<E, ID, C extends IDto<E>, U extends IDto<E>> 
      * @return DTO chi tiết của thực thể sau khi cập nhật.
      */
     @PutMapping("/{id}")
-    public <R extends IDto<E>> ResponseEntity<HttpApiResponse<R>> update(@PathVariable ID id,
+    public <R extends IDto<E>> ResponseEntity<HttpApiResponse<R>> update(
+            @Parameter(description = "ID của thực thể cần cập nhật", required = true, example = "1") @PathVariable(name = "id") ID id,
             @RequestBody @Valid @NonNull U dto) {
         R result = service.update(dto, id, getResponseDetailDtoClass());
         return ResponseEntity.ok(HttpApiResponse.success(result, HttpStatus.ACCEPTED));
@@ -169,7 +171,8 @@ public abstract class AbController<E, ID, C extends IDto<E>, U extends IDto<E>> 
      * @return Phản hồi thành công (không có dữ liệu trả về).
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpApiResponse<Void>> delete(@PathVariable ID id) {
+    public ResponseEntity<HttpApiResponse<Void>> delete(
+            @Parameter(description = "ID của thực thể cần xóa", required = true, example = "1") @PathVariable(name = "id") ID id) {
         service.delete(id);
         return ResponseEntity.ok(HttpApiResponse.success(null, HttpStatus.NO_CONTENT));
     }
