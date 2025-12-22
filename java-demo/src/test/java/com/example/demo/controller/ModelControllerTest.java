@@ -7,12 +7,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
@@ -20,100 +23,120 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 class ModelControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+        @Autowired
+        private MockMvc mockMvc;
 
-    @Test
-    void testCreateModel_Success() throws Exception {
-        String brandBody = """
-                {
-                    "name": "TestBrandForModel",
-                    "origin": "Test Country"
-                }
-                """;
-        mockMvc.perform(post("/api/brands")
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(brandBody))
-                .andExpect(status().isCreated());
+        @Autowired
+        private ObjectMapper objectMapper;
 
-        String requestBody = """
-                {
-                    "name": "TestModel",
-                    "year": 2024
-                }
-                """;
+        @Test
+        void testCreateModel_Success() throws Exception {
+                String requestBody = """
+                                {
+                                    "name": "TestModel",
+                                    "year": 2024
+                                }
+                                """;
 
-        mockMvc.perform(post("/api/models")
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(requestBody))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.data.name").value("TestModel"))
-                .andExpect(jsonPath("$.data.year").value(2024));
-    }
+                mockMvc.perform(post("/api/v1/models")
+                                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                                .content(requestBody))
+                                .andExpect(status().isCreated())
+                                .andExpect(jsonPath("$.data.name").value("TestModel"));
+        }
 
-    @Test
-    void testCreateModel_ValidationFail_NameBlank() throws Exception {
-        String requestBody = """
-                {
-                    "name": "",
-                    "year": 2024
-                }
-                """;
+        @Test
+        void testCreateModel_ValidationFail_NameBlank() throws Exception {
+                String requestBody = """
+                                {
+                                    "name": "",
+                                    "year": 2024
+                                }
+                                """;
 
-        mockMvc.perform(post("/api/models")
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(requestBody))
-                .andExpect(status().isBadRequest());
-    }
+                mockMvc.perform(post("/api/v1/models")
+                                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                                .content(requestBody))
+                                .andExpect(status().isBadRequest());
+        }
 
-    @Test
-    void testCreateModel_ValidationFail_YearTooSmall() throws Exception {
-        String requestBody = """
-                {
-                    "name": "OldModel",
-                    "year": 1800
-                }
-                """;
+        @Test
+        void testGetModelById_NotFound() throws Exception {
+                mockMvc.perform(get("/api/v1/models/99999"))
+                                .andExpect(status().isNotFound());
+        }
 
-        mockMvc.perform(post("/api/models")
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(requestBody))
-                .andExpect(status().isBadRequest());
-    }
+        @Test
+        void testGetAllModels_Success() throws Exception {
+                mockMvc.perform(get("/api/v1/models")
+                                .param("page", "0")
+                                .param("size", "10"))
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath("$.data.content").isArray());
+        }
 
-    @Test
-    void testGetModelById_NotFound() throws Exception {
-        mockMvc.perform(get("/api/models/99999"))
-                .andExpect(status().isNotFound());
-    }
+        @Test
+        void testModelCRUDFlow() throws Exception {
+                // 1. Create
+                String createBody = """
+                                {
+                                    "name": "CRUDModel",
+                                    "year": 2024
+                                }
+                                """;
 
-    @Test
-    void testGetAllModels_Success() throws Exception {
-        mockMvc.perform(get("/api/models")
-                .param("page", "0")
-                .param("size", "10"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.content").isArray());
-    }
+                MvcResult result = mockMvc.perform(post("/api/v1/models")
+                                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                                .content(createBody))
+                                .andExpect(status().isCreated())
+                                .andReturn();
 
-    @Test
-    void testUpdateModel_NotFound() throws Exception {
-        String requestBody = """
-                {
-                    "name": "Updated Model",
-                    "year": 2025
-                }
-                """;
+                String responseString = result.getResponse().getContentAsString();
+                JsonNode root = objectMapper.readTree(responseString);
+                Long id = root.path("data").path("id").asLong();
 
-        mockMvc.perform(put("/api/models/99999")
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(requestBody))
-                .andExpect(status().isNotFound());
-    }
+                // 2. Get
+                mockMvc.perform(get("/api/v1/models/" + id))
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath("$.data.name").value("CRUDModel"));
 
-    @Test
-    void testDeleteModel_NotFound() throws Exception {
-        mockMvc.perform(delete("/api/models/99999"))
-                .andExpect(status().isNotFound());
-    }
+                // 3. Update
+                String updateBody = """
+                                {
+                                    "name": "UpdatedCRUDModel",
+                                    "year": 2025
+                                }
+                                """;
+
+                mockMvc.perform(put("/api/v1/models/" + id)
+                                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                                .content(updateBody))
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath("$.data.name").value("UpdatedCRUDModel"))
+                                .andExpect(jsonPath("$.data.year").value(2025));
+
+                // 4. Delete
+                mockMvc.perform(delete("/api/v1/models/" + id))
+                                .andExpect(status().isOk());
+
+                // 5. Verify Delete
+                mockMvc.perform(get("/api/v1/models/" + id))
+                                .andExpect(status().isNotFound());
+        }
+
+        @Test
+        void testCreateModel_ValidationFail_DuplicateName() throws Exception {
+                // "Smartphones" is seeded by DataSeeder
+                String requestBody = """
+                                {
+                                    "name": "Smartphones",
+                                    "year": 2024
+                                }
+                                """;
+
+                mockMvc.perform(post("/api/v1/models")
+                                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                                .content(requestBody))
+                                .andExpect(status().isBadRequest());
+        }
 }

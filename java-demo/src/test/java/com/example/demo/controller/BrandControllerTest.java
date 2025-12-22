@@ -7,12 +7,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
@@ -20,115 +23,153 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 class BrandControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+        @Autowired
+        private MockMvc mockMvc;
 
-    @Test
-    void testCreateBrand_Success() throws Exception {
-        String requestBody = """
-                {
-                    "name": "TestBrand",
-                    "origin": "Test Country"
-                }
-                """;
+        @Autowired
+        private ObjectMapper objectMapper;
 
-        mockMvc.perform(post("/api/brands")
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(requestBody))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.data.name").value("TestBrand"))
-                .andExpect(jsonPath("$.data.origin").value("Test Country"));
-    }
+        @Test
+        void testCreateBrand_Success() throws Exception {
+                String requestBody = """
+                                {
+                                    "name": "TestBrand",
+                                    "description": "Test Description"
+                                }
+                                """;
 
-    @Test
-    void testCreateBrand_ValidationFail_NameBlank() throws Exception {
-        String requestBody = """
-                {
-                    "name": "",
-                    "origin": "Test Country"
-                }
-                """;
+                mockMvc.perform(post("/api/v1/brands")
+                                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                                .content(requestBody))
+                                .andExpect(status().isCreated())
+                                .andExpect(jsonPath("$.data.name").value("TestBrand"));
+        }
 
-        mockMvc.perform(post("/api/brands")
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(requestBody))
-                .andExpect(status().isBadRequest());
-    }
+        @Test
+        void testCreateBrand_ValidationFail_NameBlank() throws Exception {
+                String requestBody = """
+                                {
+                                    "name": "",
+                                    "description": "Test Description"
+                                }
+                                """;
 
-    @Test
-    void testGetBrandById_NotFound() throws Exception {
-        mockMvc.perform(get("/api/brands/99999"))
-                .andExpect(status().isNotFound());
-    }
+                mockMvc.perform(post("/api/v1/brands")
+                                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                                .content(requestBody))
+                                .andExpect(status().isBadRequest());
+        }
 
-    @Test
-    void testGetAllBrands_Success() throws Exception {
-        mockMvc.perform(get("/api/brands")
-                .param("page", "0")
-                .param("size", "10"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.content").isArray());
-    }
+        @Test
+        void testGetBrandById_NotFound() throws Exception {
+                mockMvc.perform(get("/api/v1/brands/99999"))
+                                .andExpect(status().isNotFound());
+        }
 
-    @Test
-    void testUpdateBrand_NotFound() throws Exception {
-        String requestBody = """
-                {
-                    "name": "Updated Brand",
-                    "origin": "Updated Country"
-                }
-                """;
+        @Test
+        void testGetAllBrands_Success() throws Exception {
+                mockMvc.perform(get("/api/v1/brands")
+                                .param("page", "0")
+                                .param("size", "10"))
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath("$.data.content").isArray());
+        }
 
-        mockMvc.perform(put("/api/brands/99999")
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(requestBody))
-                .andExpect(status().isNotFound());
-    }
+        @Test
+        void testUpdateBrand_NotFound() throws Exception {
+                String requestBody = """
+                                {
+                                    "name": "Updated Brand",
+                                    "description": "Updated Description"
+                                }
+                                """;
 
-    @Test
-    void testDeleteBrand_NotFound() throws Exception {
-        mockMvc.perform(delete("/api/brands/99999"))
-                .andExpect(status().isNotFound());
-    }
+                mockMvc.perform(put("/api/v1/brands/99999")
+                                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                                .content(requestBody))
+                                .andExpect(status().isNotFound());
+        }
 
-    @Test
-    void testBrandCRUDFlow() throws Exception {
-        String createBody = """
-                {
-                    "name": "CRUDTestBrand",
-                    "origin": "CRUD Country"
-                }
-                """;
+        @Test
+        void testDeleteBrand_NotFound() throws Exception {
+                mockMvc.perform(delete("/api/v1/brands/99999"))
+                                .andExpect(status().isNotFound());
+        }
 
-        mockMvc.perform(post("/api/brands")
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(createBody))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.data.name").value("CRUDTestBrand"));
+        @Test
+        void testBrandCRUDFlow() throws Exception {
+                String createBody = """
+                                {
+                                    "name": "CRUDTestBrand",
+                                    "description": "CRUD Description"
+                                }
+                                """;
 
-        Long id = 1L;
+                MvcResult result = mockMvc.perform(post("/api/v1/brands")
+                                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                                .content(createBody))
+                                .andExpect(status().isCreated())
+                                .andExpect(jsonPath("$.data.name").value("CRUDTestBrand"))
+                                .andReturn();
 
-        mockMvc.perform(get("/api/brands/" + id))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.name").value("CRUDTestBrand"));
+                String responseString = result.getResponse().getContentAsString();
+                JsonNode root = objectMapper.readTree(responseString);
+                Long id = root.path("data").path("id").asLong();
 
-        String updateBody = """
-                {
-                    "name": "UpdatedCRUDBrand",
-                    "origin": "Updated CRUD Country"
-                }
-                """;
+                mockMvc.perform(get("/api/v1/brands/" + id))
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath("$.data.name").value("CRUDTestBrand"));
 
-        mockMvc.perform(put("/api/brands/" + id)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(updateBody))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.name").value("UpdatedCRUDBrand"));
+                String updateBody = """
+                                {
+                                    "name": "UpdatedCRUDBrand",
+                                    "description": "Updated CRUD Description"
+                                }
+                                """;
 
-        mockMvc.perform(delete("/api/brands/" + id))
-                .andExpect(status().isNoContent());
+                mockMvc.perform(put("/api/v1/brands/" + id)
+                                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                                .content(updateBody))
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath("$.data.name").value("UpdatedCRUDBrand"));
 
-        mockMvc.perform(get("/api/brands/" + id))
-                .andExpect(status().isNotFound());
-    }
+                mockMvc.perform(delete("/api/v1/brands/" + id))
+                                .andExpect(status().isOk()); // AbController returns 200
+
+                mockMvc.perform(get("/api/v1/brands/" + id))
+                                .andExpect(status().isNotFound());
+        }
+
+        @Test
+        void testCreateBrand_ValidationFail_DuplicateName() throws Exception {
+                // "Apple" is seeded by DataSeeder
+                String requestBody = """
+                                {
+                                    "name": "Apple",
+                                    "description": "Duplicate description",
+                                    "modelId": 1
+                                }
+                                """;
+
+                mockMvc.perform(post("/api/v1/brands")
+                                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                                .content(requestBody))
+                                .andExpect(status().isBadRequest());
+        }
+
+        @Test
+        void testCreateBrand_ValidationFail_InvalidModelId() throws Exception {
+                String requestBody = """
+                                {
+                                    "name": "NewBrand",
+                                    "description": "Desc",
+                                    "modelId": 99999
+                                }
+                                """;
+
+                mockMvc.perform(post("/api/v1/brands")
+                                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                                .content(requestBody))
+                                .andExpect(status().isBadRequest());
+        }
 }

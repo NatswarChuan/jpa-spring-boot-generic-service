@@ -1,15 +1,15 @@
 package com.example.demo.repository;
 
-import com.example.demo.domain.Model;
+import com.example.demo.domain.Store;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 /**
- * Repository cho Model.
+ * Repository cho Store.
  * <p>
- * Tương tác với bảng models trong cơ sở dữ liệu.
+ * Quản lý dữ liệu cửa hàng.
  */
 @Repository
-public interface ModelRepository extends JpaRepository<Model, Long>, JpaSpecificationExecutor<Model> {
+public interface StoreRepository extends JpaRepository<Store, Long>, JpaSpecificationExecutor<Store> {
 }

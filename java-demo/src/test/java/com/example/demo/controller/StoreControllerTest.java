@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
-class CategoryControllerTest {
+class StoreControllerTest {
 
         @Autowired
         private MockMvc mockMvc;
@@ -30,45 +30,46 @@ class CategoryControllerTest {
         private ObjectMapper objectMapper;
 
         @Test
-        void testCreateCategory_Success() throws Exception {
+        void testCreateStore_Success() throws Exception {
                 String requestBody = """
                                 {
-                                    "name": "TestCategory",
-                                    "description": "Test Description"
+                                    "name": "TestStore",
+                                    "address": "123 Test Address"
                                 }
                                 """;
 
-                mockMvc.perform(post("/api/v1/categories")
+                mockMvc.perform(post("/api/v1/stores")
                                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                                 .content(requestBody))
                                 .andExpect(status().isCreated())
-                                .andExpect(jsonPath("$.data.name").value("TestCategory"));
+                                .andExpect(jsonPath("$.data.name").value("TestStore"))
+                                .andExpect(jsonPath("$.data.address").value("123 Test Address"));
         }
 
         @Test
-        void testCreateCategory_ValidationFail_NameBlank() throws Exception {
+        void testCreateStore_ValidationFail_NameBlank() throws Exception {
                 String requestBody = """
                                 {
                                     "name": "",
-                                    "description": "Test Description"
+                                    "address": "123 Test Address"
                                 }
                                 """;
 
-                mockMvc.perform(post("/api/v1/categories")
+                mockMvc.perform(post("/api/v1/stores")
                                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                                 .content(requestBody))
                                 .andExpect(status().isBadRequest());
         }
 
         @Test
-        void testGetCategoryById_NotFound() throws Exception {
-                mockMvc.perform(get("/api/v1/categories/99999"))
+        void testGetStoreById_NotFound() throws Exception {
+                mockMvc.perform(get("/api/v1/stores/99999"))
                                 .andExpect(status().isNotFound());
         }
 
         @Test
-        void testGetAllCategories_Success() throws Exception {
-                mockMvc.perform(get("/api/v1/categories")
+        void testGetAllStores_Success() throws Exception {
+                mockMvc.perform(get("/api/v1/stores")
                                 .param("page", "0")
                                 .param("size", "10"))
                                 .andExpect(status().isOk())
@@ -76,16 +77,16 @@ class CategoryControllerTest {
         }
 
         @Test
-        void testCategoryCRUDFlow() throws Exception {
+        void testStoreCRUDFlow() throws Exception {
                 // 1. Create
                 String createBody = """
                                 {
-                                    "name": "CRUDCategory",
-                                    "description": "CRUD Description"
+                                    "name": "CRUDStore",
+                                    "address": "CRUD Address"
                                 }
                                 """;
 
-                MvcResult result = mockMvc.perform(post("/api/v1/categories")
+                MvcResult result = mockMvc.perform(post("/api/v1/stores")
                                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                                 .content(createBody))
                                 .andExpect(status().isCreated())
@@ -96,46 +97,47 @@ class CategoryControllerTest {
                 Long id = root.path("data").path("id").asLong();
 
                 // 2. Get
-                mockMvc.perform(get("/api/v1/categories/" + id))
+                mockMvc.perform(get("/api/v1/stores/" + id))
                                 .andExpect(status().isOk())
-                                .andExpect(jsonPath("$.data.name").value("CRUDCategory"));
+                                .andExpect(jsonPath("$.data.name").value("CRUDStore"));
 
                 // 3. Update
                 String updateBody = """
                                 {
-                                    "name": "UpdatedCRUDCategory",
-                                    "description": "Updated CRUD Description"
+                                    "name": "UpdatedCRUDStore",
+                                    "address": "Updated CRUD Address"
                                 }
                                 """;
 
-                mockMvc.perform(put("/api/v1/categories/" + id)
+                mockMvc.perform(put("/api/v1/stores/" + id)
                                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                                 .content(updateBody))
                                 .andExpect(status().isOk())
-                                .andExpect(jsonPath("$.data.name").value("UpdatedCRUDCategory"));
+                                .andExpect(jsonPath("$.data.name").value("UpdatedCRUDStore"));
 
                 // 4. Delete
-                mockMvc.perform(delete("/api/v1/categories/" + id))
-                                .andExpect(status().isOk());
+                mockMvc.perform(delete("/api/v1/stores/" + id))
+                                .andExpect(status().isOk()); // AbController returns 200/204 depending on impl, usually
+                                                             // 200 wrapped
 
                 // 5. Verify Delete
-                mockMvc.perform(get("/api/v1/categories/" + id))
+                mockMvc.perform(get("/api/v1/stores/" + id))
                                 .andExpect(status().isNotFound());
         }
 
         @Test
-        void testCreateCategory_ValidationFail_DuplicateName() throws Exception {
-                // "Electronics" is seeded
+        void testCreateStore_ValidationFail_DuplicateName() throws Exception {
+                // "Main Tech Store" is seeded by DataSeeder
                 String requestBody = """
                                 {
-                                    "name": "Electronics",
-                                    "description": "Duplicate"
+                                    "name": "Main Tech Store",
+                                    "address": "New Address"
                                 }
                                 """;
 
-                mockMvc.perform(post("/api/v1/categories")
+                mockMvc.perform(post("/api/v1/stores")
                                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                                 .content(requestBody))
-                                .andExpect(status().isBadRequest());
+                                .andExpect(status().isBadRequest()); // Should fail unique validation
         }
 }
