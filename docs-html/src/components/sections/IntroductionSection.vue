@@ -28,6 +28,20 @@
         <li><strong>Đa ngôn ngữ:</strong> Xử lý Localization ngay từ tầng Service.</li>
       </ul>
     </div>
+
+    <!-- Quick Links -->
+    <div class="flex flex-wrap gap-4 mb-12">
+      <a href="https://github.com/NatswarChuan/jpa-spring-boot-generic-service/tree/main/java-demo" target="_blank" 
+         class="inline-flex items-center px-6 py-3 bg-slate-900 text-white font-bold rounded-lg hover:bg-slate-800 transition-colors shadow-lg group">
+        <i class="fab fa-github text-xl mr-3 group-hover:scale-110 transition-transform"></i>
+        <span>Xem Source Code Demo</span>
+      </a>
+      <a href="https://github.com/NatswarChuan/jpa-spring-boot-generic-service" target="_blank"
+         class="inline-flex items-center px-6 py-3 bg-white text-slate-700 font-bold rounded-lg border border-slate-300 hover:bg-slate-50 transition-colors shadow-sm">
+        <i class="fas fa-star text-yellow-500 mr-2"></i>
+        <span>Star on GitHub</span>
+      </a>
+    </div>
     
     <!-- Detailed Features -->
     <div class="mt-12">

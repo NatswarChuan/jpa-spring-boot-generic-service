@@ -1,4 +1,4 @@
-import{_ as s}from"./CodeBlock-rhId-KlK.js";import{r as n,c as i,o as d,b as t,a as c,e as r,d as o}from"./index-NytfIO67.js";const m={id:"response-handling",class:"scroll-mt-20 mb-16"},g={id:"res-structure",class:"mb-10 scroll-mt-24"},u={id:"res-exception",class:"mb-10 scroll-mt-24"},b={class:"grid grid-cols-1 md:grid-cols-2 gap-6"},x={class:"bg-slate-50 p-6 rounded-lg border border-slate-200 shadow-sm"},w={__name:"ResponseSection",setup(h){const a=n(`package com.example.demo.controller;
+import{_ as s}from"./CodeBlock-Bl3isb_5.js";import{r as n,c as i,o as d,b as t,a as c,e as r,d as o}from"./index-BCAyzHOy.js";const m={id:"response-handling",class:"scroll-mt-20 mb-16"},g={id:"res-structure",class:"mb-10 scroll-mt-24"},u={id:"res-exception",class:"mb-10 scroll-mt-24"},b={class:"grid grid-cols-1 md:grid-cols-2 gap-6"},x={class:"bg-slate-50 p-6 rounded-lg border border-slate-200 shadow-sm"},w={__name:"ResponseSection",setup(h){const a=n(`package com.example.demo.controller;
 
 import com.example.demo.dto.ProductResponse;
 import com.natswarchuan.genericservice.payload.response.HttpApiResponse;
@@ -23,7 +23,7 @@ public class MyController { // ...
 }
 `),l=n(`package com.example.demo.controller;
 
-import com.example.demo.dto.ProductResponse;
+import com.example.demo.dto.res.ProductResponse;
 import com.natswarchuan.genericservice.payload.response.HttpApiResponse;
 import com.natswarchuan.genericservice.payload.response.PagedResponse;
 import org.springframework.data.domain.Page;
@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class MyController { // ...
+public class CustomController { // ...
 
     @GetMapping
     public HttpApiResponse<PagedResponse<ProductResponse>> getList(Pageable pageable) {
@@ -65,7 +65,7 @@ public class UserService {
   &quot;message&quot;: &quot;Success&quot;,     // Thông điệp Human readable
   &quot;data&quot;: { ... }           // Payload chi tiết
 }
-        </pre></div>`,3)),r(s,{filename:"MyController.java",code:a.value},null,8,["code"]),e[1]||(e[1]=t("h4",{class:"font-bold text-slate-700 mt-6 mb-2"},"PagedResponse (Phân trang)",-1)),e[2]||(e[2]=t("p",{class:"text-slate-600 mb-3 text-sm"},[o("Thay thế "),t("code",null,"Page<T>"),o(" mặc định để custom fields.")],-1)),r(s,{filename:"ProductController.java",code:l.value},null,8,["code"])]),t("article",u,[e[5]||(e[5]=t("h3",{class:"text-xl font-bold text-slate-800 mb-3"},"8.2. Exception Handling",-1)),e[6]||(e[6]=t("p",{class:"text-slate-600 mb-4"},[o(" Sử dụng "),t("code",null,"HttpException"),o(" để ném lỗi từ Service/Controller. "),t("code",null,"GlobalExceptionHandler"),o(" sẽ tự động bắt và trả về format chuẩn. ")],-1)),t("div",b,[t("div",x,[e[3]||(e[3]=t("h4",{class:"text-lg font-bold text-slate-800 mb-2 font-mono text-sm"},"Throw Exception",-1)),r(s,{filename:"UserService.java",code:p.value},null,8,["code"])]),e[4]||(e[4]=t("div",{class:"bg-slate-50 p-6 rounded-lg border border-slate-200 shadow-sm"},[t("h4",{class:"text-lg font-bold text-slate-800 mb-2 font-mono text-sm"},"Standard Response"),t("pre",{class:"text-xs text-slate-600 font-mono bg-white p-3 rounded border border-slate-100 h-full"},`{
+        </pre></div>`,3)),r(s,{filename:"MyController.java",code:a.value},null,8,["code"]),e[1]||(e[1]=t("h4",{class:"font-bold text-slate-700 mt-6 mb-2"},"PagedResponse (Phân trang)",-1)),e[2]||(e[2]=t("p",{class:"text-slate-600 mb-3 text-sm"},[o("Thay thế "),t("code",null,"Page<T>"),o(" mặc định để custom fields.")],-1)),r(s,{filename:"CustomController.java",code:l.value},null,8,["code"])]),t("article",u,[e[5]||(e[5]=t("h3",{class:"text-xl font-bold text-slate-800 mb-3"},"8.2. Exception Handling",-1)),e[6]||(e[6]=t("p",{class:"text-slate-600 mb-4"},[o(" Sử dụng "),t("code",null,"HttpException"),o(" để ném lỗi từ Service/Controller. "),t("code",null,"GlobalExceptionHandler"),o(" sẽ tự động bắt và trả về format chuẩn. ")],-1)),t("div",b,[t("div",x,[e[3]||(e[3]=t("h4",{class:"text-lg font-bold text-slate-800 mb-2 font-mono text-sm"},"Throw Exception",-1)),r(s,{filename:"UserService.java",code:p.value},null,8,["code"])]),e[4]||(e[4]=t("div",{class:"bg-slate-50 p-6 rounded-lg border border-slate-200 shadow-sm"},[t("h4",{class:"text-lg font-bold text-slate-800 mb-2 font-mono text-sm"},"Standard Response"),t("pre",{class:"text-xs text-slate-600 font-mono bg-white p-3 rounded border border-slate-100 h-full"},`{
   "status": 404,
   "message": "Không tìm thấy người dùng với ID: 123",
   "data": null

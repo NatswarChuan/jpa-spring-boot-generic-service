@@ -3,7 +3,7 @@
     <h2 class="text-4xl font-bold text-slate-900 mb-6">2. Cài đặt</h2>
     
     <p class="text-lg text-slate-600 leading-relaxed mb-6">
-      Thư viện này được phân phối thông qua <strong>JitPack</strong>. Bạn có thể dễ dàng tích hợp vào dự án Spring Boot của mình bằng Maven hoặc Gradle.
+      Thư viện này đã được publish lên <strong>Maven Central</strong>. Bạn có thể dễ dàng tích hợp vào dự án Spring Boot của mình bằng Maven hoặc Gradle mà không cần cấu hình repository phức tạp.
     </p>
 
     <!-- Maven Tab -->
@@ -13,23 +13,12 @@
       </h3>
       
       <div class="bg-slate-900 rounded-lg p-4 shadow-lg overflow-x-auto">
-        <p class="text-slate-400 text-sm mb-2 font-mono">&lt;!-- 1. Thêm repository JitPack vào pom.xml --&gt;</p>
-        <pre class="text-green-400 font-mono text-sm">
-&lt;repositories&gt;
-    &lt;repository&gt;
-        &lt;id&gt;jitpack.io&lt;/id&gt;
-        &lt;url&gt;https://jitpack.io&lt;/url&gt;
-    &lt;/repository&gt;
-&lt;/repositories&gt;</pre>
-        
-        <div class="border-t border-slate-700 my-4"></div>
-        
-        <p class="text-slate-400 text-sm mb-2 font-mono">&lt;!-- 2. Thêm dependency --&gt;</p>
+        <p class="text-slate-400 text-sm mb-2 font-mono">&lt;!-- Thêm dependency vào pom.xml --&gt;</p>
         <pre class="text-green-400 font-mono text-sm">
 &lt;dependency&gt;
-    &lt;groupId&gt;com.github.NatswarChuan&lt;/groupId&gt;
+    &lt;groupId&gt;io.github.natswarchuan&lt;/groupId&gt;
     &lt;artifactId&gt;jpa-spring-boot-generic-service&lt;/artifactId&gt;
-    &lt;version&gt;1.2.4&lt;/version&gt; &lt;!-- Thay thế bằng version mới nhất trên GitHub --&gt;
+    &lt;version&gt;1.3.0&lt;/version&gt;
 &lt;/dependency&gt;</pre>
       </div>
     </div>
@@ -41,21 +30,10 @@
       </h3>
       
       <div class="bg-slate-900 rounded-lg p-4 shadow-lg overflow-x-auto">
-        <p class="text-slate-400 text-sm mb-2 font-mono">// 1. Thêm vào root build.gradle</p>
-        <pre class="text-green-400 font-mono text-sm">
-allprojects {
-    repositories {
-        ...
-        maven { url 'https://jitpack.io' }
-    }
-}</pre>
-        
-        <div class="border-t border-slate-700 my-4"></div>
-        
-        <p class="text-slate-400 text-sm mb-2 font-mono">// 2. Thêm dependency</p>
+        <p class="text-slate-400 text-sm mb-2 font-mono">// Thêm dependency vào build.gradle</p>
         <pre class="text-green-400 font-mono text-sm">
 dependencies {
-    implementation 'com.github.NatswarChuan:jpa-spring-boot-generic-service:1.2.4' // Thay thế bằng version mới nhất
+    implementation 'io.github.natswarchuan:jpa-spring-boot-generic-service:1.3.0'
 }</pre>
       </div>
     </div>

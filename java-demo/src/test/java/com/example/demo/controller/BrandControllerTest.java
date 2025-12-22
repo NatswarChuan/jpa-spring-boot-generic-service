@@ -93,7 +93,6 @@ class BrandControllerTest {
 
     @Test
     void testBrandCRUDFlow() throws Exception {
-        // Create
         String createBody = """
                 {
                     "name": "CRUDTestBrand",
@@ -107,15 +106,12 @@ class BrandControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.data.name").value("CRUDTestBrand"));
 
-        // Using hardcoded ID for test - in production test, would parse from response
         Long id = 1L;
 
-        // Read
         mockMvc.perform(get("/api/brands/" + id))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.name").value("CRUDTestBrand"));
 
-        // Update
         String updateBody = """
                 {
                     "name": "UpdatedCRUDBrand",
@@ -129,11 +125,9 @@ class BrandControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.name").value("UpdatedCRUDBrand"));
 
-        // Delete
         mockMvc.perform(delete("/api/brands/" + id))
                 .andExpect(status().isNoContent());
 
-        // Verify deleted
         mockMvc.perform(get("/api/brands/" + id))
                 .andExpect(status().isNotFound());
     }

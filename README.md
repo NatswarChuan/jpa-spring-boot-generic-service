@@ -1,61 +1,53 @@
 # jpa-spring-boot-generic-service
 
-**Thư viện Generic Service cho Spring Boot Application**
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.natswarchuan/jpa-spring-boot-generic-service.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/io.github.natswarchuan/jpa-spring-boot-generic-service)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Thư viện này cung cấp một tầng Service & Controller tiêu chuẩn hóa giúp tự động hóa các thao tác CRUD, tích hợp sẵn Validation mạnh mẽ và hệ thống Specification Search động. Được thiết kế để giảm thiểu boilerplate code và tăng tốc độ phát triển dự án.
+**Clean Architecture Generic Service Framework cho Spring Boot**
+
+Thư viện này cung cấp một tầng Service & Controller tiêu chuẩn hóa giúp **tự động hóa 80%** các thao tác CRUD lặp lại, tích hợp sẵn Validation mạnh mẽ và hệ thống Dynamic Search.
 
 ## ✨ Tính năng nổi bật
 
-*   **Clean Architecture**: Cấu trúc phân lớp rõ ràng (Controller -> Service -> Repository).
 *   **Zero-Boilerplate CRUD**:
-    *   `AbController`: Có sẵn API `create`, `update`, `delete`, `findById`, `findAll` (paging & search).
-    *   `AbService`: Xử lý logic nghiệp vụ, transaction và mapping DTO.
-*   **Tìm kiếm & Phân trang nâng cao**:
-    *   Tự động parse `page`, `size`, `sort`, `search` từ request.
-    *   Hỗ trợ Custom Specification dễ dàng.
-*   **Validation Mạnh mẽ**:
-    *   Tích hợp sẵn các Annotation: `@Exists`, `@Unique`, `@EnumValue`, `@PhoneNumber`.
-    *   Tự động validate DTO Input (`@Valid`).
-    *   Tự động validate DTO Input (`@Valid`).
-*   **Auto DTO Mapping (New)**: Interface `IDto` tích hợp sẵn `BeanUtils.copyProperties`.
-*   **Multi-language Support**: Tự động nhận diện header `Accept-Language` (vi, en,...) và truyền vào `IDto.fromEntity` để xử lý đa ngôn ngữ.
+    *   `AbController`: Có sẵn toàn bộ API `Create`, `Update`, `Delete`, `FindById`, `FindAll`.
+    *   `AbService`: Xử lý logic nghiệp vụ transaction-safe.
+*   **Dynamic Search & Paging**:
+    *   Mặc định hỗ trợ params: `page`, `size`, `sort`, `dir`, `search`, `searchField`.
+    *   Dễ dàng mở rộng với **Specification** pattern.
+*   **Validation System**:
+    *   Annotations mạnh mẽ: `@Exists`, `@Unique`, `@EnumValue`, `@PhoneNumber`, `@NoSpecialChars`.
+    *   Hỗ trợ **Cross-field Validation** (Class-level) thông qua `SpecificationLoader`.
+*   **Auto DTO Mapping**: Interface `IDto` tích hợp sẵn logic mapping 2 chiều Entity-DTO.
+*   **I18n Service**: Tự động xử lý đa ngôn ngữ dựa trên header `Accept-Language`.
 
 ## 📦 Cài đặt
 
-Thư viện được phân phối qua **JitPack**.
-
-### Yêu cầu
-*   Java 17+
-*   Spring Boot 3.x
+Thư viện đã có mặt trên **Maven Central**.
 
 ### Maven
-1. Thêm repository JitPack vào `pom.xml`:
-```xml
-<repositories>
-    <repository>
-        <id>jitpack.io</id>
-        <url>https://jitpack.io</url>
-    </repository>
-</repositories>
-```
-
-2. Thêm dependency:
 ```xml
 <dependency>
-    <groupId>com.github.NatswarChuan</groupId>
+    <groupId>io.github.natswarchuan</groupId>
     <artifactId>jpa-spring-boot-generic-service</artifactId>
-    <version>LATEST_VERSION</version> <!-- Thay thế bằng version mới nhất trên GitHub Releases -->
+    <version>1.3.0</version>
 </dependency>
+```
+
+### Gradle
+```groovy
+implementation 'io.github.natswarchuan:jpa-spring-boot-generic-service:1.3.0'
 ```
 
 ## 🚀 Hướng dẫn nhanh
 
 ### 1. Entity & Repository
-Định nghĩa thực thể và lớp truy cập dữ liệu. Repository buộc phải hỗ trợ `JpaSpecificationExecutor`.
+Repository bắt buộc phải extends `JpaSpecificationExecutor`.
 
 ```java
 @Entity
 @Data
+@Table(name = "products")
 public class Product {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -64,13 +56,36 @@ public class Product {
 }
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpecificationExecutor<Product> {
+public interface ProductRepository extends JpaRepository<Product, Long>, 
+                                           JpaSpecificationExecutor<Product> {
 }
 ```
 
-### 2. Service Layer
-Chứa logic nghiệp vụ. Kế thừa `AbService` để tái sử dụng toàn bộ các hàm CRUD và Transaction standard.
+### 2. DTO
+Kế thừa `IDto<E>` để mapping tự động.
 
+```java
+@Data
+public class ProductCreateReq implements IDto<Product> { // Auto map to Entity
+    @NotBlank
+    @Unique(entity = Product.class, field = "name")
+    private String name;
+    
+    @Min(0)
+    private Double price;
+    
+    // Override toEntity() nếu cần map thêm quan hệ phức tạp
+}
+
+@Data
+public class ProductResponse implements IDto<Product> { // Auto map from Entity
+    private Long id;
+    private String name;
+    // ...
+}
+```
+
+### 3. Service Layer
 ```java
 public interface IProductService extends IService<Product, Long> {}
 
@@ -83,62 +98,45 @@ public class ProductServiceImpl extends AbService<Product, Long> implements IPro
 }
 ```
 
-### 3. Controller Layer
-Nơi định nghĩa API Endpoint. Kế thừa `AbController` để có ngay 5 API chuẩn (List, Detail, Create, Update, Delete) mà không cần viết code.
+### 4. Controller Layer
+Chỉ cần khai báo, **KHÔNG CẦN** viết code CRUD.
 
 ```java
 @RestController
 @RequestMapping("/api/products")
 public class ProductController extends AbController<
-    Product,            // Entity
+    Product,            // Entity Class
     Long,               // ID Type
-    ProductCreateReq,   // Create Request (C)
-    ProductUpdateReq    // Update Request (U)
+    ProductCreateReq,   // Create DTO
+    ProductUpdateReq    // Update DTO
 > {
     public ProductController(IProductService service) {
         super(service);
     }
 
     @Override
-    protected Class<ProductResponse> getResponseSummaryDtoClass() {
+    protected Class<ProductResponse> getResponseSummaryDtoClass() { // DTO cho list
         return ProductResponse.class;
     }
 
     @Override
-    protected Class<ProductResponse> getResponseDetailDtoClass() {
+    protected Class<ProductResponse> getResponseDetailDtoClass() {  // DTO cho detail/create
         return ProductResponse.class;
     }
 }
 ```
 
-### 4. Custom Search (Optional)
-Nếu cần filter thêm field riêng (ví dụ `minPrice`), hãy override `findAll`:
+-> **Done!** Bây giờ bạn đã có sẵn API:
+*   `GET /api/products?page=0&size=10&sort=price&dir=desc&search=iphone&searchField=name`
+*   `GET /api/products/{id}`
+*   `POST /api/products` (với validation)
+*   `PUT /api/products/{id}`
+*   `DELETE /api/products/{id}`
 
-```java
-@Override
-@GetMapping
-public ResponseEntity<HttpApiResponse<PagedResponse<ProductResponse>>> findAll(ProductRequestParam requestParam) {
-    // Override để Spring bind đúng field trong ProductRequestParam
-    return super.findAll(requestParam);
-}
+## 📖 Demo & Tài liệu
 
-@Override
-protected Specification<Product> getSpecification(BaseRequestParam baseParam) {
-    Specification<Product> spec = super.getSpecification(baseParam);
-    if (baseParam instanceof ProductRequestParam param && param.getMinPrice() != null) {
-        // Add custom logic
-    }
-    return spec;
-}
-```
-
-## 📖 Tài liệu chi tiết
-
-Vui lòng tham khảo thư mục `docs-html` trong repository này. Đây là trang tài liệu đầy đủ được viết bằng Vue.js, bao gồm:
-*   **Core Architecture**: Sơ đồ luồng dữ liệu.
-*   **API List**: Danh sách API mặc định.
-*   **Specification**: Hướng dẫn dùng bộ lọc nâng cao.
-*   **Validation**: Cách sử dụng custom annotations.
+*   **Demo Project**: Xem [java-demo folder](./java-demo) để thấy code thực tế.
+*   **Documentation Site**: Mở file `docs/index.html` (sau khi clone) hoặc tham khảo thư mục `docs-html`.
 
 ## 👨‍💻 Tác giả
 
@@ -146,4 +144,4 @@ Vui lòng tham khảo thư mục `docs-html` trong repository này. Đây là tr
 
 ## 📄 License
 
-Dự án này được cấp phép theo giấy phép MIT.
+MIT License.

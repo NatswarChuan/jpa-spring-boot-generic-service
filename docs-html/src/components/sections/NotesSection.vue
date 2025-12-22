@@ -86,33 +86,34 @@ import CodeBlock from '../CodeBlock.vue';
 
 const n1FixCode1 = ref(`package com.example.demo.repository;
 
-import com.example.demo.entity.User;
+import com.example.demo.entity.Product;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface ProductRepository extends JpaRepository<Product, Long> {
     @Override
-    @EntityGraph(attributePaths = {"roles", "profile"}) 
-    List<User> findAll();
+    @EntityGraph(attributePaths = {"brand", "category", "model"}) 
+    List<Product> findAll();
 }
 `);
 
 const n1FixCode2 = ref(`// Trong ProductController / Service
-import com.example.demo.entity.User;
-import com.example.demo.dto.UserResponse;
+import com.example.demo.entity.Product;
+import com.example.demo.dto.res.ProductResponse;
 import jakarta.persistence.criteria.JoinType;
 import org.springframework.data.jpa.domain.Specification;
 
 // ...
-Specification<User> spec = (root, query, cb) -> {
+Specification<Product> spec = (root, query, cb) -> {
     // Chỉ fetch khi return type không phải là count (Long)
     if (query.getResultType() != Long.class && query.getResultType() != long.class) {
-        root.fetch("roles", JoinType.LEFT);
+        root.fetch("brand", JoinType.LEFT);
+        root.fetch("category", JoinType.LEFT);
     }
     return null; 
 };
-service.findAll(page, size, spec, UserResponse.class);
+service.findAll(page, size, spec, ProductResponse.class);
 `);
 
 const overFetchingOneToOne = ref(`package com.example.demo.entity;
@@ -121,26 +122,26 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
-@Table(name = "users")
+@Table(name = "products")
 @Data
-public class User {
+public class Product {
     @Id private Long id;
     private String name;
 
-    // Tách cột nặng sang bảng 'user_details'
+    // Tách cột nặng sang bảng 'product_details'
     // Quan trọng: fetch = LAZY và optional = false
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "detail_id")
-    private UserDetail userDetail;
+    private ProductDescription detail;
 }
 
 @Entity
-@Table(name = "user_details")
+@Table(name = "product_details")
 @Data
-public class UserDetail {
+public class ProductDescription {
     @Id private Long id;
-    @Lob private byte[] avatar; // Cột nặng
-    @Column(columnDefinition="TEXT") private String bio;
+    @Lob private String fullDescriptionHTML; // Cột nặng
+    @Column(columnDefinition="TEXT") private String technicalSpecs;
 }
 `);
 </script>

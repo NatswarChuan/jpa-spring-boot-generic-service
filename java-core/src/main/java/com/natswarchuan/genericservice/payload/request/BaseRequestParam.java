@@ -1,6 +1,7 @@
 package com.natswarchuan.genericservice.payload.request;
 
 import com.natswarchuan.genericservice.exception.HttpException;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -182,12 +183,12 @@ public class BaseRequestParam {
      * @return Đối tượng {@link Pageable} với thông tin page, size và sort.
      * @throws HttpException nếu trường sắp xếp không hợp lệ.
      */
+    @Hidden
     public Pageable toPageable() {
         try {
             Sort sort = Sort.by(Sort.Direction.fromString(sortDir), sortBy);
             return PageRequest.of(page, size, sort);
         } catch (IllegalArgumentException ex) {
-            // Catch exception when sortBy field is invalid or sortDir is invalid
             String message = String.format(
                     "Tham số sắp xếp không hợp lệ. sortBy='%s', sortDir='%s'. " +
                             "Vui lòng kiểm tra lại tên trường và hướng sắp xếp (asc/desc).",
@@ -201,6 +202,7 @@ public class BaseRequestParam {
      *
      * @return {@code true} nếu page == -1, ngược lại {@code false}.
      */
+    @Hidden
     public boolean isUnpaged() {
         return page == -1;
     }

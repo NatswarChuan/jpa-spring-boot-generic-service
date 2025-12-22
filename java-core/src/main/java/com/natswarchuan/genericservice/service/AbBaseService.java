@@ -26,6 +26,8 @@ public abstract class AbBaseService<E, ID> {
      * Khởi tạo service với repository tương ứng.
      *
      * @param repository Repository JPA hỗ trợ cả CRUD và Specification.
+     * @param <R>        Kiểu repository (extends JpaRepository &amp;
+     *                   JpaSpecificationExecutor).
      */
     protected <R extends JpaRepository<E, ID> & JpaSpecificationExecutor<E>> AbBaseService(@NonNull R repository) {
         this.repository = repository;

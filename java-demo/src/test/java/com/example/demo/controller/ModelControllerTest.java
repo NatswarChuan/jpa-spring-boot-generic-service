@@ -25,7 +25,6 @@ class ModelControllerTest {
 
     @Test
     void testCreateModel_Success() throws Exception {
-        // Create brand first
         String brandBody = """
                 {
                     "name": "TestBrandForModel",

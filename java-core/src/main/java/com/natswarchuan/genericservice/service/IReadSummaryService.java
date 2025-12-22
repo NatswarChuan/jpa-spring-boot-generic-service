@@ -17,7 +17,6 @@ import org.springframework.data.jpa.domain.Specification;
  */
 public interface IReadSummaryService<E, ID> {
 
-    // --- Entity Methods ---
 
     /**
      * Lấy danh sách tất cả các thực thể.
@@ -90,7 +89,6 @@ public interface IReadSummaryService<E, ID> {
      */
     <S extends IDto<E>> Page<E> findAll(Pageable pageable, Specification<E> spec);
 
-    // --- DTO List Methods ---
 
     /**
      * Lấy danh sách tất cả các thực thể và chuyển đổi chúng thành danh sách các
@@ -156,7 +154,6 @@ public interface IReadSummaryService<E, ID> {
      */
     <S extends IDto<E>> List<S> findAll(Class<S> dtoClass, Specification<E> spec);
 
-    // --- DTO Page Methods ---
 
     /**
      * Lấy danh sách các thực thể theo trang và chuyển đổi chúng thành danh sách các

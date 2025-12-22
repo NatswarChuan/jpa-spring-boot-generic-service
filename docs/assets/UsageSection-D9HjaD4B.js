@@ -1,41 +1,4 @@
-<template>
-  <section id="dtos" class="scroll-mt-20 mb-16">
-    <h2 class="text-3xl font-bold text-slate-900 border-b pb-4 mb-8">4. Data Transfer Objects</h2>
-    
-    <article id="dto-request" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-3">4.1. Request DTO (Create/Update)</h3>
-      <p class="text-slate-600 mb-3">Tách biệt DTO tạo mới và cập nhật để kiểm soát dữ liệu đầu vào.</p>
-      <CodeBlock filename="ProductCreateReq.java" :code="createReqCode" />
-      <CodeBlock filename="ProductUpdateReq.java" :code="updateReqCode" />
-    </article>
-
-    <article id="dto-response" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-3">4.2. Response DTO (Auto Mapping)</h3>
-      <p class="text-slate-600 mb-3">Dữ liệu trả về cho client. Hỗ trợ tự động map từ Entity sang DTO.</p>
-      <CodeBlock filename="ProductResponse.java" :code="resCode" />
-
-      <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4 mt-4 text-sm text-blue-800 shadow-sm">
-        <strong>Tips:</strong> <code>IDto</code> mặc định sử dụng <code>BeanUtils.copyProperties</code>. 
-        Nếu tên field của DTO trùng với Entity, bạn <strong>KHÔNG CẦN</strong> viết code mapping thủ công nữa.
-      </div>
-    </article>
-
-    <article id="dto-i18n" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-3">4.3. Multi-language Support (I18n)</h3>
-      <p class="text-slate-600 mb-3">
-        Framework hỗ trợ đa ngôn ngữ ngay khi chuyển đổi DTO. Bạn có thể override hàm <code>fromEntity</code> có tham số <code>language</code>.
-      </p>
-      <CodeBlock filename="ProductResponse.java" :code="i18nCode" />
-    </article>
-
-  </section>
-</template>
-
-<script setup>
-import { ref } from 'vue';
-import CodeBlock from '../CodeBlock.vue';
-
-const createReqCode = ref(`package com.example.demo.dto.req;
+import{_ as n}from"./CodeBlock-Bl3isb_5.js";import{r as a,c,o as m,b as e,e as r,d as o}from"./index-BCAyzHOy.js";const p={id:"dtos",class:"scroll-mt-20 mb-16"},u={id:"dto-request",class:"mb-10 scroll-mt-24"},g={id:"dto-response",class:"mb-10 scroll-mt-24"},y={id:"dto-i18n",class:"mb-10 scroll-mt-24"},f={__name:"UsageSection",setup(b){const i=a(`package com.example.demo.dto.req;
 
 import com.example.demo.dto.req.spec.ProductRelationshipConsistencySpec;
 import com.example.demo.entity.Product;
@@ -98,9 +61,7 @@ public class ProductCreateReq implements IDto<Product> {
         return product;
     }
 }
-`);
-
-const updateReqCode = ref(`package com.example.demo.dto.req;
+`),s=a(`package com.example.demo.dto.req;
 
 import com.example.demo.entity.Product;
 import com.natswarchuan.genericservice.dto.IDto;
@@ -117,9 +78,7 @@ public class ProductUpdateReq implements IDto<Product> {
     // KHÔNG cần override updateEntity nếu field name trùng khớp
     // IDto tự động dùng BeanUtils.copyProperties(this, entity)
 }
-`);
-
-const resCode = ref(`package com.example.demo.dto.res;
+`),l=a(`package com.example.demo.dto.res;
 
 import org.springframework.beans.BeanUtils;
 
@@ -166,9 +125,7 @@ public class ProductResponse implements IDto<Product> {
         }
     }
 }
-`);
-
-const i18nCode = ref(`@Override
+`),d=a(`@Override
 public void fromEntity(Product entity, String language) {
     // Gọi hàm cha để copy fields cơ bản
     IDto.super.fromEntity(entity, language);
@@ -180,5 +137,4 @@ public void fromEntity(Product entity, String language) {
         this.name = entity.getNameEn();
     }
 }
-`);
-</script>
+`);return(v,t)=>(m(),c("section",p,[t[7]||(t[7]=e("h2",{class:"text-3xl font-bold text-slate-900 border-b pb-4 mb-8"},"4. Data Transfer Objects",-1)),e("article",u,[t[0]||(t[0]=e("h3",{class:"text-xl font-bold text-slate-800 mb-3"},"4.1. Request DTO (Create/Update)",-1)),t[1]||(t[1]=e("p",{class:"text-slate-600 mb-3"},"Tách biệt DTO tạo mới và cập nhật để kiểm soát dữ liệu đầu vào.",-1)),r(n,{filename:"ProductCreateReq.java",code:i.value},null,8,["code"]),r(n,{filename:"ProductUpdateReq.java",code:s.value},null,8,["code"])]),e("article",g,[t[2]||(t[2]=e("h3",{class:"text-xl font-bold text-slate-800 mb-3"},"4.2. Response DTO (Auto Mapping)",-1)),t[3]||(t[3]=e("p",{class:"text-slate-600 mb-3"},"Dữ liệu trả về cho client. Hỗ trợ tự động map từ Entity sang DTO.",-1)),r(n,{filename:"ProductResponse.java",code:l.value},null,8,["code"]),t[4]||(t[4]=e("div",{class:"bg-blue-50 border-l-4 border-blue-500 p-4 mb-4 mt-4 text-sm text-blue-800 shadow-sm"},[e("strong",null,"Tips:"),o(),e("code",null,"IDto"),o(" mặc định sử dụng "),e("code",null,"BeanUtils.copyProperties"),o(". Nếu tên field của DTO trùng với Entity, bạn "),e("strong",null,"KHÔNG CẦN"),o(" viết code mapping thủ công nữa. ")],-1))]),e("article",y,[t[5]||(t[5]=e("h3",{class:"text-xl font-bold text-slate-800 mb-3"},"4.3. Multi-language Support (I18n)",-1)),t[6]||(t[6]=e("p",{class:"text-slate-600 mb-3"},[o(" Framework hỗ trợ đa ngôn ngữ ngay khi chuyển đổi DTO. Bạn có thể override hàm "),e("code",null,"fromEntity"),o(" có tham số "),e("code",null,"language"),o(". ")],-1)),r(n,{filename:"ProductResponse.java",code:d.value},null,8,["code"])])]))}};export{f as default};

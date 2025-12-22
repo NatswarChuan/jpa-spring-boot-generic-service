@@ -45,15 +45,8 @@
       
       <CodeBlock filename="ProductController.java" :code="ctrlCode" />
 
-      <div class="bg-orange-50 border-l-4 border-orange-500 p-4 mb-4 mt-4 text-sm text-orange-800">
-        <h4 class="font-bold flex items-center mb-1"><i class="fas fa-exclamation-triangle mr-2"></i> Lưu ý quan trọng: Custom Filter</h4>
-        <p>
-          Khi bạn muốn dùng Custom Request Param (VD: <code>ProductRequestParam</code> có thêm <code>minPrice</code>), 
-          bạn <strong>BẮT BUỘC phải Override lại hàm <code>findAll</code></strong> trong Controller con.
-        </p>
-        <p class="mt-1 text-xs">
-          Lý do: Spring MVC cần biết chính xác class cụ thể để bind dữ liệu. Nếu không override, nó sẽ gọi hàm gốc của cha (nhận <code>BaseRequestParam</code>) và bỏ qua các field custom của bạn.
-        </p>
+      <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4 mt-4 text-sm text-blue-800">
+        <strong>Lưu ý:</strong> Bạn cần override <code>getResponseDetailDtoClass</code> và <code>getResponseSummaryDtoClass</code> để framework biết được DTO nào sẽ được dùng để serialize response.
       </div>
     </article>
 
@@ -147,11 +140,7 @@ import ArchitectureDiagram from '../ArchitectureDiagram.vue';
 
 const entityCode = ref(`package com.example.demo.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -163,6 +152,19 @@ public class Product {
     private Long id;
     private String name;
     private Double price;
+    private String description;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
+    @ManyToOne
+    @JoinColumn(name = "brand_id")
+    private Brand brand;
+
+    @ManyToOne
+    @JoinColumn(name = "model_id")
+    private Model model;
 }
 `);
 
@@ -174,7 +176,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Long>, 
+public interface ProductRepository extends JpaRepository<Product, Long>,
                                            JpaSpecificationExecutor<Product> {
 }
 `);
@@ -185,7 +187,6 @@ import com.example.demo.entity.Product;
 import com.natswarchuan.genericservice.service.IService;
 
 public interface IProductService extends IService<Product, Long> {
-    // Định nghĩa thêm hàm riêng nếu cần
 }
 `);
 
@@ -195,16 +196,17 @@ import com.example.demo.entity.Product;
 import com.example.demo.repository.ProductRepository;
 import com.example.demo.service.IProductService;
 import com.natswarchuan.genericservice.service.AbService;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import jakarta.annotation.Nonnull;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
 public class ProductServiceImpl extends AbService<Product, Long> implements IProductService {
-
-    @Autowired
-    public ProductServiceImpl(ProductRepository repository) {
+    @SuppressWarnings("null")
+    public ProductServiceImpl(@Nonnull ProductRepository repository) {
         super(repository);
     }
 }
@@ -212,63 +214,36 @@ public class ProductServiceImpl extends AbService<Product, Long> implements IPro
 
 const ctrlCode = ref(`package com.example.demo.controller;
 
-import com.example.demo.dto.ProductCreateReq;
-import com.example.demo.dto.ProductResponse;
-import com.example.demo.dto.ProductUpdateReq;
-import com.example.demo.dto.ProductRequestParam;
+import com.example.demo.dto.req.ProductCreateReq;
+import com.example.demo.dto.req.ProductUpdateReq;
+import com.example.demo.dto.res.ProductResponse;
 import com.example.demo.entity.Product;
 import com.example.demo.service.IProductService;
 import com.natswarchuan.genericservice.controller.AbController;
-import com.natswarchuan.genericservice.payload.request.BaseRequestParam;
-import org.springframework.data.jpa.domain.Specification;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/products")
-public class ProductController extends AbController<
-    Product, 
-    Long, 
-    ProductCreateReq,      // C
-    ProductUpdateReq       // U
-> {
+public class ProductController
+        extends AbController<Product, Long, ProductCreateReq, ProductUpdateReq> {
 
-    public ProductController(IProductService service) { 
-        super(service); 
+    public ProductController(IProductService service) {
+        super(service);
     }
 
-    @Override
-    protected Class<ProductResponse> getResponseSummaryDtoClass() {
-        return ProductResponse.class;
-    }
 
     @Override
+    @SuppressWarnings("unchecked")
     protected Class<ProductResponse> getResponseDetailDtoClass() {
         return ProductResponse.class;
     }
 
-    // Quan trọng: Override findAll để Spring bind đúng fields của ProductRequestParam
     @Override
-    @GetMapping
-    public ResponseEntity<HttpApiResponse<PagedResponse<ProductResponse>>> findAll(
-            ProductRequestParam requestParam,
-            @RequestHeader(name = "Accept-Language", defaultValue = "en") String language) {
-        return super.findAll(requestParam, language);
-    }
-
-    // Override để thêm custom logic filter
-    @Override
-    protected Specification<Product> getSpecification(BaseRequestParam baseParam) {
-        Specification<Product> spec = super.getSpecification(baseParam);
-        
-        // Cast về kiểu custom để lấy field
-        if (baseParam instanceof ProductRequestParam param) {
-             if (param.getMinPrice() != null) {
-                 spec = spec.and((root, query, cb) -> cb.ge(root.get("price"), param.getMinPrice()));
-             }
-        }
-        
-        return spec;
+    @SuppressWarnings("unchecked")
+    protected Class<ProductResponse> getResponseSummaryDtoClass() {
+        return ProductResponse.class;
     }
 }
 `);

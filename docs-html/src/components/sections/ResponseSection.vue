@@ -27,7 +27,7 @@
 
       <h4 class="font-bold text-slate-700 mt-6 mb-2">PagedResponse (Phân trang)</h4>
       <p class="text-slate-600 mb-3 text-sm">Thay thế <code>Page&lt;T&gt;</code> mặc định để custom fields.</p>
-      <CodeBlock filename="ProductController.java" :code="pagedResCode" />
+      <CodeBlock filename="CustomController.java" :code="pagedResCode" />
     </article>
 
     <!-- 8.2 Exception Handling -->
@@ -89,7 +89,7 @@ public class MyController { // ...
 
 const pagedResCode = ref(`package com.example.demo.controller;
 
-import com.example.demo.dto.ProductResponse;
+import com.example.demo.dto.res.ProductResponse;
 import com.natswarchuan.genericservice.payload.response.HttpApiResponse;
 import com.natswarchuan.genericservice.payload.response.PagedResponse;
 import org.springframework.data.domain.Page;
@@ -98,7 +98,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class MyController { // ...
+public class CustomController { // ...
 
     @GetMapping
     public HttpApiResponse<PagedResponse<ProductResponse>> getList(Pageable pageable) {

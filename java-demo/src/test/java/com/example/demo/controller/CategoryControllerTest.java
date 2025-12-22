@@ -25,7 +25,6 @@ class CategoryControllerTest {
 
     @Test
     void testCreateCategory_Success() throws Exception {
-        // First create a brand
         String brandBody = """
                 {
                     "name": "TestBrandForCategory",

@@ -53,14 +53,16 @@ const sections = ref([
     subs: [
       { id: 'core-entity', title: '3.1. Entity & Repository' },
       { id: 'core-service', title: '3.2. Service Layer' },
-      { id: 'core-controller', title: '3.3. Controller Layer' }
+      { id: 'core-controller', title: '3.3. Controller Layer' },
+      { id: 'framework-spec', title: '3.4. Framework Specification' }
     ]
   },
   { 
     id: 'dtos', title: '4. Data Transfer Objects', component: 'UsageSection', 
     subs: [
       { id: 'dto-request', title: '4.1. Request DTO' },
-      { id: 'dto-response', title: '4.2. Response DTO' }
+      { id: 'dto-response', title: '4.2. Response DTO' },
+      { id: 'dto-i18n', title: '4.3. Multi-language Support' }
     ]
   },
   { 
@@ -71,10 +73,10 @@ const sections = ref([
     ]
   },
   { 
-    id: 'specifications', title: '6. Specification & Search', component: 'SpecificationSection', 
+    id: 'specifications', title: '6. Specification & Dynamic Search', component: 'SpecificationSection', 
     subs: [
-      { id: 'spec-basic', title: '6.1. Basic Search' },
-      { id: 'spec-adv', title: '6.2. Advanced Features' }
+      { id: 'spec-default', title: '6.1. Built-in Search API' },
+      { id: 'spec-custom', title: '6.2. Custom Filter (Advanced)' }
     ]
   },
   { 

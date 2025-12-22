@@ -15,20 +15,17 @@ public class ProductRelationshipConsistencySpec implements SpecificationLoader<O
 
     @Override
     public Specification<Product> getSpecification(Object... args) {
-        // args[0] = ProductCreateReq dto
         ProductCreateReq dto = (ProductCreateReq) args[0];
 
         return (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
 
-            // Validate model belongs to brand if both are specified
             if (dto.getBrandId() != null && dto.getModelId() != null) {
                 var modelJoin = root.join("model");
                 var modelBrandJoin = modelJoin.join("brand");
                 predicates.add(cb.equal(modelBrandJoin.get("id"), dto.getBrandId()));
             }
 
-            // Validate category belongs to brand if both are specified
             if (dto.getBrandId() != null && dto.getCategoryId() != null) {
                 var categoryJoin = root.join("category");
                 var categoryBrandJoin = categoryJoin.join("brand");

@@ -3,13 +3,37 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.natswarchuan</groupId>
+  <groupId>io.github.natswarchuan</groupId>
   <artifactId>jpa-spring-boot-generic-service</artifactId>
-  <version>1.3.0</version>
+  <version>1.3.1</version>
   <packaging>jar</packaging>
 
-  <name>jpa-spring-boot-generic-service</name>
-  <description>Generic Service Framework for Spring Boot</description>
+  <name>JPA Spring Boot Generic Service</name>
+  <description>A generic service framework for Spring Boot JPA applications with built-in CRUD operations, pagination, sorting, and filtering capabilities.</description>
+  <url>https://github.com/NatswarChuan/jpa-spring-boot-generic-service</url>
+
+  <licenses>
+    <license>
+      <name>MIT License</name>
+      <url>https://opensource.org/licenses/MIT</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <id>natswarchuan</id>
+      <name>NatswarChuan</name>
+      <email>natswarchuan@gmail.com</email>
+      <url>https://github.com/NatswarChuan</url>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:git:git://github.com/NatswarChuan/jpa-spring-boot-generic-service.git</connection>
+    <developerConnection>scm:git:ssh://github.com:NatswarChuan/jpa-spring-boot-generic-service.git</developerConnection>
+    <url>https://github.com/NatswarChuan/jpa-spring-boot-generic-service/tree/main</url>
+  </scm>
 
   <properties>
     <java.version>17</java.version>
@@ -53,6 +77,8 @@
       <scope>provided</scope>
     </dependency>
   </dependencies>
+
+
 
   <build>
     <plugins>
@@ -101,6 +127,31 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-gpg-plugin</artifactId>
+        <version>3.1.0</version>
+        <executions>
+          <execution>
+            <id>sign-artifacts</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>sign</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.sonatype.central</groupId>
+        <artifactId>central-publishing-maven-plugin</artifactId>
+        <version>0.7.0</version>
+        <extensions>true</extensions>
+        <configuration>
+          <publishingServerId>central</publishingServerId>
+          <tokenAuth>true</tokenAuth>
+          <autoPublish>true</autoPublish>
+        </configuration>
       </plugin>
     </plugins>
   </build>

@@ -6,7 +6,10 @@ import com.natswarchuan.genericservice.payload.response.HttpApiResponse;
 import com.natswarchuan.genericservice.payload.response.PagedResponse;
 import com.natswarchuan.genericservice.service.IService;
 import com.natswarchuan.genericservice.specification.GenericSpecification;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -96,6 +99,11 @@ public abstract class AbController<E, ID, C extends IDto<E>, U extends IDto<E>> 
      * @param <R>          Kiểu DTO phản hồi (thường là Summary DTO).
      * @return {@link PagedResponse} chứa danh sách các DTO và thông tin phân trang.
      */
+    @Operation(summary = "Lấy danh sách (Phân trang & Tìm kiếm)", description = "Hỗ trợ phân trang, sắp xếp và tìm kiếm động theo các tiêu chí.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Thành công"),
+            @ApiResponse(responseCode = "400", description = "Lỗi dữ liệu đầu vào (VD: sai format sort)")
+    })
     @GetMapping
     public <RQ extends BaseRequestParam, R extends IDto<E>> ResponseEntity<HttpApiResponse<PagedResponse<R>>> findAll(
             RQ requestParam,
@@ -123,6 +131,11 @@ public abstract class AbController<E, ID, C extends IDto<E>, U extends IDto<E>> 
      * @param <R>      Kiểu DTO phản hồi (thường là Detail DTO).
      * @return DTO chi tiết của thực thể.
      */
+    @Operation(summary = "Lấy chi tiết theo ID", description = "Trả về thông tin chi tiết của một bản ghi.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Thành công"),
+            @ApiResponse(responseCode = "404", description = "Không tìm thấy bản ghi")
+    })
     @GetMapping("/{id}")
     public <R extends IDto<E>> ResponseEntity<HttpApiResponse<R>> findById(
             @Parameter(description = "ID của thực thể cần lấy", required = true, example = "1") @PathVariable(name = "id") ID id,
@@ -141,6 +154,11 @@ public abstract class AbController<E, ID, C extends IDto<E>, U extends IDto<E>> 
      * @param <R> Kiểu DTO phản hồi sau khi tạo (thường là Detail DTO).
      * @return DTO chi tiết của thực thể vừa được tạo.
      */
+    @Operation(summary = "Tạo mới bản ghi", description = "Tạo mới một bản ghi vào hệ thống.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Tạo thành công"),
+            @ApiResponse(responseCode = "400", description = "Lỗi validation dữ liệu"),
+    })
     @PostMapping
     public <R extends IDto<E>> ResponseEntity<HttpApiResponse<R>> create(@RequestBody @Valid @NonNull C dto) {
         R result = service.create(dto, getResponseDetailDtoClass());
@@ -156,6 +174,12 @@ public abstract class AbController<E, ID, C extends IDto<E>, U extends IDto<E>> 
      * @param <R> Kiểu DTO phản hồi sau khi cập nhật (thường là Detail DTO).
      * @return DTO chi tiết của thực thể sau khi cập nhật.
      */
+    @Operation(summary = "Cập nhật bản ghi", description = "Cập nhật thông tin của một bản ghi hiện có.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "202", description = "Cập nhật thành công"),
+            @ApiResponse(responseCode = "400", description = "Lỗi validation dữ liệu"),
+            @ApiResponse(responseCode = "404", description = "Không tìm thấy bản ghi")
+    })
     @PutMapping("/{id}")
     public <R extends IDto<E>> ResponseEntity<HttpApiResponse<R>> update(
             @Parameter(description = "ID của thực thể cần cập nhật", required = true, example = "1") @PathVariable(name = "id") ID id,
@@ -170,6 +194,11 @@ public abstract class AbController<E, ID, C extends IDto<E>, U extends IDto<E>> 
      * @param id ID của thực thể cần xóa.
      * @return Phản hồi thành công (không có dữ liệu trả về).
      */
+    @Operation(summary = "Xóa bản ghi", description = "Xóa (hoặc vô hiệu hóa) một bản ghi khỏi hệ thống.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Xóa thành công"),
+            @ApiResponse(responseCode = "404", description = "Không tìm thấy bản ghi")
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpApiResponse<Void>> delete(
             @Parameter(description = "ID của thực thể cần xóa", required = true, example = "1") @PathVariable(name = "id") ID id) {
