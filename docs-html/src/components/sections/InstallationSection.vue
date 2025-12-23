@@ -18,7 +18,7 @@
 &lt;dependency&gt;
     &lt;groupId&gt;io.github.natswarchuan&lt;/groupId&gt;
     &lt;artifactId&gt;jpa-spring-boot-generic-service&lt;/artifactId&gt;
-    &lt;version&gt;1.3.0&lt;/version&gt;
+    &lt;version&gt;1.3.5&lt;/version&gt;
 &lt;/dependency&gt;</pre>
       </div>
     </div>
@@ -33,7 +33,7 @@
         <p class="text-slate-400 text-sm mb-2 font-mono">// Thêm dependency vào build.gradle</p>
         <pre class="text-green-400 font-mono text-sm">
 dependencies {
-    implementation 'io.github.natswarchuan:jpa-spring-boot-generic-service:1.3.0'
+    implementation 'io.github.natswarchuan:jpa-spring-boot-generic-service:1.3.5'
 }</pre>
       </div>
     </div>

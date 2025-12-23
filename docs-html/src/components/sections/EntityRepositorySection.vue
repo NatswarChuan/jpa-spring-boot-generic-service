@@ -1,0 +1,119 @@
+<template>
+  <section id="core-arch" class="scroll-mt-20 mb-16">
+    <h2 class="text-3xl font-bold text-slate-900 border-b pb-4 mb-8">3. Entity & Repository Layer</h2>
+    <p class="text-slate-600 italic mb-6">Ánh xạ với bảng trong database và Repository JPA cho module Product.</p>
+
+    <!-- Architecture Overview Diagram -->
+    <div class="mb-10 bg-slate-50 rounded-xl p-4 border border-slate-200">
+       <ArchitectureDiagram />
+    </div>
+
+    <article id="core-entity" class="mb-10 scroll-mt-24">
+      <h3 class="text-xl font-bold text-slate-800 mb-3">3.1. Entity Definition</h3>
+      <p class="text-slate-600 mb-3">Định nghĩa cấu trúc bảng và các mối quan hệ (ManyToOne, OneToMany).</p>
+      <CodeBlock filename="Product.java" :code="entityCode" />
+    </article>
+
+    <article id="core-repo" class="mb-10 scroll-mt-24">
+      <h3 class="text-xl font-bold text-slate-800 mb-3">3.2. Repository Implementation</h3>
+      <p class="text-slate-600 mb-3">Sử dụng Spring Data JPA Repository.</p>
+      <CodeBlock filename="ProductRepository.java" :code="repoCode" />
+      
+      <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4 mt-4 text-sm text-yellow-800">
+        <strong>Lưu ý:</strong> Repository bắt buộc phải extends <code>JpaSpecificationExecutor</code> để hỗ trợ bộ lọc nâng cao (Specification).
+      </div>
+    </article>
+  </section>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import CodeBlock from '../CodeBlock.vue';
+import ArchitectureDiagram from '../ArchitectureDiagram.vue';
+
+const entityCode = ref(`package com.example.demo.domain;
+
+import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.annotations.Nationalized;
+
+import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+/**
+ * Entity đại diện cho Sản phẩm (Product).
+ */
+@Entity
+@Table(name = "products", indexes = {
+        @Index(name = "idx_product_brand", columnList = "brand_id"),
+        @Index(name = "idx_product_model", columnList = "model_id"),
+        @Index(name = "idx_product_store", columnList = "store_id")
+})
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class Product {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Nationalized
+    @Column(nullable = false)
+    private String name;
+
+    @Column(precision = 19, scale = 4)
+    private BigDecimal price;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "brand_id")
+    private Brand brand;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "model_id")
+    private Model model;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "store_id")
+    private Store store;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private Set<ProductCategory> productCategories = new HashSet<>();
+
+    // Helper method for Many-to-Many via transient
+    @Transient
+    public void setCategories(Set<Category> categories) {
+        if (this.productCategories == null) {
+            this.productCategories = new HashSet<>();
+        }
+        this.productCategories.clear();
+        if (categories != null) {
+            this.productCategories.addAll(categories.stream()
+                    .map(cat -> ProductCategory.builder()
+                            .product(this)
+                            .category(cat)
+                            .build())
+                    .collect(Collectors.toSet()));
+        }
+    }
+}
+`);
+
+const repoCode = ref(`package com.example.demo.repository;
+
+import com.example.demo.domain.Product;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface ProductRepository extends JpaRepository<Product, Long>,
+                                           JpaSpecificationExecutor<Product> {
+}
+`);
+</script>

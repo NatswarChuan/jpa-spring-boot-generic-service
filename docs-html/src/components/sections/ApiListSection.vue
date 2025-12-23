@@ -1,15 +1,10 @@
 <template>
   <section id="api-list" class="scroll-mt-20 mb-16">
-    <h2 class="text-3xl font-bold text-slate-900 border-b pb-4 mb-8">5. Base Service Methods (AbService)</h2>
-    <p class="text-slate-600 mb-6">
-      Dưới đây là danh sách đầy đủ các phương thức có sẵn trong <code>AbService</code> mà bạn có thể sử dụng ngay lập tức.
-    </p>
+    <h2 class="text-3xl font-bold text-slate-900 border-b pb-4 mb-8">8. Base Service Methods</h2>
+    <p class="text-slate-600 italic mb-6">Danh sách các phương thức CRUD mạnh mẽ có sẵn trong <code>AbService</code>.</p>
 
     <article id="api-read" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-4 flex items-center">
-        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">5.1</span>
-        Read Operations (Truy vấn)
-      </h3>
+      <h3 class="text-xl font-bold text-slate-800 mb-3">8.1. Read Operations</h3>
       
       <h4 class="font-bold text-slate-700 mt-6 mb-2">Single Entity Lookup</h4>
       <div class="overflow-x-auto rounded-lg border border-slate-200 shadow-sm mb-8">
@@ -145,10 +140,7 @@
     </article>
 
     <article id="api-write" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-4 flex items-center">
-        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">5.2</span>
-        Write Operations (Create / Update / Delete)
-      </h3>
+      <h3 class="text-xl font-bold text-slate-800 mb-3">8.2. Write Operations</h3>
       <div class="overflow-x-auto rounded-lg border border-slate-200 shadow-sm mb-8">
         <table class="w-full text-sm text-left text-slate-600 api-table">
           <thead class="text-xs text-slate-700 uppercase bg-slate-50 border-b border-slate-200">

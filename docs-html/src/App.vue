@@ -36,7 +36,10 @@ import MainContent from './components/MainContent.vue';
 const sectionComponents = {
   IntroductionSection: defineAsyncComponent(() => import('./components/sections/IntroductionSection.vue')),
   InstallationSection: defineAsyncComponent(() => import('./components/sections/InstallationSection.vue')),
-  ImplementationSection: defineAsyncComponent(() => import('./components/sections/ImplementationSection.vue')),
+  EntityRepositorySection: defineAsyncComponent(() => import('./components/sections/EntityRepositorySection.vue')),
+  ServiceLayerSection: defineAsyncComponent(() => import('./components/sections/ServiceLayerSection.vue')),
+  ControllerLayerSection: defineAsyncComponent(() => import('./components/sections/ControllerLayerSection.vue')),
+  ArchitectureSection: defineAsyncComponent(() => import('./components/sections/ArchitectureSection.vue')),
   UsageSection: defineAsyncComponent(() => import('./components/sections/UsageSection.vue')),
   ApiListSection: defineAsyncComponent(() => import('./components/sections/ApiListSection.vue')),
   SpecificationSection: defineAsyncComponent(() => import('./components/sections/SpecificationSection.vue')),
@@ -49,56 +52,78 @@ const sections = ref([
   { id: 'intro', title: '1. Giới thiệu', component: 'IntroductionSection', subs: [] },
   { id: 'installation', title: '2. Cài đặt', component: 'InstallationSection', subs: [] },
   { 
-    id: 'core-arch', title: '3. Core Architecture', component: 'ImplementationSection', 
+    id: 'core-entity-repo', title: '3. Entity & Repository', component: 'EntityRepositorySection', 
     subs: [
-      { id: 'core-entity', title: '3.1. Entity & Repository' },
-      { id: 'core-service', title: '3.2. Service Layer' },
-      { id: 'core-controller', title: '3.3. Controller Layer' },
-      { id: 'framework-spec', title: '3.4. Framework Specification' }
+      { id: 'core-entity', title: '3.1. Entity Definition' },
+      { id: 'core-repo', title: '3.2. Repository Implementation' }
     ]
   },
   { 
-    id: 'dtos', title: '4. Data Transfer Objects', component: 'UsageSection', 
+    id: 'service-layer', title: '4. Service Layer', component: 'ServiceLayerSection', 
     subs: [
-      { id: 'dto-request', title: '4.1. Request DTO' },
-      { id: 'dto-response', title: '4.2. Response DTO' },
-      { id: 'dto-i18n', title: '4.3. Multi-language Support' }
+      { id: 'core-service', title: '4.1. Basic Service' },
+      { id: 'service-hooks', title: '4.2. Life-cycle Hooks' }
     ]
   },
   { 
-    id: 'api-list', title: '5. Base Service Methods', component: 'ApiListSection', 
+    id: 'controller-layer', title: '5. Controller Layer', component: 'ControllerLayerSection', 
     subs: [
-      { id: 'api-read', title: '5.1. Read Operations' },
-      { id: 'api-write', title: '5.2. Write Operations' }
+      { id: 'core-controller', title: '5.1. Standard Controller' },
+      { id: 'controller-traits', title: '5.2. Controller Traits' },
+      { id: 'custom-api', title: '5.3. Custom API Endpoints' }
     ]
   },
   { 
-    id: 'specifications', title: '6. Specification & Dynamic Search', component: 'SpecificationSection', 
+    id: 'architecture-system', title: '6. Architecture & Life-cycle', component: 'ArchitectureSection', 
     subs: [
-      { id: 'spec-default', title: '6.1. Built-in Search API' },
-      { id: 'spec-custom', title: '6.2. Custom Filter (Advanced)' }
+      { id: 'framework-spec', title: '6.1. Class Hierarchy' },
+      { id: 'generic-system', title: '6.2. Generic Type System' },
+      { id: 'request-lifecycle', title: '6.3. Request Life-cycle' }
     ]
   },
   { 
-    id: 'validation', title: '7. Validation System', component: 'ValidationSection', 
+    id: 'dtos', title: '7. Data Transfer Objects', component: 'UsageSection', 
     subs: [
-      { id: 'val-basic', title: '7.1. Basic Constraints' },
-      { id: 'val-custom', title: '7.2. Custom Validators' },
-      { id: 'val-cross', title: '7.3. Cross-Entity Validators' }
+      { id: 'dto-request', title: '7.1. Request DTO' },
+      { id: 'dto-response', title: '7.2. Response DTO' },
+      { id: 'dto-i18n', title: '7.3. Multi-language' }
     ]
   },
   { 
-    id: 'response-handling', title: '8. Response Handling', component: 'ResponseSection', 
+    id: 'api-list', title: '8. Base Service Methods', component: 'ApiListSection', 
     subs: [
-      { id: 'res-structure', title: '8.1. Response Structure' },
-      { id: 'res-exception', title: '8.2. Exception Handling' }
+      { id: 'api-read', title: '8.1. Read Operations' },
+      { id: 'api-write', title: '8.2. Write Operations' }
     ]
   },
   { 
-    id: 'notes', title: '9. Important Notes', component: 'NotesSection', 
+    id: 'specifications', title: '9. Specification & Dynamic Search', component: 'SpecificationSection', 
     subs: [
-      { id: 'notes-best-practices', title: '9.1. Best Practices' },
-      { id: 'notes-troubleshooting', title: '9.2. Troubleshooting' }
+      { id: 'spec-default', title: '9.1. Built-in Search API' },
+      { id: 'spec-custom', title: '9.2. Custom Filter (Advanced)' }
+    ]
+  },
+  { 
+    id: 'validation', title: '10. Validation System', component: 'ValidationSection', 
+    subs: [
+      { id: 'val-basic', title: '10.1. Basic Constraints' },
+      { id: 'val-custom', title: '10.2. Custom Validators' },
+      { id: 'val-advanced', title: '10.3. Native SQL Constraint' }
+    ]
+  },
+  { 
+    id: 'response-handling', title: '11. Response Handling', component: 'ResponseSection', 
+    subs: [
+      { id: 'res-structure', title: '11.1. Response Structure' },
+      { id: 'res-exception', title: '11.2. Exception Handling' }
+    ]
+  },
+  { 
+    id: 'notes', title: '12. Important Notes', component: 'NotesSection', 
+    subs: [
+      { id: 'notes-best-practices', title: '12.1. Best Practices' },
+      { id: 'notes-troubleshooting', title: '12.2. Troubleshooting' },
+      { id: 'notes-advanced', title: '12.3. Advanced Patterns' }
     ] 
   }
 ]);

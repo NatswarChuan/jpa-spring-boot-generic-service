@@ -1,13 +1,11 @@
 <template>
   <section id="notes" class="scroll-mt-20 mb-16">
-    <h2 class="text-3xl font-bold text-red-600 border-b border-red-200 pb-4 mb-8">9. Important Notes</h2>
+    <h2 class="text-3xl font-bold text-slate-900 border-b pb-4 mb-8">12. Important Notes</h2>
+    <p class="text-slate-600 mb-6 italic">Các lưu ý quan trọng để sử dụng framework hiệu quả và tránh các lỗi thường gặp.</p>
     
     <!-- 9.1 Best Practices -->
     <article id="notes-best-practices" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-4 flex items-center">
-        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">9.1</span>
-        Best Practices
-      </h3>
+      <h3 class="text-xl font-bold text-slate-800 mb-3">12.1. Best Practices</h3>
       
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <div class="bg-blue-50 p-6 rounded-lg border-l-4 border-blue-500 shadow-sm">
@@ -42,10 +40,7 @@
 
     <!-- 9.2 Troubleshooting -->
     <article id="notes-troubleshooting" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-4 flex items-center">
-        <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm mr-3">9.2</span>
-        Troubleshooting (N+1 & Performance)
-      </h3>
+      <h3 class="text-xl font-bold text-slate-800 mb-3">12.2. Troubleshooting</h3>
 
       <!-- N+1 Solution -->
       <div class="bg-white border border-slate-200 rounded-lg p-6 shadow-sm mb-6">
@@ -74,6 +69,60 @@
             </h5>
             <CodeBlock filename="User.java" :code="overFetchingOneToOne" />
           </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 12.3 Advanced Patterns -->
+    <article id="notes-advanced" class="mb-10 scroll-mt-24">
+      <h3 class="text-xl font-bold text-slate-800 mb-3">12.3. Advanced Usage Patterns</h3>
+      <p class="text-slate-600 mb-6">Tận dụng tối đa sức mạnh của kế thừa và generic để xây dựng hệ thống linh hoạt.</p>
+
+      <div class="space-y-6">
+        <!-- Composite Service -->
+        <div class="bg-indigo-50 p-6 rounded-lg border-l-4 border-indigo-500 shadow-sm">
+          <h4 class="text-lg font-bold text-indigo-800 mb-2">
+            <i class="fas fa-layer-group mr-2"></i>Composite Service (Aggregator)
+          </h4>
+          <p class="text-sm text-indigo-700 mb-4">
+            Đừng cố nhồi nhét mọi thứ vào một Generic Service. Hãy tạo một Service "Điều phối" (Aggregator) để gọi nhiều Service generic khác nhau.
+          </p>
+          <CodeBlock filename="OrderService.java" :code="compositeServiceCode" />
+        </div>
+
+        <!-- Soft Delete -->
+        <div class="bg-pink-50 p-6 rounded-lg border-l-4 border-pink-500 shadow-sm">
+          <h4 class="text-lg font-bold text-pink-800 mb-2">
+            <i class="fas fa-trash-restore mr-2"></i>Global Soft Delete Logic
+          </h4>
+          <p class="text-sm text-pink-700 mb-4">
+            Triển khai xóa mềm (không xóa vật lý khỏi DB) theo hai cách phổ biến:
+          </p>
+          
+          <div class="space-y-4">
+            <div>
+              <h5 class="font-bold text-pink-900 mb-2 text-sm">Cách 1: Override tại Service Layer</h5>
+              <p class="text-xs text-pink-600 mb-2">Phù hợp khi bạn muốn kiểm soát logic xóa tập trung tại Service.</p>
+              <CodeBlock filename="BaseAppService.java" :code="softDeleteCode" />
+            </div>
+            
+            <div>
+              <h5 class="font-bold text-pink-900 mb-2 text-sm">Cách 2: Sử dụng Hibernate Annotation tại Entity</h5>
+              <p class="text-xs text-pink-600 mb-2">Trong suốt (transparent), tự động áp dụng cho tất cả các câu query (Find, List, v.v.).</p>
+              <CodeBlock filename="BaseEntity.java" :code="hibernateSoftDeleteCode" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Complex Dynamic Filtering -->
+        <div class="bg-emerald-50 p-6 rounded-lg border-l-4 border-emerald-500 shadow-sm">
+          <h4 class="text-lg font-bold text-emerald-800 mb-2">
+            <i class="fas fa-filter mr-2"></i>Complex Dynamic Filtering (Full Spec)
+          </h4>
+          <p class="text-sm text-emerald-700 mb-4">
+            Khi cần lọc nâng cao (khoảng giá, join bảng phức tạp), hãy kết hợp <code>Custom Param</code> và <code>Custom Specification</code>.
+          </p>
+          <CodeBlock filename="FilteringImplementation.java" :code="complexFilterCode" />
         </div>
       </div>
     </article>
@@ -142,6 +191,81 @@ public class ProductDescription {
     @Id private Long id;
     @Lob private String fullDescriptionHTML; // Cột nặng
     @Column(columnDefinition="TEXT") private String technicalSpecs;
+}
+`);
+
+const compositeServiceCode = ref(`@Service
+public class OrderService {
+    private final ProductService productService;
+    private final CustomerService customerService;
+    private final InventoryService inventoryService;
+
+    @Transactional
+    public void createOrder(OrderReq req) {
+        // Tận dụng findById có sẵn của Generic Service
+        Product p = productService.findById(req.getProductId());
+        Customer c = customerService.findById(req.getCustomerId());
+        
+        // Thực hiện logic nghiệp vụ tổng hợp...
+    }
+}
+`);
+
+const softDeleteCode = ref(`public abstract class BaseAppService<E extends BaseEntity, ID> 
+    extends AbService<E, ID> {
+    
+    @Override
+    public void delete(ID id) {
+        E entity = findById(id);
+        entity.setDeleted(true); // Logic xóa mềm
+        repository.save(entity);
+    }
+}
+`);
+
+const hibernateSoftDeleteCode = ref(`@MappedSuperclass
+@SQLDelete(sql = "UPDATE {table_name} SET deleted = true WHERE id = ?")
+// Hibernate <= 6.2 dùng @Where(clause = "deleted = false")
+@SQLRestriction("deleted = false") // Hibernate 6.3+
+@Getter @Setter
+public abstract class BaseEntity {
+    @Column(name = "deleted", nullable = false)
+    private boolean deleted = false;
+}
+`);
+
+const complexFilterCode = ref(`// 1. Request Param hỗ trợ filter đa dạng
+public class ProductFilterParam extends BaseRequestParam {
+    private Double minPrice;
+    private Double maxPrice;
+    private String brandName;
+}
+
+// 2. Specification xử lý Join và Range
+public class ProductSpecification extends GenericSpecification<Product> {
+    private final ProductFilterParam param;
+
+    public ProductSpecification(ProductFilterParam param) {
+        super(param);
+        this.param = param;
+    }
+
+    @Override
+    public Predicate toPredicate(Root<Product> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+        List<Predicate> predicates = new ArrayList<>();
+        // Tận dụng logic search cơ bản của framework
+        predicates.add(super.toPredicate(root, query, cb));
+
+        if (param.getMinPrice() != null) 
+            predicates.add(cb.greaterThanOrEqualTo(root.get("price"), param.getMinPrice()));
+            
+        if (param.getBrandName() != null) {
+            Join<Product, Brand> brand = root.join("brand", JoinType.INNER);
+            predicates.add(cb.like(cb.lower(brand.get("name")), "%" + param.getBrandName().toLowerCase() + "%"));
+        }
+
+        return cb.and(predicates.toArray(new Predicate[0]));
+    }
 }
 `);
 </script>

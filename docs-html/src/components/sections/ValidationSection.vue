@@ -1,11 +1,11 @@
 <template>
   <section id="validation" class="scroll-mt-20 mb-16">
-    <h2 class="text-3xl font-bold text-slate-900 border-b pb-4 mb-8">7. Validation System</h2>
-    <p class="text-slate-600 mb-6">Thư viện cung cấp bộ Annotation mạnh mẽ, tích hợp sẵn với Hibernate Validator và Spring Data JPA.</p>
+    <h2 class="text-3xl font-bold text-slate-900 border-b pb-4 mb-8">10. Validation System</h2>
+    <p class="text-slate-600 mb-6 italic">Hệ thống kiểm tra dữ liệu đầu vào mạnh mẽ, tích hợp sẵn với Spring Validation.</p>
 
     <!-- 7.1 Basic Constraints -->
     <article id="val-basic" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-3">7.1. Basic Constraints</h3>
+      <h3 class="text-xl font-bold text-slate-800 mb-3">10.1. Basic Constraints</h3>
       <p class="text-slate-600 mb-4">Các annotation kiểm tra định dạng hoặc ràng buộc đơn giản.</p>
       
       <div class="space-y-6">
@@ -26,12 +26,18 @@
           <p class="text-sm text-slate-600 mb-2">Validation số điện thoại và ký tự đặc biệt.</p>
           <CodeBlock filename="ProfileRequest.java" :code="formatCode" />
         </div>
+
+        <div>
+          <h4 class="font-semibold text-slate-700">@IdsExist</h4>
+          <p class="text-sm text-slate-600 mb-2">Kiểm tra danh sách (Set, List) các ID có tồn tại trong Database hay không.</p>
+          <CodeBlock filename="ProductRequest.java" :code="idsExistCode" />
+        </div>
       </div>
     </article>
 
     <!-- 7.2 Custom Validators -->
     <article id="val-custom" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-3">7.2. Custom Validators (Specification)</h3>
+      <h3 class="text-xl font-bold text-slate-800 mb-3">10.2. Custom Validators</h3>
       <p class="text-slate-600 mb-4">Sử dụng <strong>Specification</strong> để thực hiện các validation phức tạp.</p>
 
       <h4 class="font-semibold text-slate-700 mt-4">@SpecValidation (Field Level)</h4>
@@ -46,14 +52,14 @@
       <CodeBlock filename="ProductUniqueSpec.java" :code="loaderImplCode" />
     </article>
 
-    <!-- 7.3 Cross-Entity Validator -->
-    <article id="val-cross" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-3">7.3. Cross-Entity Validation</h3>
-      <p class="text-slate-600 mb-4">Validation phức tạp liên quan đến quan hệ giữa nhiều bảng (Brand - Model - Category).</p>
+    <!-- 7.3 Advanced Validators -->
+    <article id="val-advanced" class="mb-10 scroll-mt-24">
+      <h3 class="text-xl font-bold text-slate-800 mb-3">10.3. Native SQL Constraint</h3>
+      <p class="text-slate-600 mb-4">Sử dụng <strong>Native SQL</strong> để viết các ràng buộc kiểm tra dữ liệu trực tiếp dưới DB.</p>
 
-      <h4 class="font-semibold text-slate-700 mt-4">@BrandModelCategoryValid</h4>
-      <p class="text-sm text-slate-600 mb-2">Đảm bảo tính nhất quán của dữ liệu quan hệ.</p>
-      <CodeBlock filename="BrandCreateReq.java" :code="crossValCode" />
+      <h4 class="font-semibold text-slate-700 mt-4">@SqlConstraint</h4>
+      <p class="text-sm text-slate-600 mb-2">Validate logic phức tạp bằng SQL. Hỗ trợ bind biến từ Request Path, Params, hoặc Fields trong DTO.</p>
+      <CodeBlock filename="BrandUpdateReq.java" :code="sqlConstraintCode" />
     </article>
 
   </section>
@@ -110,6 +116,20 @@ public class ProfileRequest {
 
     @NoSpecialChars(message = "Tên đăng nhập không được chứa ký tự đặc biệt")
     private String username;
+}
+`);
+
+const idsExistCode = ref(`package com.example.demo.dto;
+
+import com.example.demo.domain.Category;
+import com.natswarchuan.genericservice.validation.IdsExist;
+import lombok.Data;
+import java.util.Set;
+
+@Data
+public class ProductRequest {
+    @IdsExist(entity = Category.class, message = "Danh mục không tồn tại")
+    private Set<Long> categoryIds;
 }
 `);
 
@@ -175,15 +195,23 @@ public class ProductUniqueSpec implements SpecificationLoader<ProductCreateReq, 
 }
 `);
 
-const crossValCode = ref(`package com.example.demo.dto.brand;
+const sqlConstraintCode = ref(`package com.example.demo.dto.brand;
 
-import com.example.demo.validation.BrandModelCategoryValid;
+import com.example.demo.domain.Brand;
+import com.natswarchuan.genericservice.dto.IDto;
+import com.natswarchuan.genericservice.validation.SqlConstraint;
 import lombok.Data;
-import java.util.Set;
 
 @Data
-@BrandModelCategoryValid(message = "Danh mục sản phẩm không thuộc về Model đã chọn")
-public class BrandCreateReq {
+@SqlConstraint(
+    sql = """
+        SELECT CASE WHEN (SELECT count(*) FROM model_categories WHERE model_id = :mid) 
+        = (SELECT count(*) FROM model_categories WHERE model_id = :mid AND category_id IN (:cids)) 
+        THEN 1 ELSE 0 END""", 
+    dependencies = { "mid:field/modelId", "cids:field/categoryIds" }, 
+    message = "Brand does not support all categories of the selected Model"
+)
+public class BrandUpdateReq implements IDto<Brand> {
     private Long modelId;
     private Set<Long> categoryIds;
     // ...

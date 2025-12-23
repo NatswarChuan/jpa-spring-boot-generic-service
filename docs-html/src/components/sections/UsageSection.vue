@@ -1,16 +1,17 @@
 <template>
   <section id="dtos" class="scroll-mt-20 mb-16">
-    <h2 class="text-3xl font-bold text-slate-900 border-b pb-4 mb-8">4. Data Transfer Objects</h2>
+    <h2 class="text-3xl font-bold text-slate-900 border-b pb-4 mb-8">7. Data Transfer Objects</h2>
+    <p class="text-slate-600 italic mb-6">Sử dụng DTO để tách biệt Model của Database và Model của API.</p>
     
     <article id="dto-request" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-3">4.1. Request DTO (Create/Update)</h3>
+      <h3 class="text-xl font-bold text-slate-800 mb-3">7.1. Request DTO (Create/Update)</h3>
       <p class="text-slate-600 mb-3">Tách biệt DTO tạo mới và cập nhật để kiểm soát dữ liệu đầu vào.</p>
       <CodeBlock filename="ProductCreateReq.java" :code="createReqCode" />
       <CodeBlock filename="ProductUpdateReq.java" :code="updateReqCode" />
     </article>
 
     <article id="dto-response" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-3">4.2. Response DTO (Auto Mapping)</h3>
+      <h3 class="text-xl font-bold text-slate-800 mb-3">7.2. Response DTO (Auto Mapping)</h3>
       <p class="text-slate-600 mb-3">Dữ liệu trả về cho client. Hỗ trợ tự động map từ Entity sang DTO.</p>
       <CodeBlock filename="ProductResponse.java" :code="resCode" />
 
@@ -21,7 +22,7 @@
     </article>
 
     <article id="dto-i18n" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-3">4.3. Multi-language Support (I18n)</h3>
+      <h3 class="text-xl font-bold text-slate-800 mb-3">7.3. Multi-language Support (I18n)</h3>
       <p class="text-slate-600 mb-3">
         Framework hỗ trợ đa ngôn ngữ ngay khi chuyển đổi DTO. Bạn có thể override hàm <code>fromEntity</code> có tham số <code>language</code>.
       </p>
@@ -43,7 +44,6 @@ import java.util.stream.Collectors;
 import org.springframework.beans.BeanUtils;
 
 import com.example.demo.domain.*;
-import com.example.demo.validation.specs.IdsInSpecLoader;
 import com.natswarchuan.genericservice.dto.IDto;
 import com.natswarchuan.genericservice.validation.*;
 
@@ -68,7 +68,7 @@ public class ProductCreateReq implements IDto<Product> {
     @Exists(entity = Store.class)
     private Long storeId;
 
-    @SpecValidation(entity = Category.class, loader = IdsInSpecLoader.class, message = "Given categories do not exist")
+    @IdsExist(entity = Category.class, message = "Given categories do not exist")
     private Set<Long> categoryIds;
 
     /**
@@ -99,7 +99,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.example.demo.domain.*;
-import com.example.demo.validation.specs.IdsInSpecLoader;
 import com.natswarchuan.genericservice.dto.IDto;
 import com.natswarchuan.genericservice.validation.*;
 
@@ -119,7 +118,7 @@ public class ProductUpdateReq implements IDto<Product> {
     @Exists(entity = Store.class)
     private Long storeId;
 
-    @SpecValidation(entity = Category.class, loader = IdsInSpecLoader.class, message = "Given categories do not exist")
+    @IdsExist(entity = Category.class, message = "Given categories do not exist")
     private Set<Long> categoryIds;
 
     @Override

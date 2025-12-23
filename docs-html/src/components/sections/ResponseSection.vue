@@ -1,13 +1,11 @@
 <template>
   <section id="response-handling" class="scroll-mt-20 mb-16">
-    <h2 class="text-3xl font-bold text-slate-900 border-b pb-4 mb-8">8. Response Handling</h2>
-    <p class="text-slate-600 mb-6">
-      Cung cấp cấu trúc phản hồi thống nhất và cơ chế xử lý lỗi tập trung.
-    </p>
+    <h2 class="text-3xl font-bold text-slate-900 border-b pb-4 mb-8">11. Response Handling</h2>
+    <p class="text-slate-600 mb-6 italic">Cấu trúc kết quả trả về đồng nhất và cơ chế xử lý lỗi tập trung.</p>
 
     <!-- 8.1 Response Structures -->
     <article id="res-structure" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-3">8.1. Response Structures</h3>
+      <h3 class="text-xl font-bold text-slate-800 mb-3">11.1. Response Structure</h3>
       <p class="text-slate-600 mb-3">
         Thư viện cung cấp 2 lớp wrap chuẩn: <code>HttpApiResponse</code> cho đối tượng đơn/list và <code>PagedResponse</code> cho phân trang.
       </p>
@@ -32,7 +30,7 @@
 
     <!-- 8.2 Exception Handling -->
     <article id="res-exception" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-3">8.2. Exception Handling</h3>
+      <h3 class="text-xl font-bold text-slate-800 mb-3">11.2. Exception Handling</h3>
       <p class="text-slate-600 mb-4">
         Sử dụng <code>HttpException</code> để ném lỗi từ Service/Controller. <code>GlobalExceptionHandler</code> sẽ tự động bắt và trả về format chuẩn.
       </p>
