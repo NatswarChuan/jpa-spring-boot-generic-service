@@ -24,7 +24,7 @@
     </div>
 
     <!-- Gradle Tab -->
-    <div class="mb-8">
+    <div class="mb-10">
       <h3 class="text-2xl font-bold text-slate-800 mb-4 flex items-center">
         <i class="fas fa-cubes text-blue-600 mr-2"></i> Gradle
       </h3>
@@ -35,6 +35,44 @@
 dependencies {
     implementation 'io.github.natswarchuan:jpa-spring-boot-generic-service:1.3.5'
 }</pre>
+      </div>
+    </div>
+
+    <!-- Local Installation -->
+    <div id="installation-local" class="mb-10 p-6 bg-slate-50 border border-slate-200 rounded-xl scroll-mt-24">
+      <h3 class="text-2xl font-bold text-slate-800 mb-4 flex items-center">
+        <i class="fas fa-tools text-slate-600 mr-2"></i> Local Development
+      </h3>
+      <p class="text-slate-600 mb-4">
+        Nếu bạn đang phát triển hoặc tùy chỉnh trực tiếp mã nguồn của framework, hãy cài đặt nó vào Local Maven Repository của bạn:
+      </p>
+      
+      <div class="bg-slate-900 rounded-lg p-4 mb-4 font-mono text-sm text-green-400">
+        # Chạy lệnh này tại thư mục java-core<br/>
+        mvn clean install
+      </div>
+
+      <p class="text-sm text-slate-500 italic">
+        Sau khi chạy lệnh trên, bạn có thể sử dụng version <code>1.3.5</code> trong các dự án local khác.
+      </p>
+    </div>
+
+    <!-- Package Scanning -->
+    <div id="installation-config" class="mb-10 scroll-mt-24">
+      <h3 class="text-2xl font-bold text-slate-800 mb-4 flex items-center">
+        <i class="fas fa-cog text-indigo-600 mr-2"></i> Configuration
+      </h3>
+      <p class="text-slate-600 mb-4">
+        Để Spring Boot có thể nhận diện các Beans và Validators từ thư viện, bạn cần cấu hình Package Scanning tại lớp Application chính.
+      </p>
+
+      <div class="bg-slate-900 rounded-lg p-4 shadow-lg overflow-x-auto">
+        <pre class="text-green-400 font-mono text-sm">
+@SpringBootApplication(scanBasePackages = { 
+    "com.your.package",             // Package dự án của bạn
+    "com.natswarchuan.genericservice" // Package của thư viện
+})
+public class YourApplication { ... }</pre>
       </div>
     </div>
 

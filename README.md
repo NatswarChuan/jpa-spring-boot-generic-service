@@ -5,54 +5,64 @@
 
 **Clean Architecture Generic Service Framework cho Spring Boot**
 
-Thư viện này cung cấp một tầng Service & Controller tiêu chuẩn hóa giúp **tự động hóa 80%** các thao tác CRUD lặp lại, tích hợp sẵn Validation mạnh mẽ và hệ thống Dynamic Search.
+Thư viện này cung cấp một tầng Service & Controller tiêu chuẩn hóa giúp **tự động hóa 80%** các thao tác CRUD lặp lại, tích hợp sẵn Validation mạnh mẽ và hệ thống Dynamic Search linh hoạt.
 
 ## ✨ Tính năng nổi bật
 
-*   **Zero-Boilerplate CRUD**:
-    *   `AbController`: Có sẵn toàn bộ API `Create`, `Update`, `Delete`, `FindById`, `FindAll`.
-    *   `AbService`: Xử lý logic nghiệp vụ transaction-safe.
+*   **Zero-Boilerplate CRUD**: 
+    *   Sử dụng các **Trait Interfaces** (`ICreateController`, `IReadController`, `IUpdateController`, `IDeleteController`) để kích hoạt API chọn lọc.
+    *   `AbService`: Xử lý logic nghiệp vụ transaction-safe với các Points of intervention (Hooks).
 *   **Dynamic Search & Paging**:
-    *   Mặc định hỗ trợ params: `page`, `size`, `sort`, `dir`, `search`, `searchField`.
-    *   Dễ dàng mở rộng với **Specification** pattern.
+    *   Mặc định hỗ trợ các query params: `page`, `size`, `sort`, `dir`, `search`, `searchField`.
+    *   Hỗ trợ lọc nâng cao (Join, Range...) thông qua **Custom Specification**.
 *   **Validation System**:
-    *   Annotations mạnh mẽ: `@Exists`, `@Unique`, `@EnumValue`, `@PhoneNumber`, `@NoSpecialChars`.
-    *   Hỗ trợ **Cross-field Validation** (Class-level) thông qua `SpecificationLoader`.
-*   **Auto DTO Mapping**: Interface `IDto` tích hợp sẵn logic mapping 2 chiều Entity-DTO.
-*   **I18n Service**: Tự động xử lý đa ngôn ngữ dựa trên header `Accept-Language`.
+    *   Annotations mạnh mẽ: `@Exists`, `@Unique`, `@IdsExist`, `@EnumValue`, `@PhoneNumber`, `@NoSpecialChars`.
+    *   Hỗ trợ **Native SQL Constraint** (`@SqlConstraint`) và **Cross-field Validation** (`@DtoSpecValidation`).
+*   **Auto DTO Mapping**: Interface `IDto` tích hợp sẵn logic mapping 2 chiều Entity-DTO tự động qua BeanUtils.
+*   **I18n Service**: Tự động xử lý đa ngôn ngữ (Localization) dựa trên header `Accept-Language`.
 
 ## 📦 Cài đặt
 
-Thư viện đã có mặt trên **Maven Central**.
+Thư viện có sẵn trên **Maven Central**.
 
 ### Maven
 ```xml
 <dependency>
     <groupId>io.github.natswarchuan</groupId>
     <artifactId>jpa-spring-boot-generic-service</artifactId>
-    <version>1.3.0</version>
+    <version>1.3.5</version>
 </dependency>
 ```
 
 ### Gradle
 ```groovy
-implementation 'io.github.natswarchuan:jpa-spring-boot-generic-service:1.3.0'
+implementation 'io.github.natswarchuan:jpa-spring-boot-generic-service:1.3.5'
 ```
 
 ## 🚀 Hướng dẫn nhanh
 
-### 1. Entity & Repository
-Repository bắt buộc phải extends `JpaSpecificationExecutor`.
+### 1. Cấu hình Package Scanning (Bắt buộc)
+Để Spring có thể quét được các Component và Validator của thư viện, hãy thêm vào lớp Application:
+
+```java
+@SpringBootApplication(scanBasePackages = { 
+    "com.your.project", 
+    "com.natswarchuan.genericservice" 
+})
+public class DemoApplication { ... }
+```
+
+### 2. Entity & Repository
+Repository cần extends `JpaSpecificationExecutor`.
 
 ```java
 @Entity
-@Data
-@Table(name = "products")
+@Getter @Setter
 public class Product {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private Double price;
+    private BigDecimal price;
 }
 
 @Repository
@@ -61,82 +71,47 @@ public interface ProductRepository extends JpaRepository<Product, Long>,
 }
 ```
 
-### 2. DTO
-Kế thừa `IDto<E>` để mapping tự động.
-
-```java
-@Data
-public class ProductCreateReq implements IDto<Product> { // Auto map to Entity
-    @NotBlank
-    @Unique(entity = Product.class, field = "name")
-    private String name;
-    
-    @Min(0)
-    private Double price;
-    
-    // Override toEntity() nếu cần map thêm quan hệ phức tạp
-}
-
-@Data
-public class ProductResponse implements IDto<Product> { // Auto map from Entity
-    private Long id;
-    private String name;
-    // ...
-}
-```
-
 ### 3. Service Layer
 ```java
-public interface IProductService extends IService<Product, Long> {}
-
 @Service
-@Transactional
-public class ProductServiceImpl extends AbService<Product, Long> implements IProductService {
-    public ProductServiceImpl(ProductRepository repository) {
+public class ProductService extends AbService<Product, Long> {
+    public ProductService(ProductRepository repository) {
         super(repository);
     }
 }
 ```
 
-### 4. Controller Layer
-Chỉ cần khai báo, **KHÔNG CẦN** viết code CRUD.
-
+### 4. Controller Layer (Sử dụng Traits)
 ```java
 @RestController
-@RequestMapping("/api/products")
-public class ProductController extends AbController<
-    Product,            // Entity Class
-    Long,               // ID Type
-    ProductCreateReq,   // Create DTO
-    ProductUpdateReq    // Update DTO
-> {
-    public ProductController(IProductService service) {
+@RequestMapping("/api/v1/products")
+public class ProductController extends AbController<Product, Long>
+        implements
+        ICreateController<Product, Long, ProductCreateReq>,
+        IUpdateController<Product, Long, ProductUpdateReq>,
+        IDeleteController<Product, Long>,
+        IReadController<Product, Long> {
+
+    public ProductController(ProductService service) {
         super(service);
     }
 
     @Override
-    protected Class<ProductResponse> getResponseSummaryDtoClass() { // DTO cho list
-        return ProductResponse.class;
+    public <R extends IDto<Product>> Class<R> getResponseSummaryDtoClass() {
+        return (Class<R>) ProductRes.class;
     }
 
     @Override
-    protected Class<ProductResponse> getResponseDetailDtoClass() {  // DTO cho detail/create
-        return ProductResponse.class;
+    public <R extends IDto<Product>> Class<R> getResponseDetailDtoClass() {
+        return (Class<R>) ProductDetailRes.class;
     }
 }
 ```
 
--> **Done!** Bây giờ bạn đã có sẵn API:
-*   `GET /api/products?page=0&size=10&sort=price&dir=desc&search=iphone&searchField=name`
-*   `GET /api/products/{id}`
-*   `POST /api/products` (với validation)
-*   `PUT /api/products/{id}`
-*   `DELETE /api/products/{id}`
-
 ## 📖 Demo & Tài liệu
 
-*   **Demo Project**: Xem [java-demo folder](./java-demo) để thấy code thực tế.
-*   **Documentation Site**: Mở file `docs/index.html` (sau khi clone) hoặc tham khảo thư mục `docs-html`.
+*   **Demo Project**: Xem thư mục [java-demo](./java-demo) để tham khảo code thực tế đầy đủ.
+*   **Documentation Site**: Mở file `docs/index.html` hoặc chạy dự án trong thư mục `docs-html`.
 
 ## 👨‍💻 Tác giả
 

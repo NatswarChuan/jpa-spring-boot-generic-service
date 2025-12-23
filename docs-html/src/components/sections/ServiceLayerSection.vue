@@ -48,10 +48,16 @@ import com.example.demo.domain.Product;
 import com.example.demo.repository.ProductRepository;
 import com.natswarchuan.genericservice.service.AbService;
 import org.springframework.stereotype.Service;
+import org.springframework.lang.NonNull;
 
+/**
+ * Service xử lý nghiệp vụ cho Product.
+ * Kế thừa AbService để tận dụng logic CRUD có sẵn.
+ */
 @Service
 public class ProductService extends AbService<Product, Long> {
-    public ProductService(ProductRepository repository) {
+
+    public ProductService(@NonNull ProductRepository repository) {
         super(repository);
     }
 }

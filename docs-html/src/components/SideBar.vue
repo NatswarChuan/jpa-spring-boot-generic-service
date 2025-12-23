@@ -42,7 +42,7 @@
             :key="sub.id" 
             :href="`#${sub.id}`"
             class="nav-sublink block text-xs py-1 transition-colors truncate"
-            :class="currentSectionId === sub.id ? 'text-blue-600 font-medium' : 'text-slate-500 hover:text-blue-600'"
+            :class="activeId === sub.id ? 'text-blue-600 font-medium' : 'text-slate-500 hover:text-blue-600'"
           >
             {{ sub.title }}
           </a>
@@ -63,7 +63,8 @@ import { ref, watch, onMounted } from 'vue';
 
 const props = defineProps({
   sections: Array,
-  currentSectionId: String
+  currentSectionId: String,
+  activeId: String
 });
 
 const openSections = ref(new Set());
@@ -103,11 +104,11 @@ const isSectionActive = (section) => {
   return section.subs && section.subs.some(sub => sub.id === props.currentSectionId);
 };
 
-// Watch for currentSectionId changes to auto-expand parent
-watch(() => props.currentSectionId, (newId) => {
+// Watch for activeId changes to auto-expand parent
+watch(() => props.activeId, (newId) => {
   if (!newId) return;
   
-  // Find parent section of the current ID
+  // Find parent section of the active ID
   const parent = props.sections.find(s => 
     s.id === newId || (s.subs && s.subs.some(sub => sub.id === newId))
   );

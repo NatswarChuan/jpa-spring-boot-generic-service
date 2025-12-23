@@ -1,4 +1,4 @@
-import{_ as s}from"./CodeBlock-BQU6-ZC9.js";import{r as n,c as i,o as d,b as t,a as c,d as r,e as o}from"./index-D9vsZoXm.js";const m={id:"response-handling",class:"scroll-mt-20 mb-16"},g={id:"res-structure",class:"mb-10 scroll-mt-24"},u={id:"res-exception",class:"mb-10 scroll-mt-24"},b={class:"grid grid-cols-1 md:grid-cols-2 gap-6"},x={class:"bg-slate-50 p-6 rounded-lg border border-slate-200 shadow-sm"},w={__name:"ResponseSection",setup(h){const a=n(`package com.example.demo.controller;
+import{_ as s}from"./CodeBlock-BkvZVepJ.js";import{r as n,c as i,o as d,b as t,a as c,d as r,e as o}from"./index-BT1pOG7q.js";const m={id:"response-handling",class:"scroll-mt-20 mb-16"},g={id:"res-structure",class:"mb-10 scroll-mt-24"},u={id:"res-exception",class:"mb-10 scroll-mt-24"},b={class:"grid grid-cols-1 md:grid-cols-2 gap-6"},x={class:"bg-slate-50 p-6 rounded-lg border border-slate-200 shadow-sm"},w={__name:"ResponseSection",setup(h){const a=n(`package com.example.demo.controller;
 
 import com.example.demo.dto.ProductResponse;
 import com.natswarchuan.genericservice.payload.response.HttpApiResponse;

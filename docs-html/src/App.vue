@@ -10,7 +10,7 @@
 
     <!-- Sidebar -->
     <div :class="['fixed md:sticky top-0 h-screen bg-white z-40 transition-transform duration-300 ease-in-out md:translate-x-0', isSidebarOpen ? 'translate-x-0' : '-translate-x-full']">
-      <Sidebar :sections="sections" :current-section-id="currentSection.id" />
+      <Sidebar :sections="sections" :current-section-id="currentSection.id" :active-id="activeId" />
     </div>
 
     <!-- Main Content -->
@@ -28,7 +28,7 @@
 </template>
 
 <script setup>
-import { ref, computed, defineAsyncComponent, onMounted, onUnmounted, nextTick } from 'vue';
+import { ref, computed, defineAsyncComponent, onMounted, onUnmounted, nextTick, watch } from 'vue';
 import Sidebar from './components/Sidebar.vue';
 import MainContent from './components/MainContent.vue';
 
@@ -50,7 +50,14 @@ const sectionComponents = {
 
 const sections = ref([
   { id: 'intro', title: '1. Giới thiệu', component: 'IntroductionSection', subs: [] },
-  { id: 'installation', title: '2. Cài đặt', component: 'InstallationSection', subs: [] },
+  { 
+    id: 'installation', title: '2. Cài đặt', component: 'InstallationSection', 
+    subs: [
+      { id: 'installation', title: '2.1. Maven/Gradle' },
+      { id: 'installation-local', title: '2.2. Local Development' },
+      { id: 'installation-config', title: '2.3. Configuration' }
+    ] 
+  },
   { 
     id: 'core-entity-repo', title: '3. Entity & Repository', component: 'EntityRepositorySection', 
     subs: [
@@ -130,6 +137,8 @@ const sections = ref([
 
 const currentSectionIndex = ref(0);
 const isSidebarOpen = ref(false);
+const activeId = ref('');
+let observer = null;
 
 const handleHashChange = () => {
   const hash = window.location.hash.replace('#', '');
@@ -166,13 +175,45 @@ const handleHashChange = () => {
   }
 };
 
+const setupObserver = () => {
+  if (observer) observer.disconnect();
+
+  observer = new IntersectionObserver((entries) => {
+    // Collect all intersecting entries
+    const intersecting = entries.filter(e => e.isIntersecting);
+    if (intersecting.length > 0) {
+      // Pick the first one (top-most in viewport)
+      activeId.value = intersecting[0].target.id;
+    }
+  }, {
+    rootMargin: '-10% 0px -70% 0px', // Focus on top 10%-30% of viewport
+    threshold: 0
+  });
+
+  // Observe current section and its subsections
+  nextTick(() => {
+    const idsToWatch = [currentSection.value.id, ...currentSection.value.subs.map(s => s.id)];
+    idsToWatch.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+  });
+};
+
 onMounted(() => {
   window.addEventListener('hashchange', handleHashChange);
   handleHashChange();
+  setupObserver();
 });
 
 onUnmounted(() => {
   window.removeEventListener('hashchange', handleHashChange);
+  if (observer) observer.disconnect();
+});
+
+watch(() => currentSectionIndex.value, () => {
+  activeId.value = currentSection.value.id;
+  setupObserver();
 });
 
 const currentSection = computed(() => sections.value[currentSectionIndex.value]);

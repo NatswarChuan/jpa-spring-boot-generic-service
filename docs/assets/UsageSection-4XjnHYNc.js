@@ -1,4 +1,4 @@
-import{_ as a}from"./CodeBlock-BQU6-ZC9.js";import{r as i,c as d,o as m,b as e,d as r,e as o}from"./index-D9vsZoXm.js";const p={id:"dtos",class:"scroll-mt-20 mb-16"},u={id:"dto-request",class:"mb-10 scroll-mt-24"},g={id:"dto-response",class:"mb-10 scroll-mt-24"},v={id:"dto-i18n",class:"mb-10 scroll-mt-24"},h={__name:"UsageSection",setup(b){const s=i(`package com.example.demo.dto.product;
+import{_ as a}from"./CodeBlock-BkvZVepJ.js";import{r as i,c as d,o as m,b as e,d as r,e as o}from"./index-BT1pOG7q.js";const p={id:"dtos",class:"scroll-mt-20 mb-16"},u={id:"dto-request",class:"mb-10 scroll-mt-24"},g={id:"dto-response",class:"mb-10 scroll-mt-24"},v={id:"dto-i18n",class:"mb-10 scroll-mt-24"},h={__name:"UsageSection",setup(b){const s=i(`package com.example.demo.dto.product;
 
 import java.math.BigDecimal;
 import java.util.Set;

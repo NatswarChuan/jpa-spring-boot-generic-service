@@ -52,6 +52,10 @@ import com.natswarchuan.genericservice.controller.trait.*;
 import com.natswarchuan.genericservice.dto.IDto;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Controller quản lý Sản phẩm (Product).
+ * Kế thừa AbController và implement các trait để kích hoạt API CRUD.
+ */
 @RestController
 @RequestMapping("/api/v1/products")
 public class ProductController extends AbController<Product, Long>
