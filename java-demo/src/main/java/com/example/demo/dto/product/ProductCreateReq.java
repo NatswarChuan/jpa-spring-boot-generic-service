@@ -12,7 +12,7 @@ import com.example.demo.domain.Product;
 import com.example.demo.domain.Store;
 import com.natswarchuan.genericservice.dto.IDto;
 import com.natswarchuan.genericservice.validation.Exists;
-import com.natswarchuan.genericservice.validation.SpecValidation;
+import com.natswarchuan.genericservice.validation.IdsExist;
 import com.natswarchuan.genericservice.validation.DtoSpecValidation;
 
 import jakarta.validation.constraints.DecimalMin;
@@ -20,14 +20,14 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 import com.example.demo.domain.Category;
-import com.example.demo.validation.specs.IdsInSpecLoader;
+
 import com.example.demo.validation.specs.ProductUniqueSpec;
 
 /**
  * DTO tạo mới Product.
  */
 @Data
-@DtoSpecValidation(loader = ProductUniqueSpec.class, message = "Product with this name already exists in the selected store")
+@DtoSpecValidation(loader = ProductUniqueSpec.class, mustExist = false, message = "Product with this name already exists in the selected store")
 public class ProductCreateReq implements IDto<Product> {
 
     /**
@@ -63,7 +63,7 @@ public class ProductCreateReq implements IDto<Product> {
     /**
      * Danh sách Category liên kết (nếu có).
      */
-    @SpecValidation(entity = Category.class, loader = IdsInSpecLoader.class, message = "Given categories do not exist")
+    @IdsExist(entity = Category.class, message = "Given categories do not exist")
     private Set<Long> categoryIds;
 
     /**

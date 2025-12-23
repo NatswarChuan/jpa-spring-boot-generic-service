@@ -6,6 +6,10 @@ import com.example.demo.dto.brand.BrandDetailRes;
 import com.example.demo.dto.brand.BrandRes;
 import com.example.demo.dto.brand.BrandUpdateReq;
 import com.example.demo.service.BrandService;
+import com.natswarchuan.genericservice.controller.trait.ICreateController;
+import com.natswarchuan.genericservice.controller.trait.IDeleteController;
+import com.natswarchuan.genericservice.controller.trait.IReadController;
+import com.natswarchuan.genericservice.controller.trait.IUpdateController;
 import com.natswarchuan.genericservice.controller.AbController;
 import com.natswarchuan.genericservice.dto.IDto;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +31,12 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api/v1/brands")
-public class BrandController extends AbController<Brand, Long, BrandCreateReq, BrandUpdateReq> {
+public class BrandController extends AbController<Brand, Long>
+        implements
+        ICreateController<Brand, Long, BrandCreateReq>,
+        IUpdateController<Brand, Long, BrandUpdateReq>,
+        IDeleteController<Brand, Long>,
+        IReadController<Brand, Long> {
 
     /**
      * Khởi tạo controller với service tương ứng.
@@ -51,7 +60,7 @@ public class BrandController extends AbController<Brand, Long, BrandCreateReq, B
      */
     @Override
     @SuppressWarnings("unchecked")
-    protected <R extends IDto<Brand>> Class<R> getResponseSummaryDtoClass() {
+    public <R extends IDto<Brand>> Class<R> getResponseSummaryDtoClass() {
         return (Class<R>) BrandRes.class;
     }
 
@@ -67,7 +76,7 @@ public class BrandController extends AbController<Brand, Long, BrandCreateReq, B
      */
     @Override
     @SuppressWarnings("unchecked")
-    protected <R extends IDto<Brand>> Class<R> getResponseDetailDtoClass() {
+    public <R extends IDto<Brand>> Class<R> getResponseDetailDtoClass() {
         return (Class<R>) BrandDetailRes.class;
     }
 }

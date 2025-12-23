@@ -15,16 +15,16 @@ import java.lang.annotation.Target;
  *
  * <p>
  * Hữu ích khi bạn nhận dữ liệu dưới dạng String hoặc Integer nhưng muốn đảm bảo
- * nó map chính xác vào
- * một giá trị Enum trong hệ thống.
+ * nó map chính xác
+ * vào một giá trị Enum trong hệ thống.
+ *
+ * <p>
  * Ví dụ sử dụng:
- * 
- * <pre>
- * {@code
+ *
+ * <pre>{@code
  * @EnumValue(enumClass = Status.class, message = "Status không hợp lệ")
  * private String status;
- * }
- * </pre>
+ * }</pre>
  *
  * @author NatswarChuan
  */

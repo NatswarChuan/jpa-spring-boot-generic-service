@@ -25,8 +25,8 @@ import org.springframework.http.HttpStatus;
  *
  * <p>
  * Thực hiện kiểm tra tính hợp lệ của một đối tượng DTO dựa trên các quy tắc
- * được định nghĩa bởi một
- * {@link SpecificationLoader}.
+ * được định nghĩa bởi
+ * một {@link SpecificationLoader}.
  *
  * <p>
  * Validator này sử dụng reflection để lấy giá trị của tất cả các trường trong
@@ -91,7 +91,6 @@ public class DtoSpecValidationValidator
     }
 
     try {
-
       Class<?> entityClass = ResolvableType.forClass(value.getClass()).as(IDto.class).getGeneric(0).resolve();
 
       if (entityClass == null) {
@@ -102,14 +101,12 @@ public class DtoSpecValidationValidator
 
       SpecificationLoader<Object, Object> loader = (SpecificationLoader<Object, Object>) getLoaderInstance();
 
-      Field[] fields = value.getClass().getDeclaredFields();
-      Object[] params = new Object[fields.length];
-      for (int i = 0; i < fields.length; i++) {
-        fields[i].setAccessible(true);
-        params[i] = fields[i].get(value);
-      }
+      // Create typed array for varargs explicitly to avoid ClassCastException
+      // implementation expects T[] (e.g. ProductCreateReq[]), not Object[]
+      Object[] args = (Object[]) java.lang.reflect.Array.newInstance(value.getClass(), 1);
+      args[0] = value;
 
-      Specification<Object> spec = loader.getSpecification(params);
+      Specification<Object> spec = loader.getSpecification(args);
       if (spec == null) {
         return true;
       }
@@ -149,8 +146,8 @@ public class DtoSpecValidationValidator
    *
    * <p>
    * Ưu tiên lấy từ Spring ApplicationContext (nếu là Bean). Nếu không tìm thấy,
-   * sẽ tạo instance mới
-   * bằng constructor mặc định.
+   * sẽ tạo instance
+   * mới bằng constructor mặc định.
    *
    * @return Instance của SpecificationLoader.
    * @throws RuntimeException Nếu không thể khởi tạo instance.

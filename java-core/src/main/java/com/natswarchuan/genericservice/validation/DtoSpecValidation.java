@@ -11,14 +11,16 @@ import org.springframework.data.jpa.domain.Specification;
 
 /**
  * Annotation validation ở mức class (Type Level) sử dụng {@link Specification}
- * để kiểm tra logic phức tạp.
+ * để kiểm tra logic
+ * phức tạp.
+ *
  * <p>
  * Yêu cầu:
  * <ul>
  * <li>Class được gán annotation phải implement
- * {@link com.natswarchuan.genericservice.dto.IDto}.</li>
+ * {@link com.natswarchuan.genericservice.dto.IDto}.
  * <li>Cần cung cấp một implementation của {@link SpecificationLoader} để xác
- * định logic query.</li>
+ * định logic query.
  * </ul>
  *
  * @author NatswarChuan
@@ -52,6 +54,7 @@ public @interface DtoSpecValidation {
 
   /**
    * Class implement {@link SpecificationLoader} để tạo query từ DTO.
+   *
    * <p>
    * Logic tạo {@link Specification} sẽ nằm ở đây.
    *
@@ -63,12 +66,13 @@ public @interface DtoSpecValidation {
    * Xác định điều kiện hợp lệ dựa trên số lượng bản ghi tìm được.
    * <ul>
    * <li><b>true</b> (Mặc định): Bắt buộc phải TỒN TẠI bản ghi (count > 0).</li>
-   * <li><b>false</b>: Bắt buộc KHÔNG đượC tồn tại bản ghi (count == 0). Thường
-   * dùng để check trùng lặp (Unique).</li>
+   * <li><b>false</b>: Bắt buộc KHÔNG ĐƯỢC tồn tại bản ghi (count == 0). Thường
+   * dùng để check
+   * trùng lặp (Unique).</li>
    * </ul>
    *
    * @return {@code true} nếu yêu cầu tồn tại, {@code false} nếu yêu cầu không tồn
-   * tại.
+   *         tại.
    */
   boolean mustExist() default true;
 }

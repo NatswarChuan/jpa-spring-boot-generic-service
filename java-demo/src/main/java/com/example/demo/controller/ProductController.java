@@ -6,6 +6,10 @@ import com.example.demo.dto.product.ProductDetailRes;
 import com.example.demo.dto.product.ProductRes;
 import com.example.demo.dto.product.ProductUpdateReq;
 import com.example.demo.service.ProductService;
+import com.natswarchuan.genericservice.controller.trait.ICreateController;
+import com.natswarchuan.genericservice.controller.trait.IDeleteController;
+import com.natswarchuan.genericservice.controller.trait.IReadController;
+import com.natswarchuan.genericservice.controller.trait.IUpdateController;
 import com.natswarchuan.genericservice.controller.AbController;
 import com.natswarchuan.genericservice.dto.IDto;
 import com.example.demo.dto.product.ProductFilterParam;
@@ -40,7 +44,12 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api/v1/products")
-public class ProductController extends AbController<Product, Long, ProductCreateReq, ProductUpdateReq> {
+public class ProductController extends AbController<Product, Long>
+        implements
+        ICreateController<Product, Long, ProductCreateReq>,
+        IUpdateController<Product, Long, ProductUpdateReq>,
+        IDeleteController<Product, Long>,
+        IReadController<Product, Long> {
 
     /**
      * Khởi tạo ProductController.
@@ -67,7 +76,7 @@ public class ProductController extends AbController<Product, Long, ProductCreate
     public ResponseEntity<HttpApiResponse<PagedResponse<ProductRes>>> filterProducts(
             ProductFilterParam requestParam,
             @RequestHeader(name = "Accept-Language", defaultValue = "en") String language) {
-        return super.findAll(requestParam, language);
+        return this.findAll(requestParam, language);
     }
 
     /**
@@ -81,13 +90,13 @@ public class ProductController extends AbController<Product, Long, ProductCreate
      * @return Specification (câu điều kiện WHERE trong JPA).
      */
     @Override
-    protected Specification<Product> getSpecification(
+    public Specification<Product> getSpecification(
             BaseRequestParam requestParam) {
         if (requestParam instanceof ProductFilterParam) {
             return new ProductSpecification(
                     (ProductFilterParam) requestParam);
         }
-        return super.getSpecification(requestParam);
+        return IReadController.super.getSpecification(requestParam);
     }
 
     /**
@@ -95,7 +104,7 @@ public class ProductController extends AbController<Product, Long, ProductCreate
      */
     @Override
     @SuppressWarnings("unchecked")
-    protected <R extends IDto<Product>> Class<R> getResponseSummaryDtoClass() {
+    public <R extends IDto<Product>> Class<R> getResponseSummaryDtoClass() {
         return (Class<R>) ProductRes.class;
     }
 
@@ -104,7 +113,7 @@ public class ProductController extends AbController<Product, Long, ProductCreate
      */
     @Override
     @SuppressWarnings("unchecked")
-    protected <R extends IDto<Product>> Class<R> getResponseDetailDtoClass() {
+    public <R extends IDto<Product>> Class<R> getResponseDetailDtoClass() {
         return (Class<R>) ProductDetailRes.class;
     }
 }

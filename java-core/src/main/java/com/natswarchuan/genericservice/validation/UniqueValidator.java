@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Lớp Validator cho annotation {@link Unique}.
- * 
+ *
  * <p>
  * Sử dụng {@link EntityManager} để truy vấn trực tiếp Database.
  *

@@ -4,10 +4,9 @@ import org.springframework.data.jpa.domain.Specification;
 
 /**
  * Functional Interface để tạo ra {@link Specification} từ giá trị cần validate.
- * <p>
- * Người dùng cần implement interface này (thường là một Spring Bean) để truyền
- * vào
- * annotation {@code @SpecValidation}.
+ *
+ * <p>Người dùng cần implement interface này (thường là một Spring Bean) để truyền vào annotation
+ * {@code @SpecValidation}.
  *
  * @param <T> Kiểu dữ liệu của giá trị cần validate.
  * @param <E> Kiểu Entity tương ứng.

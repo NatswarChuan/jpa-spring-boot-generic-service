@@ -14,19 +14,17 @@ import java.lang.annotation.Target;
  * để kiểm tra tính hợp lệ của dữ liệu phức tạp.
  *
  * <p>
- * Khác với các annotation đơn giản (như @NotNull, @Size), annotation này cho
- * phép thực hiện truy
- * vấn database với logic tùy biến để xác định tính hợp lệ.
- * 
+ * Khác với các annotation đơn giản (như {@code @NotNull}, {@code @Size}),
+ * annotation này cho phép
+ * thực hiện truy vấn database với logic tùy biến để xác định tính hợp lệ.
+ *
  * <p>
  * Ví dụ: Kiểm tra User phải thuộc 1 bộ phận cụ thể và active = true.
- * 
- * <pre>
- * {@code
+ *
+ * <pre>{@code
  * @SpecValidation(entity = User.class, loader = ActiveUserInDeptSpecLoader.class, message = "User không hợp lệ hoặc không có quyền")
  * private Long userId;
- * }
- * </pre>
+ * }</pre>
  *
  * @author NatswarChuan
  */
@@ -49,8 +47,8 @@ public @interface SpecValidation {
    *
    * <p>
    * Nếu class này được định nghĩa là một Spring Bean, nó sẽ được inject tự động.
-   * Nếu không, nó sẽ
-   * được khởi tạo bằng constructor mặc định.
+   * Nếu không, nó
+   * sẽ được khởi tạo bằng constructor mặc định.
    *
    * @return Class của loader.
    */
@@ -61,8 +59,8 @@ public @interface SpecValidation {
    *
    * <ul>
    * <li>{@code true}: Yêu cầu dữ liệu PHẢI tồn tại (Count > 0). Thường dùng để
-   * kiểm tra khóa ngoại
-   * hợp lệ.
+   * kiểm tra khóa
+   * ngoại hợp lệ.
    * <li>{@code false}: Yêu cầu dữ liệu KHÔNG ĐƯỢC tồn tại (Count == 0). Thường
    * dùng để kiểm tra
    * tính duy nhất (unique).

@@ -6,13 +6,13 @@ import com.natswarchuan.genericservice.dto.IDto;
 import lombok.Data;
 
 import com.example.demo.domain.Model;
-import com.example.demo.validation.BrandModelCategoryValid;
 import com.natswarchuan.genericservice.validation.Exists;
-import com.natswarchuan.genericservice.validation.SpecValidation;
-import com.example.demo.validation.specs.IdsInSpecLoader;
+import com.natswarchuan.genericservice.validation.IdsExist;
 
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import com.natswarchuan.genericservice.validation.SqlConstraint;
 
 /**
  * DTO dùng cho yêu cầu cập nhật Brand.
@@ -21,8 +21,13 @@ import java.util.stream.Collectors;
  * cập nhật vào entity.
  */
 @Data
-@BrandModelCategoryValid
-public class BrandUpdateReq implements IDto<Brand>, BrandRequestWithRelations {
+@SqlConstraint(sql = """
+        SELECT CASE WHEN (SELECT count(*) FROM model_categories
+        WHERE model_id = :mid) = (SELECT count(*) FROM model_categories WHERE
+        model_id = :mid AND category_id IN (:cids)) THEN 1 ELSE 0 END""", dependencies = {
+        "mid:field/modelId",
+        "cids:field/categoryIds" }, message = "Brand does not support all categories of the selected Model")
+public class BrandUpdateReq implements IDto<Brand> {
     /**
      * Tên thương hiệu.
      */
@@ -43,7 +48,7 @@ public class BrandUpdateReq implements IDto<Brand>, BrandRequestWithRelations {
     /**
      * Danh sách ID của Category liên kết.
      */
-    @SpecValidation(entity = Category.class, loader = IdsInSpecLoader.class, message = "Given categories do not exist")
+    @IdsExist(entity = Category.class, message = "Given categories do not exist")
     private Set<Long> categoryIds;
 
     /**

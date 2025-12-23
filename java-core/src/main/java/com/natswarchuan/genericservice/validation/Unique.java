@@ -10,16 +10,14 @@ import java.lang.annotation.Target;
 
 /**
  * Annotation để đảm bảo giá trị của field là duy nhất trong Database.
- * 
+ *
  * <p>
  * Ví dụ:
- * 
- * <pre>
- * {@code
+ *
+ * <pre>{@code
  * @Unique(entity = User.class, field = "email", message = "Email đã tồn tại")
  * private String email;
- * }
- * </pre>
+ * }</pre>
  *
  * @author NatswarChuan
  */

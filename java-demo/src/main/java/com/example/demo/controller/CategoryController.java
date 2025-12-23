@@ -6,6 +6,10 @@ import com.example.demo.dto.category.CategoryDetailRes;
 import com.example.demo.dto.category.CategoryRes;
 import com.example.demo.dto.category.CategoryUpdateReq;
 import com.example.demo.service.CategoryService;
+import com.natswarchuan.genericservice.controller.trait.ICreateController;
+import com.natswarchuan.genericservice.controller.trait.IDeleteController;
+import com.natswarchuan.genericservice.controller.trait.IReadController;
+import com.natswarchuan.genericservice.controller.trait.IUpdateController;
 import com.natswarchuan.genericservice.controller.AbController;
 import com.natswarchuan.genericservice.dto.IDto;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +32,12 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api/v1/categories")
-public class CategoryController extends AbController<Category, Long, CategoryCreateReq, CategoryUpdateReq> {
+public class CategoryController extends AbController<Category, Long>
+        implements
+        ICreateController<Category, Long, CategoryCreateReq>,
+        IUpdateController<Category, Long, CategoryUpdateReq>,
+        IDeleteController<Category, Long>,
+        IReadController<Category, Long> {
 
     /**
      * Khởi tạo controller với CategoryService.
@@ -48,7 +57,7 @@ public class CategoryController extends AbController<Category, Long, CategoryCre
      */
     @Override
     @SuppressWarnings("unchecked")
-    protected <R extends IDto<Category>> Class<R> getResponseSummaryDtoClass() {
+    public <R extends IDto<Category>> Class<R> getResponseSummaryDtoClass() {
         return (Class<R>) CategoryRes.class;
     }
 
@@ -61,7 +70,7 @@ public class CategoryController extends AbController<Category, Long, CategoryCre
      */
     @Override
     @SuppressWarnings("unchecked")
-    protected <R extends IDto<Category>> Class<R> getResponseDetailDtoClass() {
+    public <R extends IDto<Category>> Class<R> getResponseDetailDtoClass() {
         return (Class<R>) CategoryDetailRes.class;
     }
 }

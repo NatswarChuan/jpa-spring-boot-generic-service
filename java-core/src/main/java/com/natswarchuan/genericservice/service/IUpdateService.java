@@ -22,8 +22,8 @@ public interface IUpdateService<E, ID> {
      *                     tra sự tồn tại).
      * @return Thực thể sau khi cập nhật.
      * @throws HttpException Nếu không tìm thấy thực thể với ID cung cấp, hoặc nếu
-     *                       có lỗi xảy ra trong
-     *                       quá trình cập nhật.
+     *                       có lỗi xảy ra
+     *                       trong quá trình cập nhật.
      */
     E update(@NonNull E updateEntity, ID id);
 
@@ -59,8 +59,8 @@ public interface IUpdateService<E, ID> {
      * @param id           Khóa chính (ID) của thực thể cần cập nhật.
      * @return Thực thể sau khi cập nhật.
      * @throws HttpException Nếu không tìm thấy thực thể với ID cung cấp, hoặc nếu
-     *                       có lỗi xảy ra trong
-     *                       quá trình chuyển đổi DTO hoặc cập nhật thực thể.
+     *                       có lỗi xảy ra
+     *                       trong quá trình chuyển đổi DTO hoặc cập nhật thực thể.
      */
     <S extends IDto<E>> E update(@NonNull S updateEntity, @NonNull ID id);
 
@@ -85,8 +85,8 @@ public interface IUpdateService<E, ID> {
      *
      * <p>
      * Thực thể sẽ được lưu trước, sau đó kết quả (thường chứa ID được tạo tự động)
-     * sẽ được chuyển đổi
-     * sang kiểu DTO yêu cầu.
+     * sẽ được
+     * chuyển đổi sang kiểu DTO yêu cầu.
      *
      * @param <S>      Kiểu của DTO kết quả, phải triển khai {@link IDto}.
      * @param dtoClass Lớp của DTO kết quả.
@@ -102,7 +102,8 @@ public interface IUpdateService<E, ID> {
      *
      * <p>
      * Chuyển đổi DTO đầu vào thành các thay đổi trên thực thể và lưu lại, sau đó
-     * trả về DTO kết quả.
+     * trả về DTO kết
+     * quả.
      *
      * @param <S>      Kiểu của DTO kết quả, phải triển khai {@link IDto}.
      * @param <T>      Kiểu của DTO đầu vào, phải triển khai {@link IDto}.
@@ -118,8 +119,8 @@ public interface IUpdateService<E, ID> {
      *
      * <p>
      * Phương thức này chuyển đổi DTO đầu vào thành thực thể, lưu thực thể đó, và
-     * chuyển đổi ngược lại
-     * thực thể đã lưu sang DTO kết quả.
+     * chuyển đổi
+     * ngược lại thực thể đã lưu sang DTO kết quả.
      *
      * @param <S>      Kiểu của DTO kết quả, phải triển khai {@link IDto}.
      * @param <T>      Kiểu của DTO đầu vào, phải triển khai {@link IDto}.
@@ -169,8 +170,8 @@ public interface IUpdateService<E, ID> {
      *
      * <p>
      * Cảnh báo: Phương thức này sẽ cập nhật TẤT CẢ các thực thể tìm thấy bởi
-     * {@code spec}.
-     * Cần cẩn trọng khi sử dụng.
+     * {@code spec}. Cần
+     * cẩn trọng khi sử dụng.
      *
      * @param updateEntity Thực thể mẫu chứa các giá trị cần cập nhật (các trường
      *                     khác null sẽ bị bỏ qua hoặc ghi đè tùy triển khai).

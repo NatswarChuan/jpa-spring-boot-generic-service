@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Validator cho {@link Exists}. Logic ngược lại với {@link Unique}.
+ *
+ * @author NatswarChuan
  */
 @Component
 public class ExistsValidator implements ConstraintValidator<Exists, Object> {

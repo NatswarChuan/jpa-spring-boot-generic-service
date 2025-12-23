@@ -44,7 +44,6 @@ public class ProductUniqueSpec implements SpecificationLoader<ProductCreateReq, 
             return null;
         }
         ProductCreateReq req = value[0];
-
         return (root, query, cb) -> cb.and(
                 cb.equal(root.get("name"), req.getName()),
                 cb.equal(root.get("store").get("id"), req.getStoreId()));

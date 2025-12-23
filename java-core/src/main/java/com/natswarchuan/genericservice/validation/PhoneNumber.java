@@ -10,15 +10,14 @@ import java.lang.annotation.Target;
 
 /**
  * Annotation để xác thực số điện thoại hợp lệ (quốc tế).
- * 
- * <p>
- * Chấp nhận định dạng số điện thoại quốc tế:
+ *
+ * <p>Chấp nhận định dạng số điện thoại quốc tế:
  * <ul>
- * <li>Có thể bắt đầu bằng dấu + (tùy chọn).</li>
- * <li>Chứa từ 9 đến 15 chữ số.</li>
- * <li>Ví dụ: +84912345678, 0912345678, 1234567890</li>
+ *   <li>Có thể bắt đầu bằng dấu + (tùy chọn).</li>
+ *   <li>Chứa từ 9 đến 15 chữ số.</li>
+ *   <li>Ví dụ: +84912345678, 0912345678, 1234567890</li>
  * </ul>
- * 
+ *
  * @author NatswarChuan
  */
 @Documented

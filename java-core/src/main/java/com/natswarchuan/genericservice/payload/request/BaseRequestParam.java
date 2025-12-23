@@ -13,13 +13,13 @@ import org.springframework.http.HttpStatus;
 
 /**
  * Lớp cơ sở (Base Class) cho các yêu cầu tìm kiếm và phân trang.
- * <p>
- * Cung cấp các tham số chung như:
+ *
+ * <p>Cung cấp các tham số chung như:
  * <ul>
- * <li><b>page</b>: Số trang hiện tại (bắt đầu từ 0).</li>
- * <li><b>size</b>: Số lượng bản ghi trên mỗi trang.</li>
- * <li><b>search</b>: Từ khóa tìm kiếm chung.</li>
- * <li><b>sort</b>: Cấu hình sắp xếp (trường và chiều).</li>
+ *   <li><b>page</b>: Số trang hiện tại (bắt đầu từ 0).</li>
+ *   <li><b>size</b>: Số lượng bản ghi trên mỗi trang.</li>
+ *   <li><b>search</b>: Từ khóa tìm kiếm chung.</li>
+ *   <li><b>sort</b>: Cấu hình sắp xếp (trường và chiều).</li>
  * </ul>
  *
  * @author NatswarChuan
@@ -28,8 +28,8 @@ import org.springframework.http.HttpStatus;
 public class BaseRequestParam {
     /**
      * Số trang cần lấy (0-based index).
-     * <p>
-     * Mặc định là 0. Giá trị -1 dùng để lấy tất cả (unpaged).
+     *
+     * <p>Mặc định là 0. Giá trị -1 dùng để lấy tất cả (unpaged).
      */
     @Parameter(description = "Số trang (bắt đầu từ 0). -1 để lấy tất cả.", example = "0")
     @Min(value = -1, message = "Số trang phải >= -1")
@@ -37,8 +37,8 @@ public class BaseRequestParam {
 
     /**
      * Số lượng phần tử trên mỗi trang.
-     * <p>
-     * Mặc định là 10. Giới hạn 1-200.
+     *
+     * <p>Mặc định là 10. Giới hạn 1-200.
      */
     @Parameter(description = "Kích thước trang", example = "10")
     @Min(value = 1, message = "Kích thước trang tối thiểu là 1")
@@ -177,8 +177,7 @@ public class BaseRequestParam {
     }
 
     /**
-     * Chuyển đổi các tham số hiện tại thành đối tượng {@link Pageable} của Spring
-     * Data.
+     * Chuyển đổi các tham số hiện tại thành đối tượng {@link Pageable} của Spring Data.
      *
      * @return Đối tượng {@link Pageable} với thông tin page, size và sort.
      * @throws HttpException nếu trường sắp xếp không hợp lệ.

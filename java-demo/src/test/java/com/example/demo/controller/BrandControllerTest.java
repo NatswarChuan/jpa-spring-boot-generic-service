@@ -41,6 +41,7 @@ class BrandControllerTest {
                 mockMvc.perform(post("/api/v1/brands")
                                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                                 .content(requestBody))
+                                .andDo(org.springframework.test.web.servlet.result.MockMvcResultHandlers.print())
                                 .andExpect(status().isCreated())
                                 .andExpect(jsonPath("$.data.name").value("TestBrand"));
         }
@@ -80,7 +81,9 @@ class BrandControllerTest {
                 String requestBody = """
                                 {
                                     "name": "Updated Brand",
-                                    "description": "Updated Description"
+                                    "description": "Updated Description",
+                                    "modelId": 1,
+                                    "categoryIds": [1]
                                 }
                                 """;
 
@@ -123,7 +126,9 @@ class BrandControllerTest {
                 String updateBody = """
                                 {
                                     "name": "UpdatedCRUDBrand",
-                                    "description": "Updated CRUD Description"
+                                    "description": "Updated CRUD Description",
+                                    "modelId": 1,
+                                    "categoryIds": [1]
                                 }
                                 """;
 

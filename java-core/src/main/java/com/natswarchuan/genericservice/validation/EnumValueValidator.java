@@ -10,8 +10,9 @@ import java.util.stream.Stream;
  *
  * <p>
  * Logic kiểm tra: So sánh giá trị chuỗi nhập vào với tên (name) của tất cả các
- * hằng số trong Enum
- * được chỉ định. Nếu trùng khớp (case-sensitive), giá trị được coi là hợp lệ.
+ * hằng số trong
+ * Enum được chỉ định. Nếu trùng khớp (case-sensitive), giá trị được coi là hợp
+ * lệ.
  *
  * @author NatswarChuan
  */

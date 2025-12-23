@@ -6,6 +6,10 @@ import com.example.demo.dto.store.StoreDetailRes;
 import com.example.demo.dto.store.StoreRes;
 import com.example.demo.dto.store.StoreUpdateReq;
 import com.example.demo.service.StoreService;
+import com.natswarchuan.genericservice.controller.trait.ICreateController;
+import com.natswarchuan.genericservice.controller.trait.IDeleteController;
+import com.natswarchuan.genericservice.controller.trait.IReadController;
+import com.natswarchuan.genericservice.controller.trait.IUpdateController;
 import com.natswarchuan.genericservice.controller.AbController;
 import com.natswarchuan.genericservice.dto.IDto;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +30,12 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api/v1/stores")
-public class StoreController extends AbController<Store, Long, StoreCreateReq, StoreUpdateReq> {
+public class StoreController extends AbController<Store, Long>
+        implements
+        ICreateController<Store, Long, StoreCreateReq>,
+        IUpdateController<Store, Long, StoreUpdateReq>,
+        IDeleteController<Store, Long>,
+        IReadController<Store, Long> {
 
     /**
      * Khởi tạo StoreController.
@@ -44,7 +53,7 @@ public class StoreController extends AbController<Store, Long, StoreCreateReq, S
      */
     @Override
     @SuppressWarnings("unchecked")
-    protected <R extends IDto<Store>> Class<R> getResponseSummaryDtoClass() {
+    public <R extends IDto<Store>> Class<R> getResponseSummaryDtoClass() {
         return (Class<R>) StoreRes.class;
     }
 
@@ -55,7 +64,7 @@ public class StoreController extends AbController<Store, Long, StoreCreateReq, S
      */
     @Override
     @SuppressWarnings("unchecked")
-    protected <R extends IDto<Store>> Class<R> getResponseDetailDtoClass() {
+    public <R extends IDto<Store>> Class<R> getResponseDetailDtoClass() {
         return (Class<R>) StoreDetailRes.class;
     }
 }

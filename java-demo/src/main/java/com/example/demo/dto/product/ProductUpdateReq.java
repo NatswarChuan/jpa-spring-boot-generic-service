@@ -9,9 +9,8 @@ import com.example.demo.domain.Brand;
 import com.example.demo.domain.Model;
 import com.example.demo.domain.Store;
 import com.example.demo.domain.Category;
-import com.example.demo.validation.specs.IdsInSpecLoader;
+import com.natswarchuan.genericservice.validation.IdsExist;
 import com.natswarchuan.genericservice.validation.Exists;
-import com.natswarchuan.genericservice.validation.SpecValidation;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -51,7 +50,7 @@ public class ProductUpdateReq implements IDto<Product> {
     /**
      * Danh sách Category liên kết.
      */
-    @SpecValidation(entity = Category.class, loader = IdsInSpecLoader.class, message = "Given categories do not exist")
+    @IdsExist(entity = Category.class, message = "Given categories do not exist")
     private Set<Long> categoryIds;
 
     /**

@@ -1,21 +1,18 @@
 package com.example.demo.dto.brand;
 
 import com.example.demo.domain.Brand;
+import com.example.demo.domain.Category;
 import com.example.demo.domain.Model;
 import com.natswarchuan.genericservice.dto.IDto;
 import com.natswarchuan.genericservice.validation.Exists;
-import com.example.demo.validation.BrandModelCategoryValid;
-import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
-
-import com.example.demo.domain.Category;
-import com.example.demo.validation.specs.IdsInSpecLoader;
-import com.natswarchuan.genericservice.validation.SpecValidation;
-import java.util.Set;
-import java.util.stream.Collectors;
-
+import com.natswarchuan.genericservice.validation.IdsExist;
+import com.natswarchuan.genericservice.validation.SqlConstraint;
 import com.natswarchuan.genericservice.validation.Unique;
 
+import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.springframework.beans.BeanUtils;
 
 /**
@@ -26,8 +23,13 @@ import org.springframework.beans.BeanUtils;
  * đầu vào.
  */
 @Data
-@BrandModelCategoryValid
-public class BrandCreateReq implements IDto<Brand>, BrandRequestWithRelations {
+@SqlConstraint(sql = """
+            SELECT CASE WHEN (SELECT count(*) FROM model_categories
+        WHERE model_id = :mid) = (SELECT count(*) FROM model_categories WHERE
+        model_id = :mid AND category_id IN (:cids)) THEN 1 ELSE 0 END""", dependencies = {
+        "mid:field/modelId",
+        "cids:field/categoryIds" }, message = "Brand does not support all categories of the selected Model")
+public class BrandCreateReq implements IDto<Brand> {
 
     /**
      * Tên thương hiệu. Bắt buộc có và không được trùng lặp.
@@ -54,7 +56,7 @@ public class BrandCreateReq implements IDto<Brand>, BrandRequestWithRelations {
      * Sử dụng {@link SpecValidation} với {@link IdsInSpecLoader} để kiểm tra danh
      * sách ID có tồn tại hay không.
      */
-    @SpecValidation(entity = Category.class, loader = IdsInSpecLoader.class, message = "Given categories do not exist")
+    @IdsExist(entity = Category.class, message = "Given categories do not exist")
     private Set<Long> categoryIds;
 
     /**

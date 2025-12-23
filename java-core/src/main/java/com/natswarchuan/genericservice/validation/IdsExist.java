@@ -9,22 +9,22 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation đảm bảo giá trị tham chiếu phải TỒN TẠI trong Database. Thường
- * dùng cho khóa ngoại
- * (Category ID, Role ID...).
+ * Annotation đảm bảo danh sách các ID tham chiếu phải TỒN TẠI trong Database.
+ * Thường dùng cho các
+ * trường danh sách khóa ngoại ({@code List<Long> categoryIds...}).
  *
  * <pre>{@code
- * @Exists(entity = Category.class, field = "id", message = "Category không tồn tại")
- * private Long categoryId;
+ * @IdsExist(entity = Category.class, message = "Một số Category không tồn tại")
+ * private List<Long> categoryIds;
  * }</pre>
  *
  * @author NatswarChuan
  */
 @Documented
-@Constraint(validatedBy = ExistsValidator.class)
+@Constraint(validatedBy = IdsExistValidator.class)
 @Target({ ElementType.FIELD, ElementType.PARAMETER })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Exists {
+public @interface IdsExist {
 
   /**
    * Class Entity cần kiểm tra tồn tại.
@@ -41,11 +41,11 @@ public @interface Exists {
   String field() default "id";
 
   /**
-   * Thông báo lỗi nếu giá trị không tồn tại.
+   * Thông báo lỗi nếu có ID không tồn tại.
    *
    * @return Chuỗi thông báo lỗi.
    */
-  String message() default "Dữ liệu không tồn tại trong hệ thống";
+  String message() default "Một hoặc nhiều dữ liệu không tồn tại trong hệ thống";
 
   /**
    * Nhóm validation.

@@ -6,6 +6,10 @@ import com.example.demo.dto.model.ModelDetailRes;
 import com.example.demo.dto.model.ModelRes;
 import com.example.demo.dto.model.ModelUpdateReq;
 import com.example.demo.service.ModelService;
+import com.natswarchuan.genericservice.controller.trait.ICreateController;
+import com.natswarchuan.genericservice.controller.trait.IDeleteController;
+import com.natswarchuan.genericservice.controller.trait.IReadController;
+import com.natswarchuan.genericservice.controller.trait.IUpdateController;
 import com.natswarchuan.genericservice.controller.AbController;
 import com.natswarchuan.genericservice.dto.IDto;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +32,12 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api/v1/models")
-public class ModelController extends AbController<Model, Long, ModelCreateReq, ModelUpdateReq> {
+public class ModelController extends AbController<Model, Long>
+        implements
+        ICreateController<Model, Long, ModelCreateReq>,
+        IUpdateController<Model, Long, ModelUpdateReq>,
+        IDeleteController<Model, Long>,
+        IReadController<Model, Long> {
 
     /**
      * Khởi tạo ModelController.
@@ -47,7 +56,7 @@ public class ModelController extends AbController<Model, Long, ModelCreateReq, M
      */
     @Override
     @SuppressWarnings("unchecked")
-    protected <R extends IDto<Model>> Class<R> getResponseSummaryDtoClass() {
+    public <R extends IDto<Model>> Class<R> getResponseSummaryDtoClass() {
         return (Class<R>) ModelRes.class;
     }
 
@@ -59,7 +68,7 @@ public class ModelController extends AbController<Model, Long, ModelCreateReq, M
      */
     @Override
     @SuppressWarnings("unchecked")
-    protected <R extends IDto<Model>> Class<R> getResponseDetailDtoClass() {
+    public <R extends IDto<Model>> Class<R> getResponseDetailDtoClass() {
         return (Class<R>) ModelDetailRes.class;
     }
 }

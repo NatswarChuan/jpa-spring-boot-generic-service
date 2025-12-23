@@ -10,7 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * - Sử dụng @SpringBootApplication để kích hoạt auto-configuration.
  * - Quét các component trong package com.example.demo.
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = { "com.example.demo", "com.natswarchuan.genericservice" })
 public class DemoApplication {
 
 	public static void main(String[] args) {
