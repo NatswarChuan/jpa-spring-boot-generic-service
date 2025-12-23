@@ -1,6 +1,6 @@
 package com.natswarchuan.genericservice.controller.trait;
 
-import com.natswarchuan.genericservice.service.IService;
+import com.natswarchuan.genericservice.service.trait.IService;
 
 /**
  * Interface cơ sở cho các controller trait.

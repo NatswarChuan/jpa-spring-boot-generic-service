@@ -1,4 +1,4 @@
-package com.natswarchuan.genericservice.service;
+package com.natswarchuan.genericservice.service.trait;
 
 /**
  * Giao diện dịch vụ chung (service) cho các thực thể (entity).

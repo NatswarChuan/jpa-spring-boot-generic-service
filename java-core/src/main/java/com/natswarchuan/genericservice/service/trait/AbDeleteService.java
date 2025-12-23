@@ -1,4 +1,4 @@
-package com.natswarchuan.genericservice.service;
+package com.natswarchuan.genericservice.service.trait;
 
 import com.natswarchuan.genericservice.dto.IDto;
 import java.util.List;
@@ -14,7 +14,7 @@ import org.springframework.lang.NonNull;
  * @param <ID> Kiểu khóa chính của thực thể.
  * @author NatswarChuan
  */
-    @SuppressWarnings("null")
+@SuppressWarnings("null")
 public abstract class AbDeleteService<E, ID> extends AbUpdateService<E, ID> implements IDeleteService<E, ID> {
 
     /**
@@ -31,7 +31,7 @@ public abstract class AbDeleteService<E, ID> extends AbUpdateService<E, ID> impl
     @Override
     public void delete(ID id) {
         E deleteEntity = this.findById(id);
-        beforeDelete(deleteEntity);
+        deleteEntity = beforeDelete(deleteEntity);
         repository.delete(deleteEntity);
         afterDelete(deleteEntity);
     }
@@ -40,8 +40,8 @@ public abstract class AbDeleteService<E, ID> extends AbUpdateService<E, ID> impl
     @Override
     public void delete(@NonNull E deleteEntity, @NonNull ID id) {
         E entity = this.findById(id);
-        beforeDelete(entity);
-        repository.delete(deleteEntity);
+        entity = beforeDelete(entity);
+        repository.delete(entity);
         afterDelete(entity);
     }
 
@@ -49,7 +49,7 @@ public abstract class AbDeleteService<E, ID> extends AbUpdateService<E, ID> impl
     @Override
     public <S extends IDto<E>> void delete(@NonNull S deleteEntity, @NonNull ID id) {
         E entity = this.findById(id);
-        beforeDelete(entity);
+        entity = beforeDelete(entity);
         E ent = deleteEntity.toEntity();
         repository.delete(ent);
         afterDelete(entity);
@@ -58,7 +58,7 @@ public abstract class AbDeleteService<E, ID> extends AbUpdateService<E, ID> impl
     /** {@inheritDoc} */
     @Override
     public <S extends IDto<E>> S delete(@NonNull Class<S> dtoClass, @NonNull E entity) {
-        beforeDelete(entity);
+        entity = beforeDelete(entity);
         repository.delete(entity);
         afterDelete(entity);
         return mapToDto(entity, dtoClass);
@@ -68,7 +68,7 @@ public abstract class AbDeleteService<E, ID> extends AbUpdateService<E, ID> impl
     @Override
     public <S extends IDto<E>, T extends IDto<E>> S delete(@NonNull Class<S> dtoClass, @NonNull T dto) {
         E entity = dto.toEntity();
-        beforeDelete(entity);
+        entity = beforeDelete(entity);
         repository.delete(entity);
         afterDelete(entity);
         return mapToDto(entity, dtoClass);
@@ -78,7 +78,7 @@ public abstract class AbDeleteService<E, ID> extends AbUpdateService<E, ID> impl
     @Override
     public <S extends IDto<E>> S delete(@NonNull ID id, @NonNull Class<S> dtoClass) {
         E entity = findById(id);
-        beforeDelete(entity);
+        entity = beforeDelete(entity);
         repository.delete(entity);
         afterDelete(entity);
         return mapToDto(entity, dtoClass);
@@ -88,8 +88,8 @@ public abstract class AbDeleteService<E, ID> extends AbUpdateService<E, ID> impl
     @Override
     public void delete(@NonNull Specification<E> spec) {
         List<E> entities = specExecutor.findAll(spec);
-        for (E entity : entities) {
-            beforeDelete(entity);
+        for (int i = 0; i < entities.size(); i++) {
+            entities.set(i, beforeDelete(entities.get(i)));
         }
         repository.deleteAll(entities);
         for (E entity : entities) {
@@ -103,8 +103,10 @@ public abstract class AbDeleteService<E, ID> extends AbUpdateService<E, ID> impl
      * Subclass có thể override phương thức này để thực hiện xử lý bổ sung.
      *
      * @param entity Thực thể sắp bị xóa.
+     * @return Thực thể sau khi xử lý.
      */
-    protected void beforeDelete(E entity) {
+    protected E beforeDelete(E entity) {
+        return entity;
     }
 
     /**
@@ -113,7 +115,9 @@ public abstract class AbDeleteService<E, ID> extends AbUpdateService<E, ID> impl
      * Subclass có thể override phương thức này để thực hiện xử lý bổ sung.
      *
      * @param entity Thực thể đã bị xóa khỏi DB.
+     * @return Thực thể sau khi xử lý.
      */
-    protected void afterDelete(E entity) {
+    protected E afterDelete(E entity) {
+        return entity;
     }
 }

@@ -124,5 +124,42 @@
       </div>
     </div>
 
+    <!-- Security & Transparency -->
+    <div id="intro-security" class="mt-16 bg-slate-50 border border-slate-200 rounded-xl p-8 scroll-mt-24">
+      <h3 class="text-xl font-bold text-slate-800 mb-4 flex items-center">
+        <i class="fas fa-shield-alt text-slate-500 mr-2"></i>
+        Cam kết Minh bạch & An toàn
+      </h3>
+      <p class="text-slate-600 mb-4 leading-relaxed">
+        Chúng tôi hiểu rằng việc sử dụng một thư viện ngoài (Third-party library) trong dự án Production luôn đi kèm với lo ngại về <strong>bảo mật</strong> và <strong>mã độc (malicious code)</strong>.
+      </p>
+      <p class="text-slate-600 mb-6 leading-relaxed">
+        Để giải tỏa lo lắng này, mã nguồn của <code>Generic Service</code> được thiết kế hoàn toàn minh bạch:
+      </p>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="p-4 bg-white rounded-lg shadow-sm border border-slate-100">
+          <h4 class="font-bold text-slate-900 mb-2 text-sm">Open Source 100%</h4>
+          <p class="text-xs text-slate-500">Toàn bộ mã nguồn được công khai. Không có file binary bị ẩn hay mã obfuscated.</p>
+        </div>
+         <div class="p-4 bg-white rounded-lg shadow-sm border border-slate-100">
+          <h4 class="font-bold text-slate-900 mb-2 text-sm">Standard Dependencies</h4>
+          <p class="text-xs text-slate-500">Chỉ sử dụng các thư viện chuẩn (Spring Boot, Hibernate, Lombok). Không có dependencies lạ.</p>
+        </div>
+         <div class="p-4 bg-white rounded-lg shadow-sm border border-slate-100">
+          <h4 class="font-bold text-slate-900 mb-2 text-sm">Kiểm tra Trực tiếp</h4>
+          <p class="text-xs text-slate-500">
+            Bạn được khuyến khích xem trực tiếp code trong module <code>java-core</code> trước khi sử dụng.
+          </p>
+        </div>
+      </div>
+      <div class="mt-6 text-center">
+         <a href="https://github.com/NatswarChuan/jpa-spring-boot-generic-service/tree/main/java-core" target="_blank" 
+            class="text-blue-600 font-bold hover:underline text-sm inline-flex items-center">
+            <i class="fas fa-code mr-2"></i>
+            Kiểm tra mã nguồn Core tại GitHub
+         </a>
+      </div>
+    </div>
+
   </section>
 </template>

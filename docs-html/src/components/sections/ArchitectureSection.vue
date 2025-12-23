@@ -1,12 +1,25 @@
 <template>
   <section id="architecture-system" class="scroll-mt-20 mb-16">
-    <h2 class="text-3xl font-bold text-slate-900 border-b pb-4 mb-8">6. Architecture & Life-cycle</h2>
+    <h2 class="text-3xl font-bold text-slate-900 border-b pb-4 mb-8">2. Kiến trúc & Vòng đời</h2>
     <p class="text-slate-600 italic mb-6">Đặc tả kỹ thuật của framework và luồng xử lý request.</p>
+
+
+    <!-- Architecture Overview Diagram -->
+    <article id="architecture-diagram" class="mb-10 scroll-mt-24">
+       <h3 class="text-xl font-bold text-slate-800 mb-3">
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">2.1</span>
+        Sơ đồ Kiến trúc
+      </h3>
+      <p class="text-slate-600 mb-4">Mô hình tổng quan về sự tương tác giữa các tầng Controller, Service và Repository.</p>
+      <div class="bg-slate-50 rounded-xl p-4 border border-slate-200">
+         <ArchitectureDiagram />
+      </div>
+    </article>
 
     <article id="framework-spec" class="mb-10 scroll-mt-24">
       <h3 class="text-xl font-bold text-slate-800 mb-3">
-        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">6.1</span>
-        Class Hierarchy (Service)
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">2.2</span>
+        Phân cấp Class
       </h3>
       <p class="text-slate-600 mb-6">
         Thiết kế theo mô hình phân tầng, phân chia rạch ròi trách nhiệm giữa các loại thao tác (Read, Create, Update, Delete).
@@ -60,8 +73,8 @@
 
     <article id="generic-system" class="mb-10 scroll-mt-24">
       <h3 class="text-xl font-bold text-slate-800 mb-3">
-        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">6.2</span>
-        Generic Type System
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">2.3</span>
+        Hệ thống Generic Type
       </h3>
       <p class="text-slate-600 mb-4">Type safety giúp kiểm soát chặt chẽ dữ liệu từ Controller xuống Service.</p>
       
@@ -69,8 +82,8 @@
         <table class="w-full text-left text-sm border-collapse">
           <thead>
             <tr class="bg-slate-50 text-slate-600 italic">
-              <th class="p-3 border-b">Type</th>
-              <th class="p-3 border-b">Description</th>
+              <th class="p-3 border-b">Loại (Type)</th>
+              <th class="p-3 border-b">Mô tả</th>
             </tr>
           </thead>
           <tbody class="text-slate-700">
@@ -93,8 +106,8 @@
 
     <article id="request-lifecycle" class="mb-10 scroll-mt-24">
       <h3 class="text-xl font-bold text-slate-800 mb-3">
-        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">6.3</span>
-        Request Life-cycle
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">2.4</span>
+        Vòng đời Request
       </h3>
       <p class="text-slate-600 mb-6">Luồng đi của dữ liệu khi gọi API <code>POST /api/v1/products</code>:</p>
       
@@ -110,6 +123,8 @@
 </template>
 
 <script setup>
+import ArchitectureDiagram from '../ArchitectureDiagram.vue';
+
 const lifecycleSteps = [
   { title: 'DTO Validation', desc: 'Hibernate Validator kiểm tra các annotation (@NotBlank, @Exists...) trên ProductCreateReq.' },
   { title: 'Payload Mapping', desc: 'Controller gọi service.create(dto.toEntity()) để chuyển đổi DTO sang Entity.' },

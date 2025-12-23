@@ -1,13 +1,13 @@
 <template>
   <section id="response-handling" class="scroll-mt-20 mb-16">
-    <h2 class="text-3xl font-bold text-slate-900 border-b pb-4 mb-8">11. Response Handling</h2>
+    <h2 class="text-3xl font-bold text-slate-900 border-b pb-4 mb-8">11. Xử lý Phản hồi (Response)</h2>
     <p class="text-slate-600 mb-6 italic">Cấu trúc kết quả trả về đồng nhất và cơ chế xử lý lỗi tập trung.</p>
 
     <!-- 8.1 Response Structures -->
     <article id="res-structure" class="mb-10 scroll-mt-24">
       <h3 class="text-xl font-bold text-slate-800 mb-3">
         <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">11.1</span>
-        Response Structure
+        Cấu trúc Phản hồi
       </h3>
       <p class="text-slate-600 mb-3">
         Thư viện cung cấp 2 lớp wrap chuẩn: <code>HttpApiResponse</code> cho đối tượng đơn/list và <code>PagedResponse</code> cho phân trang.
@@ -35,7 +35,7 @@
     <article id="res-exception" class="mb-10 scroll-mt-24">
       <h3 class="text-xl font-bold text-slate-800 mb-3">
         <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">11.2</span>
-        Exception Handling
+        Xử lý Ngoại lệ
       </h3>
       <p class="text-slate-600 mb-4">
         Sử dụng <code>HttpException</code> để ném lỗi từ Service/Controller. <code>GlobalExceptionHandler</code> sẽ tự động bắt và trả về format chuẩn.
@@ -43,12 +43,12 @@
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div class="bg-slate-50 p-6 rounded-lg border border-slate-200 shadow-sm">
-          <h4 class="text-lg font-bold text-slate-800 mb-2 font-mono text-sm">Throw Exception</h4>
+          <h4 class="text-lg font-bold text-slate-800 mb-2 font-mono text-sm">Throw Exception (Ném Lỗi)</h4>
           <CodeBlock filename="UserService.java" :code="throwExceptionCode" />
         </div>
 
         <div class="bg-slate-50 p-6 rounded-lg border border-slate-200 shadow-sm">
-          <h4 class="text-lg font-bold text-slate-800 mb-2 font-mono text-sm">Standard Response</h4>
+          <h4 class="text-lg font-bold text-slate-800 mb-2 font-mono text-sm">Standard Response (Phản hồi Chuẩn)</h4>
           <pre class="text-xs text-slate-600 font-mono bg-white p-3 rounded border border-slate-100 h-full">
 {
   "status": 404,

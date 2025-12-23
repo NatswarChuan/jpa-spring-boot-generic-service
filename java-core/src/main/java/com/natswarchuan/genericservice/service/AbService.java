@@ -1,5 +1,7 @@
 package com.natswarchuan.genericservice.service;
 
+import com.natswarchuan.genericservice.service.trait.AbDeleteService;
+import com.natswarchuan.genericservice.service.trait.IService;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.lang.NonNull;

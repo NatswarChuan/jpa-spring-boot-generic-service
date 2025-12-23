@@ -5,7 +5,7 @@ import com.natswarchuan.genericservice.controller.trait.ICreateController;
 import com.natswarchuan.genericservice.controller.trait.IDeleteController;
 import com.natswarchuan.genericservice.controller.trait.IReadController;
 import com.natswarchuan.genericservice.controller.trait.IUpdateController;
-import com.natswarchuan.genericservice.service.IService;
+import com.natswarchuan.genericservice.service.trait.IService;
 
 /**
  * Controller trừu tượng (Abstract Controller) đóng vai trò là lớp cơ sở.

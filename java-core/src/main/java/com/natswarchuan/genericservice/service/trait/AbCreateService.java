@@ -1,4 +1,4 @@
-package com.natswarchuan.genericservice.service;
+package com.natswarchuan.genericservice.service.trait;
 
 import com.natswarchuan.genericservice.dto.IDto;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,7 +12,7 @@ import org.springframework.lang.NonNull;
  * @param <ID> Kiểu khóa chính của thực thể.
  * @author NatswarChuan
  */
-    @SuppressWarnings("null")
+@SuppressWarnings("null")
 public abstract class AbCreateService<E, ID> extends AbReadDetailService<E, ID> implements ICreateService<E, ID> {
 
     /**
@@ -28,28 +28,26 @@ public abstract class AbCreateService<E, ID> extends AbReadDetailService<E, ID> 
     /** {@inheritDoc} */
     @Override
     public E create(@NonNull E newEntity) {
-        beforeCreate(newEntity);
-        E savedEntity = repository.save(newEntity);
-        afterCreate(savedEntity);
-        return savedEntity;
+        E entity = beforeCreate(newEntity);
+        E savedEntity = repository.save(entity);
+        return afterCreate(savedEntity);
     }
 
     /** {@inheritDoc} */
     @Override
     public <S extends IDto<E>> E create(@NonNull S newEntity) {
         E ent = newEntity.toEntity();
-        beforeCreate(ent);
+        ent = beforeCreate(ent);
         E savedEntity = repository.save(ent);
-        afterCreate(savedEntity);
-        return savedEntity;
+        return afterCreate(savedEntity);
     }
 
     /** {@inheritDoc} */
     @Override
     public <S extends IDto<E>> S create(Class<S> dtoClass, @NonNull E entity) {
-        beforeCreate(entity);
+        entity = beforeCreate(entity);
         E savedEntity = repository.save(entity);
-        afterCreate(savedEntity);
+        savedEntity = afterCreate(savedEntity);
         return mapToDto(savedEntity, dtoClass);
     }
 
@@ -57,9 +55,9 @@ public abstract class AbCreateService<E, ID> extends AbReadDetailService<E, ID> 
     @Override
     public <D extends IDto<E>, S extends IDto<E>> D create(@NonNull S newEntity, @NonNull Class<D> dtoClass) {
         E ent = newEntity.toEntity();
-        beforeCreate(ent);
+        ent = beforeCreate(ent);
         E savedEntity = repository.save(ent);
-        afterCreate(savedEntity);
+        savedEntity = afterCreate(savedEntity);
         return mapToDto(savedEntity, dtoClass);
     }
 
@@ -67,9 +65,9 @@ public abstract class AbCreateService<E, ID> extends AbReadDetailService<E, ID> 
     @Override
     public <S extends IDto<E>, T extends IDto<E>> S create(@NonNull Class<S> dtoClass, @NonNull T dto) {
         E entity = dto.toEntity();
-        beforeCreate(entity);
+        entity = beforeCreate(entity);
         E savedEntity = repository.save(entity);
-        afterCreate(savedEntity);
+        savedEntity = afterCreate(savedEntity);
         return mapToDto(savedEntity, dtoClass);
     }
 
@@ -79,8 +77,10 @@ public abstract class AbCreateService<E, ID> extends AbReadDetailService<E, ID> 
      * Subclass có thể override phương thức này để thực hiện xử lý bổ sung.
      *
      * @param entity Thực thể sắp được tạo.
+     * @return Thực thể sau khi xử lý.
      */
-    protected void beforeCreate(E entity) {
+    protected E beforeCreate(E entity) {
+        return entity;
     }
 
     /**
@@ -89,7 +89,9 @@ public abstract class AbCreateService<E, ID> extends AbReadDetailService<E, ID> 
      * Subclass có thể override phương thức này để thực hiện xử lý bổ sung.
      *
      * @param entity Thực thể đã được tạo và lưu vào DB.
+     * @return Thực thể sau khi xử lý.
      */
-    protected void afterCreate(E entity) {
+    protected E afterCreate(E entity) {
+        return entity;
     }
 }

@@ -1,44 +1,158 @@
 <template>
   <section id="service-layer" class="scroll-mt-20 mb-16">
-    <h2 class="text-3xl font-bold text-slate-900 border-b pb-4 mb-8">4. Service Layer</h2>
+    <h2 class="text-3xl font-bold text-slate-900 border-b pb-4 mb-8">7. Tầng Service</h2>
     <p class="text-slate-600 italic mb-6">Xử lý logic nghiệp vụ và tích hợp các life-cycle hooks.</p>
 
     <article id="core-service" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-3">
-        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">4.1</span>
-        Basic Service
+      <h3 class="text-xl font-bold text-slate-800 mb-6">
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">7.1</span>
+        Lựa chọn Base Class
       </h3>
-      <p class="text-slate-600 mb-3">Kế thừa <code>AbService</code> để có sẵn các phương thức CRUD chuẩn hóa.</p>
-      <CodeBlock filename="ProductService.java" :code="serviceCode" />
-      <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-4 mt-4 text-sm text-green-800 shadow-sm">
-        <strong>Tips:</strong> Bạn không nhất thiết phải tạo Interface cho Service. <code>AbService</code> đã cung cấp đủ các phương thức thông dụng.
+      <p class="text-slate-600 mb-6">
+        Framework cung cấp các lớp cơ sở (Base Classes) theo mô hình phân tầng. Thay vì luôn dùng <code>AbService</code> (All-in-One), bạn hãy chọn lớp phù hợp nhất với nhu cầu để tối ưu code.
+      </p>
+
+      <!-- Base Class Selection Menu -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        <!-- Level 1: Read Summary -->
+        <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm hover:border-blue-400 transition-colors">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="bg-amber-100 text-amber-700 px-2 py-1 rounded text-xs font-bold uppercase">Base</span>
+            <h4 class="font-bold text-slate-800">AbReadSummaryService</h4>
+          </div>
+          <p class="text-sm text-slate-500 mb-4 h-10">Chỉ cần xem danh sách và phân trang?</p>
+          <ul class="text-sm text-slate-600 space-y-2 mb-4">
+            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> findAll (Page/List)</li>
+            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> exists, count</li>
+          </ul>
+        </div>
+
+        <!-- Level 2: Read Detail -->
+        <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm hover:border-blue-400 transition-colors">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="bg-orange-100 text-orange-700 px-2 py-1 rounded text-xs font-bold uppercase">Base</span>
+            <h4 class="font-bold text-slate-800">AbReadDetailService</h4>
+          </div>
+          <p class="text-sm text-slate-500 mb-4 h-10">Cần xem chi tiết từng bản ghi?</p>
+          <ul class="text-sm text-slate-600 space-y-2 mb-4">
+            <li class="flex items-center"><span class="text-blue-500 mr-2">➜</span> Tất cả của Summary</li>
+            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> findById, findOne</li>
+          </ul>
+        </div>
+
+         <!-- Level 3: Create -->
+        <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm hover:border-blue-400 transition-colors">
+           <div class="flex items-center gap-2 mb-3">
+            <span class="bg-pink-100 text-pink-700 px-2 py-1 rounded text-xs font-bold uppercase">Base</span>
+            <h4 class="font-bold text-slate-800">AbCreateService</h4>
+          </div>
+          <p class="text-sm text-slate-500 mb-4 h-10">Chỉ cho phép đọc và tạo mới?</p>
+          <ul class="text-sm text-slate-600 space-y-2 mb-4">
+            <li class="flex items-center"><span class="text-blue-500 mr-2">➜</span> Tất cả của Read Detail</li>
+            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> create (Entity/DTO)</li>
+          </ul>
+        </div>
+
+        <!-- Level 4: Update -->
+        <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm hover:border-blue-400 transition-colors">
+           <div class="flex items-center gap-2 mb-3">
+            <span class="bg-purple-100 text-purple-700 px-2 py-1 rounded text-xs font-bold uppercase">Base</span>
+            <h4 class="font-bold text-slate-800">AbUpdateService</h4>
+          </div>
+          <p class="text-sm text-slate-500 mb-4 h-10">Cho phép chỉnh sửa dữ liệu?</p>
+          <ul class="text-sm text-slate-600 space-y-2 mb-4">
+            <li class="flex items-center"><span class="text-blue-500 mr-2">➜</span> Tất cả của Create</li>
+            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> update, save</li>
+          </ul>
+        </div>
+
+         <!-- Level 5: Delete/Full -->
+        <div class="bg-indigo-50 rounded-xl border border-indigo-200 p-5 shadow-sm relative overflow-hidden col-span-1 md:col-span-2 lg:col-span-2">
+            <div class="absolute right-0 top-0 w-24 h-24 bg-indigo-100 rounded-bl-full -mr-10 -mt-10 opacity-50"></div>
+           <div class="flex items-center gap-2 mb-3 relative z-10">
+            <span class="bg-indigo-600 text-white px-2 py-1 rounded text-xs font-bold uppercase shadow">Recommended</span>
+            <h4 class="font-bold text-indigo-900">AbService (Full Option)</h4>
+          </div>
+          <p class="text-sm text-indigo-700 mb-4 h-10 relative z-10">Giải pháp toàn diện cho hầu hết các trường hợp.</p>
+           <div class="grid grid-cols-2 gap-4 relative z-10">
+              <ul class="text-sm text-indigo-800 space-y-2">
+                <li class="flex items-center font-semibold"><span class="text-indigo-600 mr-2">➜</span> Tất cả các tính năng trên</li>
+              </ul>
+              <ul class="text-sm text-indigo-800 space-y-2">
+                <li class="flex items-center"><span class="text-green-600 mr-2 font-bold">✓</span> delete (Soft/Hard delete逻辑)</li>
+              </ul>
+           </div>
+        </div>
+      </div>
+
+      <div class="bg-slate-50 rounded-lg p-5 border border-slate-200 font-mono text-sm overflow-x-auto">
+        <p class="text-slate-500 mb-2">// Ví dụ: Service chuẩn kế thừa AbService</p>
+        <CodeBlock filename="ProductService.java" :code="serviceCode" />
       </div>
     </article>
 
     <article id="service-hooks" class="mb-10 scroll-mt-24">
       <h3 class="text-xl font-bold text-slate-800 mb-3">
-        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">4.2</span>
-        Life-cycle Hooks
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">7.2</span>
+        Các Hooks Vòng đời
       </h3>
-      <p class="text-slate-600 mb-4">
-        Framework cho phép "can thiệp" vào luồng xử lý mà không cần override toàn bộ phương thức.
+      <p class="text-slate-600 mb-6">
+        Cơ chế "Hook" cho phép bạn can thiệp vào lồng xử lý (trước hoặc sau khi lưu DB) mà không cần viết lại toàn bộ logic CRUD.
       </p>
 
-      <div class="space-y-4">
-        <div class="bg-slate-900 rounded-lg p-4 font-mono text-sm text-green-400">
-          <p class="text-slate-500 mb-2">// Các hook hỗ trợ trong AbService:</p>
-          <ul class="space-y-1">
-            <li>- <span class="text-blue-400">beforeCreate</span>(E entity)</li>
-            <li>- <span class="text-blue-400">afterCreate</span>(E entity)</li>
-            <li>- <span class="text-blue-400">beforeUpdate</span>(E newEntity, E oldEntity)</li>
-            <li>- <span class="text-blue-400">afterUpdate</span>(E savedEntity, E oldEntity)</li>
-            <li>- <span class="text-blue-400">beforeDelete</span>(E entity)</li>
-            <li>- <span class="text-blue-400">afterDelete</span>(E entity)</li>
-          </ul>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-6">
+        <!-- Visual Timeline -->
+        <div class="bg-slate-50 rounded-xl p-6 border border-slate-200">
+             <h4 class="font-bold text-slate-700 mb-4 flex items-center">
+                <span class="w-2 h-6 bg-blue-500 rounded-sm mr-2"></span>
+                Luồng xử lý (Ví dụ: Create)
+             </h4>
+             <div class="relative pl-4 border-l-2 border-slate-300 space-y-6">
+                <!-- Step 1 -->
+                <div class="relative">
+                    <div class="absolute -left-[23px] top-1 w-3 h-3 rounded-full bg-slate-400 border-2 border-white"></div>
+                    <div class="text-sm font-bold text-slate-400 uppercase text-xs mb-1">Input</div>
+                    <div class="text-slate-600 text-sm">Entity từ Controller</div>
+                </div>
+                 <!-- Step 2: Before Hook -->
+                <div class="relative">
+                    <div class="absolute -left-[25px] top-0 w-4 h-4 rounded-full bg-amber-500 border-2 border-white shadow-sm ring-1 ring-amber-200"></div>
+                    <div class="text-sm font-bold text-amber-700 text-xs mb-1 bg-amber-50 inline-block px-2 py-0.5 rounded">HOOK: beforeCreate(entity)</div>
+                    <div class="text-slate-600 text-xs">Validation logic, tính toán giá trị mặc định...</div>
+                </div>
+                 <!-- Step 3: Save -->
+                 <div class="relative">
+                    <div class="absolute -left-[23px] top-1 w-3 h-3 rounded-full bg-blue-500 border-2 border-white"></div>
+                    <div class="text-sm font-bold text-blue-700 text-xs mb-1">Repository.save()</div>
+                    <div class="text-slate-600 text-xs">Lưu xuống Database</div>
+                </div>
+                 <!-- Step 4: After Hook -->
+                 <div class="relative">
+                    <div class="absolute -left-[25px] top-0 w-4 h-4 rounded-full bg-purple-500 border-2 border-white shadow-sm ring-1 ring-purple-200"></div>
+                    <div class="text-sm font-bold text-purple-700 text-xs mb-1 bg-purple-50 inline-block px-2 py-0.5 rounded">HOOK: afterCreate(entity)</div>
+                    <div class="text-slate-600 text-xs">Gửi email, ghi log audit, push notification...</div>
+                </div>
+                 <!-- Step 5: Return -->
+                <div class="relative">
+                    <div class="absolute -left-[23px] top-1 w-3 h-3 rounded-full bg-green-500 border-2 border-white"></div>
+                    <div class="text-sm font-bold text-green-700 text-xs mb-1">Return</div>
+                    <div class="text-slate-600 text-xs">Trả kết quả về Controller</div>
+                </div>
+             </div>
         </div>
-        
-        <p class="text-sm text-slate-600">Ví dụ: Tự động tính toán hoặc gửi thông báo:</p>
-        <CodeBlock filename="ProductService.java" :code="hookExampleCode" />
+
+        <!-- Code Example -->
+        <div class="space-y-4">
+             <div class="bg-indigo-50 p-4 rounded-lg border border-indigo-100 mb-2">
+                 <h4 class="font-bold text-indigo-900 text-sm mb-2">Các Hook khả dụng:</h4>
+                 <ul class="grid grid-cols-1 gap-2 text-xs font-mono text-indigo-800">
+                    <li><span class="text-amber-600">beforeCreate</span> / <span class="text-purple-600">afterCreate</span></li>
+                    <li><span class="text-amber-600">beforeUpdate</span> / <span class="text-purple-600">afterUpdate</span></li>
+                    <li><span class="text-amber-600">beforeDelete</span> / <span class="text-purple-600">afterDelete</span></li>
+                 </ul>
+             </div>
+            <CodeBlock filename="ProductService.java (Example)" :code="hookExampleCode" />
+        </div>
       </div>
     </article>
   </section>
@@ -70,17 +184,19 @@ public class ProductService extends AbService<Product, Long> {
 `);
 
 const hookExampleCode = ref(`@Override
-protected void beforeCreate(Product entity) {
+protected Product beforeCreate(Product entity) {
     // Tự động tính toán giá khuyến mãi
     if (entity.getPrice().compareTo(BigDecimal.valueOf(1000)) > 0) {
         entity.setPrice(entity.getPrice().multiply(BigDecimal.valueOf(0.9)));
     }
+    return entity;
 }
 
 @Override
-protected void afterCreate(Product entity) {
+protected Product afterCreate(Product entity) {
     // Gửi thông báo sau khi tạo thành công
     notificationService.send("New product added: " + entity.getName());
+    return entity;
 }
 `);
 </script>

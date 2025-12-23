@@ -1,4 +1,4 @@
-package com.natswarchuan.genericservice.service;
+package com.natswarchuan.genericservice.service.trait;
 
 import com.natswarchuan.genericservice.dto.IDto;
 import com.natswarchuan.genericservice.exception.HttpException;

@@ -1,28 +1,78 @@
 <template>
-  <section id="core-arch" class="scroll-mt-20 mb-16">
-    <h2 class="text-3xl font-bold text-slate-900 border-b pb-4 mb-8">3. Entity & Repository Layer</h2>
+  <section id="core-entity-repo" class="scroll-mt-20 mb-16">
+    <h2 class="text-3xl font-bold text-slate-900 border-b pb-4 mb-8">5. Tầng Entity & Repository</h2>
     <p class="text-slate-600 italic mb-6">Ánh xạ với bảng trong database và Repository JPA cho module Product.</p>
 
-    <!-- Architecture Overview Diagram -->
-    <div class="mb-10 bg-slate-50 rounded-xl p-4 border border-slate-200">
-       <ArchitectureDiagram />
-    </div>
 
     <article id="core-entity" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-3">
-        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">3.1</span>
-        Entity Definition
+      <h3 class="text-xl font-bold text-slate-800 mb-6">
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">5.1</span>
+        Định nghĩa Entity
       </h3>
-      <p class="text-slate-600 mb-3">Định nghĩa cấu trúc bảng và các mối quan hệ (ManyToOne, OneToMany).</p>
+      <p class="text-slate-600 mb-6">Định nghĩa cấu trúc bảng và các mối quan hệ (ManyToOne, OneToMany).</p>
+
+      <!-- Entity Annotation Cheat Sheet -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          <div class="bg-white border border-slate-200 rounded-lg p-4 shadow-sm">
+             <div class="flex items-center gap-2 mb-2">
+                 <code class="text-blue-600 font-bold bg-blue-50 px-2 py-0.5 rounded">@Entity</code>
+                 <span class="text-xs font-bold text-slate-500 uppercase">Bắt buộc</span>
+             </div>
+             <p class="text-sm text-slate-600">Đánh dấu class là một JPA Entity mapped với Database.</p>
+          </div>
+          <div class="bg-white border border-slate-200 rounded-lg p-4 shadow-sm">
+             <div class="flex items-center gap-2 mb-2">
+                 <code class="text-purple-600 font-bold bg-purple-50 px-2 py-0.5 rounded">@Table</code>
+                 <span class="text-xs font-bold text-slate-500 uppercase">Tùy chọn</span>
+             </div>
+             <p class="text-sm text-slate-600">Tùy chỉnh tên bảng và Index (Performance tuning).</p>
+          </div>
+          <div class="bg-white border border-slate-200 rounded-lg p-4 shadow-sm">
+             <div class="flex items-center gap-2 mb-2">
+                 <code class="text-amber-600 font-bold bg-amber-50 px-2 py-0.5 rounded">@Nationalized</code>
+                 <span class="text-xs font-bold text-slate-500 uppercase">SQL Server</span>
+             </div>
+             <p class="text-sm text-slate-600">Hỗ trợ lưu chuỗi Unicode (NVARCHAR) cho SQL Server.</p>
+          </div>
+           <div class="bg-white border border-slate-200 rounded-lg p-4 shadow-sm">
+             <div class="flex items-center gap-2 mb-2">
+                 <code class="text-green-600 font-bold bg-green-50 px-2 py-0.5 rounded">@Builder</code>
+                 <span class="text-xs font-bold text-slate-500 uppercase">Lombok</span>
+             </div>
+             <p class="text-sm text-slate-600">Tạo Builder pattern giúp khởi tạo object dễ dãng.</p>
+          </div>
+      </div>
       <CodeBlock filename="Product.java" :code="entityCode" />
     </article>
 
     <article id="core-repo" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-3">
-        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">3.2</span>
-        Repository Implementation
+      <h3 class="text-xl font-bold text-slate-800 mb-6">
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">5.2</span>
+        Triển khai Repository
       </h3>
-      <p class="text-slate-600 mb-3">Sử dụng Spring Data JPA Repository.</p>
+      
+      <div class="flex flex-col md:flex-row items-center gap-4 bg-slate-50 p-6 rounded-xl border border-slate-200 mb-6">
+           <div class="flex-1 text-center md:text-right">
+              <span class="block font-mono font-bold text-slate-700">JpaRepository</span>
+              <span class="text-xs text-slate-500">Standard CRUD</span>
+           </div>
+           
+           <div class="text-slate-400 text-2xl font-bold">+</div>
+
+           <div class="flex-1 text-center md:text-left">
+              <span class="block font-mono font-bold text-blue-600">JpaSpecificationExecutor</span>
+              <span class="text-xs text-blue-500 font-bold">Advanced Filters & Search</span>
+           </div>
+           
+           <div class="hidden md:block h-12 w-px bg-slate-300 mx-2"></div>
+           
+           <div class="flex-1 bg-white p-3 rounded shadow-sm border border-green-200 text-center">
+                <span class="block text-sm font-bold text-green-700">Ready for Generic Service</span>
+                <span class="text-xs text-slate-500">Required by AbService</span>
+           </div>
+      </div>
+
+      <p class="text-slate-600 mb-3">Triển khai Repository cực kỳ đơn giản, chỉ cần define Interface:</p>
       <CodeBlock filename="ProductRepository.java" :code="repoCode" />
       
       <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4 mt-4 text-sm text-yellow-800">
@@ -35,7 +85,7 @@
 <script setup>
 import { ref } from 'vue';
 import CodeBlock from '../CodeBlock.vue';
-import ArchitectureDiagram from '../ArchitectureDiagram.vue';
+
 
 const entityCode = ref(`package com.example.demo.domain;
 

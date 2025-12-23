@@ -1,12 +1,12 @@
 <template>
   <section id="dtos" class="scroll-mt-20 mb-16">
-    <h2 class="text-3xl font-bold text-slate-900 border-b pb-4 mb-8">7. Data Transfer Objects</h2>
+    <h2 class="text-3xl font-bold text-slate-900 border-b pb-4 mb-8">6. Data Transfer Objects (DTO)</h2>
     <p class="text-slate-600 italic mb-6">Sử dụng DTO để tách biệt Model của Database và Model của API.</p>
     
     <article id="dto-request" class="mb-10 scroll-mt-24">
       <h3 class="text-xl font-bold text-slate-800 mb-3">
-        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">7.1</span>
-        Request DTO (Create/Update)
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">6.1</span>
+        Request DTO
       </h3>
       <p class="text-slate-600 mb-3">Tách biệt DTO tạo mới và cập nhật để kiểm soát dữ liệu đầu vào.</p>
       <CodeBlock filename="ProductCreateReq.java" :code="createReqCode" />
@@ -15,8 +15,8 @@
 
     <article id="dto-response" class="mb-10 scroll-mt-24">
       <h3 class="text-xl font-bold text-slate-800 mb-3">
-        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">7.2</span>
-        Response DTO (Auto Mapping)
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">6.2</span>
+        Response DTO
       </h3>
       <p class="text-slate-600 mb-3">Dữ liệu trả về cho client. Hỗ trợ tự động map từ Entity sang DTO.</p>
       <CodeBlock filename="ProductResponse.java" :code="resCode" />
@@ -29,8 +29,8 @@
 
     <article id="dto-i18n" class="mb-10 scroll-mt-24">
       <h3 class="text-xl font-bold text-slate-800 mb-3">
-        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">7.3</span>
-        Multi-language Support (I18n)
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">6.3</span>
+        Hỗ trợ Đa ngôn ngữ
       </h3>
       <p class="text-slate-600 mb-3">
         Framework hỗ trợ đa ngôn ngữ ngay khi chuyển đổi DTO. Bạn có thể override hàm <code>fromEntity</code> có tham số <code>language</code>.

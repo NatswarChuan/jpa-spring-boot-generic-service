@@ -73,3 +73,20 @@ aside::-webkit-scrollbar-thumb {
   letter-spacing: 0.05em;
   color: #64748b;
 }
+
+/* Optimization for Sidebar Tracking */
+section {
+  scroll-margin-top: 80px;
+  margin-bottom: 4rem;
+}
+
+article {
+  scroll-margin-top: 100px;
+  margin-bottom: 2.5rem;
+  min-height: 15vh; /* Ensure even short sub-sections have enough vertical presence */
+}
+
+/* Smooth transition for active section highlighting */
+.nav-link, .nav-sublink {
+  transition: all 0.2s ease-in-out;
+}

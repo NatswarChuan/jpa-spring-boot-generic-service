@@ -1,4 +1,4 @@
-package com.natswarchuan.genericservice.service;
+package com.natswarchuan.genericservice.service.trait;
 
 import com.natswarchuan.genericservice.dto.IDto;
 import java.util.List;
@@ -28,30 +28,30 @@ public abstract class AbUpdateService<E, ID> extends AbCreateService<E, ID> impl
 
     /** {@inheritDoc} */
     @Override
+    @SuppressWarnings("null")
     public E update(@NonNull E updateEntity, ID id) {
-        E oldEntity = this.findById(id);
-        beforeUpdate(updateEntity, oldEntity);
-        E savedEntity = repository.save(updateEntity);
-        afterUpdate(savedEntity, oldEntity);
-        return savedEntity;
+        this.findById(id);
+        E entity = beforeUpdate(updateEntity);
+        E savedEntity = repository.save(entity);
+        return afterUpdate(savedEntity);
     }
 
     /** {@inheritDoc} */
     @Override
+    @SuppressWarnings("null")
     public E update(@NonNull E entity) {
-        beforeUpdate(entity, null);
+        entity = beforeUpdate(entity);
         E savedEntity = repository.save(entity);
-        afterUpdate(savedEntity, null);
-        return savedEntity;
+        return afterUpdate(savedEntity);
     }
 
     /** {@inheritDoc} */
     @Override
+    @SuppressWarnings("null")
     public E save(@NonNull E entity) {
-        beforeUpdate(entity, null);
+        entity = beforeUpdate(entity);
         E savedEntity = repository.save(entity);
-        afterUpdate(savedEntity, null);
-        return savedEntity;
+        return afterUpdate(savedEntity);
     }
 
     /** {@inheritDoc} */
@@ -60,27 +60,28 @@ public abstract class AbUpdateService<E, ID> extends AbCreateService<E, ID> impl
     public <S extends IDto<E>> E update(@NonNull S updateEntity, @NonNull ID id) {
         E oldEntity = this.findById(id);
         E ent = updateEntity.updateEntity(oldEntity);
-        beforeUpdate(ent, oldEntity);
+        ent = beforeUpdate(ent);
         E savedEntity = repository.save(ent);
-        afterUpdate(savedEntity, oldEntity);
-        return savedEntity;
+        return afterUpdate(savedEntity);
     }
 
     /** {@inheritDoc} */
     @Override
+    @SuppressWarnings("null")
     public <S extends IDto<E>> S update(@NonNull Class<S> dtoClass, @NonNull E entity) {
-        beforeUpdate(entity, null);
+        entity = beforeUpdate(entity);
         E savedEntity = repository.save(entity);
-        afterUpdate(savedEntity, null);
+        savedEntity = afterUpdate(savedEntity);
         return mapToDto(savedEntity, dtoClass);
     }
 
     /** {@inheritDoc} */
     @Override
+    @SuppressWarnings("null")
     public <S extends IDto<E>> S save(@NonNull Class<S> dtoClass, @NonNull E entity) {
-        beforeUpdate(entity, null);
+        entity = beforeUpdate(entity);
         E savedEntity = repository.save(entity);
-        afterUpdate(savedEntity, null);
+        savedEntity = afterUpdate(savedEntity);
         return mapToDto(savedEntity, dtoClass);
     }
 
@@ -89,9 +90,9 @@ public abstract class AbUpdateService<E, ID> extends AbCreateService<E, ID> impl
     @SuppressWarnings("null")
     public <S extends IDto<E>, T extends IDto<E>> S update(@NonNull Class<S> dtoClass, @NonNull T dto) {
         E entity = dto.toEntity();
-        beforeUpdate(entity, null);
+        entity = beforeUpdate(entity);
         E savedEntity = repository.save(entity);
-        afterUpdate(savedEntity, null);
+        savedEntity = afterUpdate(savedEntity);
         return mapToDto(savedEntity, dtoClass);
     }
 
@@ -100,9 +101,9 @@ public abstract class AbUpdateService<E, ID> extends AbCreateService<E, ID> impl
     @SuppressWarnings("null")
     public <S extends IDto<E>, T extends IDto<E>> S save(@NonNull Class<S> dtoClass, @NonNull T dto) {
         E entity = dto.toEntity();
-        beforeUpdate(entity, null);
+        entity = beforeUpdate(entity);
         E savedEntity = repository.save(entity);
-        afterUpdate(savedEntity, null);
+        savedEntity = afterUpdate(savedEntity);
         return mapToDto(savedEntity, dtoClass);
     }
 
@@ -113,19 +114,20 @@ public abstract class AbUpdateService<E, ID> extends AbCreateService<E, ID> impl
             @NonNull RQ updateEntity, @NonNull ID id, @NonNull Class<RP> rsClass) {
         E oldEntity = this.findById(id);
         E ent = updateEntity.updateEntity(oldEntity);
-        beforeUpdate(ent, oldEntity);
+        ent = beforeUpdate(ent);
         E savedEntity = repository.save(ent);
-        afterUpdate(savedEntity, oldEntity);
+        savedEntity = afterUpdate(savedEntity);
         return mapToDto(savedEntity, rsClass);
     }
 
     /** {@inheritDoc} */
     @Override
+    @SuppressWarnings("null")
     public <S extends IDto<E>> S update(@NonNull E updateEntity, @NonNull ID id, @NonNull Class<S> dtoClass) {
-        E oldEntity = this.findById(id);
-        beforeUpdate(updateEntity, oldEntity);
-        E saved = repository.save(updateEntity);
-        afterUpdate(saved, oldEntity);
+        this.findById(id);
+        E entity = beforeUpdate(updateEntity);
+        E saved = repository.save(entity);
+        saved = afterUpdate(saved);
         return mapToDto(saved, dtoClass);
     }
 
@@ -133,12 +135,12 @@ public abstract class AbUpdateService<E, ID> extends AbCreateService<E, ID> impl
     @Override
     public List<E> update(@NonNull E updateEntity, @NonNull Specification<E> spec) {
         List<E> entities = specExecutor.findAll(spec);
-        for (E entity : entities) {
-            beforeUpdate(entity, null);
+        for (int i = 0; i < entities.size(); i++) {
+            entities.set(i, beforeUpdate(entities.get(i)));
         }
         List<E> savedEntities = repository.saveAll(entities);
-        for (E savedEntity : savedEntities) {
-            afterUpdate(savedEntity, null);
+        for (int i = 0; i < savedEntities.size(); i++) {
+            savedEntities.set(i, afterUpdate(savedEntities.get(i)));
         }
         return savedEntities;
     }
@@ -148,11 +150,11 @@ public abstract class AbUpdateService<E, ID> extends AbCreateService<E, ID> impl
      * <p>
      * Subclass có thể override phương thức này để thực hiện xử lý bổ sung.
      *
-     * @param entity    Thực thể chứa thông tin mới.
-     * @param oldEntity Thực thể hiện tại trong database (có thể null trong một số
-     *                  trường hợp update hàng loạt).
+     * @param entity Thực thể chứa thông tin mới.
+     * @return Thực thể sau khi xử lý.
      */
-    protected void beforeUpdate(E entity, E oldEntity) {
+    protected E beforeUpdate(E entity) {
+        return entity;
     }
 
     /**
@@ -160,9 +162,10 @@ public abstract class AbUpdateService<E, ID> extends AbCreateService<E, ID> impl
      * <p>
      * Subclass có thể override phương thức này để thực hiện xử lý bổ sung.
      *
-     * @param entity    Thực thể đã được cập nhật và lưu vào DB.
-     * @param oldEntity Thực thể trạng thái trước khi cập nhật (có thể null).
+     * @param entity Thực thể đã được cập nhật và lưu vào DB.
+     * @return Thực thể sau khi xử lý.
      */
-    protected void afterUpdate(E entity, E oldEntity) {
+    protected E afterUpdate(E entity) {
+        return entity;
     }
 }

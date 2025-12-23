@@ -35,6 +35,7 @@ const copyCode = () => {
 
 const highlight = () => {
   if (codeElement.value && window.hljs) {
+    delete codeElement.value.dataset.highlighted;
     window.hljs.highlightElement(codeElement.value);
   }
 };

@@ -1,13 +1,61 @@
 <template>
   <section id="validation" class="scroll-mt-20 mb-16">
-    <h2 class="text-3xl font-bold text-slate-900 border-b pb-4 mb-8">10. Validation System</h2>
-    <p class="text-slate-600 mb-6 italic">Hệ thống kiểm tra dữ liệu đầu vào mạnh mẽ, tích hợp sẵn với Spring Validation.</p>
+    <h2 class="text-3xl font-bold text-slate-900 border-b pb-4 mb-8">9. Hệ thống Validation</h2>
+    <p class="text-slate-600 mb-8 italic">Hệ thống kiểm tra dữ liệu đầu vào mạnh mẽ, tích hợp sẵn với Spring Validation. Đảm bảo dữ liệu sạch trước khi vào Business Logic.</p>
+
+    <!-- Validation Strategy Visual -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        <!-- Level 1 -->
+        <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm relative overlow-hidden">
+            <div class="absolute top-0 right-0 p-3 opacity-10">
+                <i class="fas fa-font text-4xl"></i>
+            </div>
+            <h4 class="text-slate-800 font-bold mb-2">Basic Constraints</h4>
+            <span class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded text-xs font-mono mb-3 inline-block">@Annotation</span>
+            <p class="text-xs text-slate-500 mb-4 h-8">Kiểm tra định dạng, độ dài, null...</p>
+            <ul class="text-xs text-slate-600 space-y-1">
+                 <li>• @NotBlank, @Size</li>
+                 <li>• @Email, @Pattern</li>
+                 <li>• <strong>@Exists, @Unique</strong> (Custom)</li>
+            </ul>
+        </div>
+        
+         <!-- Level 2 -->
+        <div class="bg-white rounded-xl border border-blue-200 p-5 shadow-sm relative overlow-hidden ring-1 ring-blue-100">
+             <div class="absolute top-0 right-0 p-3 opacity-10">
+                <i class="fas fa-code-branch text-4xl text-blue-600"></i>
+            </div>
+            <h4 class="text-blue-800 font-bold mb-2">Business Logic</h4>
+             <span class="bg-blue-100 text-blue-600 px-2 py-0.5 rounded text-xs font-mono mb-3 inline-block">Specification</span>
+            <p class="text-xs text-slate-500 mb-4 h-8">Validation phức tạp phụ thuộc nhiều trường.</p>
+             <ul class="text-xs text-slate-600 space-y-1">
+                 <li>• <strong>@DtoSpecValidation</strong></li>
+                 <li>• Tra cứu DB linh hoạt</li>
+                 <li>• Logic nghiệp vụ custom</li>
+            </ul>
+        </div>
+
+          <!-- Level 3 -->
+        <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm relative overlow-hidden">
+             <div class="absolute top-0 right-0 p-3 opacity-10">
+                <i class="fas fa-database text-4xl text-amber-600"></i>
+            </div>
+            <h4 class="text-slate-800 font-bold mb-2">Database Check</h4>
+            <span class="bg-amber-100 text-amber-600 px-2 py-0.5 rounded text-xs font-mono mb-3 inline-block">Native SQL</span>
+            <p class="text-xs text-slate-500 mb-4 h-8">Ràng buộc chặt chẽ mức Database.</p>
+             <ul class="text-xs text-slate-600 space-y-1">
+                 <li>• <strong>@SqlConstraint</strong></li>
+                 <li>• Complex Joins / Aggregates</li>
+                 <li>• High Performance</li>
+            </ul>
+        </div>
+    </div>
 
     <!-- 7.1 Basic Constraints -->
     <article id="val-basic" class="mb-10 scroll-mt-24">
       <h3 class="text-xl font-bold text-slate-800 mb-3">
-        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">10.1</span>
-        Basic Constraints
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">9.1</span>
+        Ràng buộc Cơ bản
       </h3>
       <p class="text-slate-600 mb-4">Các annotation kiểm tra định dạng hoặc ràng buộc đơn giản.</p>
       
@@ -41,8 +89,8 @@
     <!-- 7.2 Custom Validators -->
     <article id="val-custom" class="mb-10 scroll-mt-24">
       <h3 class="text-xl font-bold text-slate-800 mb-3">
-        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">10.2</span>
-        Custom Validators
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">9.2</span>
+        Validator Tùy chỉnh
       </h3>
       <p class="text-slate-600 mb-4">Sử dụng <strong>Specification</strong> để thực hiện các validation phức tạp.</p>
 
@@ -61,8 +109,8 @@
     <!-- 7.3 Advanced Validators -->
     <article id="val-advanced" class="mb-10 scroll-mt-24">
       <h3 class="text-xl font-bold text-slate-800 mb-3">
-        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">10.3</span>
-        Native SQL Constraint
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">9.3</span>
+        Ràng buộc SQL Tự nhiên
       </h3>
       <p class="text-slate-600 mb-4">Sử dụng <strong>Native SQL</strong> để viết các ràng buộc kiểm tra dữ liệu trực tiếp dưới DB.</p>
 

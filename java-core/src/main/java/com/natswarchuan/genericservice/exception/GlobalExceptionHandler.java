@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  * @author NatswarChuan
  */
 @RestControllerAdvice
-    @SuppressWarnings("null")
+@SuppressWarnings("null")
 public class GlobalExceptionHandler {
 
     /**

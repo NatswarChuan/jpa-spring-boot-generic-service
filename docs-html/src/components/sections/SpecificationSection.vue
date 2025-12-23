@@ -1,20 +1,20 @@
 <template>
   <section id="specifications" class="scroll-mt-20 mb-16">
-    <h2 class="text-3xl font-bold text-slate-900 border-b pb-4 mb-8">9. Specification & Dynamic Search</h2>
+    <h2 class="text-3xl font-bold text-slate-900 border-b pb-4 mb-8">10. Specification & Tìm kiếm Động</h2>
     <p class="text-slate-600 mb-6 italic">Hướng dẫn về cách tạo Specification động cho các truy vấn phức tạp.</p>
 
     <!-- 6.1 Default Capabilities -->
     <article id="spec-default" class="mb-10 scroll-mt-24">
       <h3 class="text-xl font-bold text-slate-800 mb-3">
-        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">9.1</span>
-        Built-in Search API
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">10.1</span>
+        API Tìm kiếm Tích hợp
       </h3>
       <p class="text-slate-600 mb-4">
         Ngay khi kế thừa <code>AbController</code>, bạn đã có sẵn API <code>GET /api/products</code> hỗ trợ phân trang, sắp xếp và tìm kiếm cơ bản mà <strong>không cần viết thêm code</strong>.
       </p>
 
       <div class="bg-slate-50 border border-slate-200 rounded-lg p-5 mb-6">
-        <h4 class="font-bold text-slate-700 mb-3 text-sm uppercase">Supported Query Parameters</h4>
+        <h4 class="font-bold text-slate-700 mb-3 text-sm uppercase">Tham số Truy vấn Hỗ trợ (Supported Query Parameters)</h4>
         <ul class="space-y-3 text-sm font-mono text-slate-600">
           <li><span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded">page</span> : Số trang (bắt đầu từ 0). Mặc định: 0</li>
           <li><span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded">size</span> : Số lượng bản ghi/trang. Mặc định: 10</li>
@@ -26,7 +26,7 @@
       </div>
 
       <div class="mb-4">
-        <h4 class="font-semibold text-slate-700 mb-2">Example Usage:</h4>
+        <h4 class="font-semibold text-slate-700 mb-2">Ví dụ Sử dụng (Example Usage):</h4>
         <pre class="bg-slate-900 text-green-400 p-4 rounded-lg font-mono text-sm overflow-x-auto">
 GET /api/products?page=0&size=20&sort=price&dir=desc&search=iphone&searchField=name</pre>
         <p class="text-xs text-slate-500 mt-2 italic">
@@ -38,20 +38,20 @@ GET /api/products?page=0&size=20&sort=price&dir=desc&search=iphone&searchField=n
     <!-- 6.2 Custom Specification -->
     <article id="spec-custom" class="mb-10 scroll-mt-24">
       <h3 class="text-xl font-bold text-slate-800 mb-3">
-        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">9.2</span>
-        Custom Filter (Advanced)
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">10.2</span>
+        Bộ lọc Tùy chỉnh (Advance)
       </h3>
       <p class="text-slate-600 mb-4">
         Khi bạn cần các bộ lọc phức tạp hơn (ví dụ: khoảng giá, lọc theo danh mục), hãy mở rộng <code>BaseRequestParam</code> và Override method trong Controller.
       </p>
 
       <!-- Step 1 -->
-      <h4 class="font-bold text-slate-700 mt-6 mb-2">Step 1: Tạo Request Param Custom</h4>
+      <h4 class="font-bold text-slate-700 mt-6 mb-2">Bước 1: Tạo Request Param Custom</h4>
       <p class="text-sm text-slate-600 mb-2">Kế thừa <code>BaseRequestParam</code> để thêm các field filter mới.</p>
       <CodeBlock filename="ProductRequestParam.java" :code="customParamCode" />
 
       <!-- Step 2 -->
-      <h4 class="font-bold text-slate-700 mt-6 mb-2">Step 2: Override Controller</h4>
+      <h4 class="font-bold text-slate-700 mt-6 mb-2">Bước 2: Override Controller</h4>
       <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4 text-sm text-yellow-800">
         <strong>Lưu ý quan trọng:</strong> Bạn bắt buộc phải override hàm <code>findAll</code> để Spring có thể map đúng class <code>ProductRequestParam</code> của bạn thay vì lớp cha.
       </div>

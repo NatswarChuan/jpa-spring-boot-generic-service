@@ -1,6 +1,6 @@
 <template>
   <main class="flex-1 min-w-0 bg-white">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 pb-24">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 pb-[50vh]">
       <slot></slot>
     </div>
 
