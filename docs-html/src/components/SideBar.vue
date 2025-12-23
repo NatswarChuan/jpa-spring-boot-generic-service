@@ -7,8 +7,22 @@
       </h1>
     </div>
     
+    <div class="px-4 py-3 border-b border-slate-100">
+      <div class="relative">
+        <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <i class="fas fa-search text-slate-400 text-xs"></i>
+        </span>
+        <input 
+          v-model="searchQuery"
+          type="text" 
+          placeholder="Tìm kiếm..." 
+          class="block w-full pl-9 pr-3 py-2 border border-slate-200 rounded-md leading-5 bg-slate-50 text-sm placeholder-slate-400 focus:outline-none focus:bg-white focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-all font-sans"
+        />
+      </div>
+    </div>
+    
     <nav class="p-4 space-y-1 flex-1 overflow-y-auto">
-      <div v-for="section in sections" :key="section.id">
+      <div v-for="section in filteredSections" :key="section.id">
         <div class="flex items-center justify-between group rounded-md hover:bg-slate-50 transition-colors"
              :class="{ 'bg-blue-50': isSectionActive(section) }">
           <a 
@@ -59,7 +73,7 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted } from 'vue';
+import { ref, watch, onMounted, computed } from 'vue';
 
 const props = defineProps({
   sections: Array,
@@ -67,7 +81,40 @@ const props = defineProps({
   activeId: String
 });
 
+const searchQuery = ref('');
 const openSections = ref(new Set());
+
+const filteredSections = computed(() => {
+  if (!searchQuery.value) return props.sections;
+  
+  const query = searchQuery.value.toLowerCase();
+  
+  return props.sections.map(section => {
+    // Search in section title and content
+    const titleMatch = section.title.toLowerCase().includes(query);
+    const contentMatch = section.content?.toLowerCase().includes(query);
+    const isSectionMatch = titleMatch || contentMatch;
+
+    // Search in subsections
+    const filteredSubs = section.subs?.filter(sub => {
+      const subTitleMatch = sub.title.toLowerCase().includes(query);
+      const subContentMatch = sub.content?.toLowerCase().includes(query);
+      return subTitleMatch || subContentMatch;
+    }) || [];
+    
+    if (isSectionMatch || filteredSubs.length > 0) {
+      // Auto-open if query matches anything within the section
+      openSections.value.add(section.id);
+      
+      // If the section itself matched (title or content), we show the section.
+      // If only some subsections matched, we show the section with those subsections.
+      // To provide better UX, if the section matched but no subsections matched, 
+      // we still return the section to allow the user to see it.
+      return { ...section, subs: filteredSubs };
+    }
+    return null;
+  }).filter(Boolean);
+});
 
 const isOpen = (id) => openSections.value.has(id);
 

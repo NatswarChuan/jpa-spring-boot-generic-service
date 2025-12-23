@@ -9,7 +9,8 @@
     <!-- Maven Tab -->
     <div class="mb-8">
       <h3 class="text-2xl font-bold text-slate-800 mb-4 flex items-center">
-        <i class="fab fa-java text-orange-600 mr-2"></i> Maven
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">2.1</span>
+        Maven / Gradle
       </h3>
       
       <div class="bg-slate-900 rounded-lg p-4 shadow-lg overflow-x-auto">
@@ -25,9 +26,10 @@
 
     <!-- Gradle Tab -->
     <div class="mb-10">
-      <h3 class="text-2xl font-bold text-slate-800 mb-4 flex items-center">
-        <i class="fas fa-cubes text-blue-600 mr-2"></i> Gradle
-      </h3>
+      <!-- Gradle (Inside 2.1) -->
+      <h4 class="font-bold text-slate-700 mb-3 mt-6 flex items-center">
+        <i class="fas fa-cubes text-blue-600 mr-2"></i> Gradle Implementation
+      </h4>
       
       <div class="bg-slate-900 rounded-lg p-4 shadow-lg overflow-x-auto">
         <p class="text-slate-400 text-sm mb-2 font-mono">// Thêm dependency vào build.gradle</p>
@@ -41,7 +43,8 @@ dependencies {
     <!-- Local Installation -->
     <div id="installation-local" class="mb-10 p-6 bg-slate-50 border border-slate-200 rounded-xl scroll-mt-24">
       <h3 class="text-2xl font-bold text-slate-800 mb-4 flex items-center">
-        <i class="fas fa-tools text-slate-600 mr-2"></i> Local Development
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">2.2</span>
+        Local Development
       </h3>
       <p class="text-slate-600 mb-4">
         Nếu bạn đang phát triển hoặc tùy chỉnh trực tiếp mã nguồn của framework, hãy cài đặt nó vào Local Maven Repository của bạn:
@@ -60,7 +63,8 @@ dependencies {
     <!-- Package Scanning -->
     <div id="installation-config" class="mb-10 scroll-mt-24">
       <h3 class="text-2xl font-bold text-slate-800 mb-4 flex items-center">
-        <i class="fas fa-cog text-indigo-600 mr-2"></i> Configuration
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">2.3</span>
+        Configuration
       </h3>
       <p class="text-slate-600 mb-4">
         Để Spring Boot có thể nhận diện các Beans và Validators từ thư viện, bạn cần cấu hình Package Scanning tại lớp Application chính.

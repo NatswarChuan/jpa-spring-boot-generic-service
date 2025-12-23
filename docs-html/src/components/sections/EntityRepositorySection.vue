@@ -9,13 +9,19 @@
     </div>
 
     <article id="core-entity" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-3">3.1. Entity Definition</h3>
+      <h3 class="text-xl font-bold text-slate-800 mb-3">
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">3.1</span>
+        Entity Definition
+      </h3>
       <p class="text-slate-600 mb-3">Định nghĩa cấu trúc bảng và các mối quan hệ (ManyToOne, OneToMany).</p>
       <CodeBlock filename="Product.java" :code="entityCode" />
     </article>
 
     <article id="core-repo" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-3">3.2. Repository Implementation</h3>
+      <h3 class="text-xl font-bold text-slate-800 mb-3">
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">3.2</span>
+        Repository Implementation
+      </h3>
       <p class="text-slate-600 mb-3">Sử dụng Spring Data JPA Repository.</p>
       <CodeBlock filename="ProductRepository.java" :code="repoCode" />
       

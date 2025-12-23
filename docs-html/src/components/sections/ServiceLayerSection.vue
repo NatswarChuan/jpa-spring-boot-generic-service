@@ -4,7 +4,10 @@
     <p class="text-slate-600 italic mb-6">Xử lý logic nghiệp vụ và tích hợp các life-cycle hooks.</p>
 
     <article id="core-service" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-3">4.1. Basic Service</h3>
+      <h3 class="text-xl font-bold text-slate-800 mb-3">
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">4.1</span>
+        Basic Service
+      </h3>
       <p class="text-slate-600 mb-3">Kế thừa <code>AbService</code> để có sẵn các phương thức CRUD chuẩn hóa.</p>
       <CodeBlock filename="ProductService.java" :code="serviceCode" />
       <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-4 mt-4 text-sm text-green-800 shadow-sm">
@@ -13,7 +16,10 @@
     </article>
 
     <article id="service-hooks" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-3">4.2. Life-cycle Hooks</h3>
+      <h3 class="text-xl font-bold text-slate-800 mb-3">
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">4.2</span>
+        Life-cycle Hooks
+      </h3>
       <p class="text-slate-600 mb-4">
         Framework cho phép "can thiệp" vào luồng xử lý mà không cần override toàn bộ phương thức.
       </p>

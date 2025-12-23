@@ -13,8 +13,11 @@
     </div>
 
     <!-- Solution -->
-    <div class="bg-blue-50 border-l-4 border-blue-500 p-6 rounded-r-lg mb-8 shadow-sm">
-      <h3 class="text-xl font-bold text-blue-900 mb-2">Giải pháp: Generic Service Framework</h3>
+    <div id="intro-solution" class="bg-blue-50 border-l-4 border-blue-500 p-6 rounded-r-lg mb-8 shadow-sm scroll-mt-24">
+      <h3 class="text-xl font-bold text-blue-900 mb-2">
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">1.1</span>
+        Giải pháp: Generic Service Framework
+      </h3>
       <p class="text-slate-700 leading-relaxed">
         Hệ thống <strong>Generic Service</strong> ra đời để giải quyết triệt để vấn đề này. Bằng cách tận dụng sức mạnh của Java Generics và Reflection, framework cung cấp một lớp nền tảng (Base Service) đã được cài đặt sẵn mọi logic nghiệp vụ cốt lõi.
       </p>
@@ -44,8 +47,11 @@
     </div>
     
     <!-- Detailed Features -->
-    <div class="mt-12">
-      <h3 class="text-2xl font-bold text-slate-800 mb-6">Các chức năng chính</h3>
+    <div id="intro-features" class="mt-12 scroll-mt-24">
+      <h3 class="text-2xl font-bold text-slate-800 mb-6">
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">1.2</span>
+        Các chức năng chính
+      </h3>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
         <div class="flex items-start">
           <div class="text-blue-500 mt-1 mr-4"><i class="fas fa-check-circle text-lg"></i></div>
@@ -93,10 +99,11 @@
     </div>
 
     <!-- Pros and Cons -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-16">
+    <div id="intro-pros-cons" class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-16 scroll-mt-24">
       <div class="bg-emerald-50 rounded-xl p-8 border border-emerald-100">
         <h3 class="text-xl font-bold text-emerald-900 mb-4 flex items-center">
-          <i class="fas fa-plus-circle mr-2"></i> Ưu điểm
+          <span class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-sm mr-3">1.3</span>
+          Ưu điểm
         </h3>
         <ul class="space-y-3 text-emerald-800">
           <li class="flex items-start"><i class="fas fa-caret-right mt-1.5 mr-2 opacity-50"></i> <strong>Giảm 80% boilerplate code:</strong> Không còn phải viết hàng ngàn dòng code CRUD lặp lại.</li>

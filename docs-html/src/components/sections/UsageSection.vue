@@ -4,14 +4,20 @@
     <p class="text-slate-600 italic mb-6">Sử dụng DTO để tách biệt Model của Database và Model của API.</p>
     
     <article id="dto-request" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-3">7.1. Request DTO (Create/Update)</h3>
+      <h3 class="text-xl font-bold text-slate-800 mb-3">
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">7.1</span>
+        Request DTO (Create/Update)
+      </h3>
       <p class="text-slate-600 mb-3">Tách biệt DTO tạo mới và cập nhật để kiểm soát dữ liệu đầu vào.</p>
       <CodeBlock filename="ProductCreateReq.java" :code="createReqCode" />
       <CodeBlock filename="ProductUpdateReq.java" :code="updateReqCode" />
     </article>
 
     <article id="dto-response" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-3">7.2. Response DTO (Auto Mapping)</h3>
+      <h3 class="text-xl font-bold text-slate-800 mb-3">
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">7.2</span>
+        Response DTO (Auto Mapping)
+      </h3>
       <p class="text-slate-600 mb-3">Dữ liệu trả về cho client. Hỗ trợ tự động map từ Entity sang DTO.</p>
       <CodeBlock filename="ProductResponse.java" :code="resCode" />
 
@@ -22,7 +28,10 @@
     </article>
 
     <article id="dto-i18n" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-3">7.3. Multi-language Support (I18n)</h3>
+      <h3 class="text-xl font-bold text-slate-800 mb-3">
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">7.3</span>
+        Multi-language Support (I18n)
+      </h3>
       <p class="text-slate-600 mb-3">
         Framework hỗ trợ đa ngôn ngữ ngay khi chuyển đổi DTO. Bạn có thể override hàm <code>fromEntity</code> có tham số <code>language</code>.
       </p>

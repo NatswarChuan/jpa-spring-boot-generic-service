@@ -49,88 +49,107 @@ const sectionComponents = {
 };
 
 const sections = ref([
-  { id: 'intro', title: '1. Giới thiệu', component: 'IntroductionSection', subs: [] },
+  { 
+    id: 'intro', title: '1. Giới thiệu', component: 'IntroductionSection', 
+    content: 'Generic Service Framework, giải pháp CRUD, boilerplate code, Spring Boot Backend',
+    subs: [
+      { id: 'intro-solution', title: '1.1. Giải pháp', content: 'Base Service, Business Logic, CRUD toàn diện, Validation, Tra cứu linh hoạt, Đa ngôn ngữ' },
+      { id: 'intro-features', title: '1.2. Các chức năng chính', content: 'Generic CRUD, Dynamic Filtering JPA Spec, Automatic DTO Mapping, Service Hooks, Standardized Error Handling' },
+      { id: 'intro-pros-cons', title: '1.3. Ưu nhược điểm', content: 'Giảm boilerplate, tính nhất quán, dễ bảo trì, mở rộng linh hoạt, đường cong học tập' }
+    ] 
+  },
   { 
     id: 'installation', title: '2. Cài đặt', component: 'InstallationSection', 
+    content: 'Maven Central, tích hợp dự án, repository',
     subs: [
-      { id: 'installation', title: '2.1. Maven/Gradle' },
-      { id: 'installation-local', title: '2.2. Local Development' },
-      { id: 'installation-config', title: '2.3. Configuration' }
+      { id: 'installation', title: '2.1. Maven/Gradle', content: 'dependency, pom.xml, build.gradle, io.github.natswarchuan' },
+      { id: 'installation-local', title: '2.2. Local Development', content: 'mvn clean install, Local Maven Repository, customize framework' },
+      { id: 'installation-config', title: '2.3. Configuration', content: 'Package Scanning, scanBasePackages, SpringBootApplication, Beans recognition' }
     ] 
   },
   { 
     id: 'core-entity-repo', title: '3. Entity & Repository', component: 'EntityRepositorySection', 
+    content: 'Database mapping, JPA, module Product',
     subs: [
-      { id: 'core-entity', title: '3.1. Entity Definition' },
-      { id: 'core-repo', title: '3.2. Repository Implementation' }
+      { id: 'core-entity', title: '3.1. Entity Definition', content: 'ManyToOne, OneToMany, Table indexes, Hibernate, Product Entity' },
+      { id: 'core-repo', title: '3.2. Repository Implementation', content: 'JpaRepository, JpaSpecificationExecutor, Spring Data JPA' }
     ]
   },
   { 
     id: 'service-layer', title: '4. Service Layer', component: 'ServiceLayerSection', 
+    content: 'Business logic, ServiceImpl, AbService',
     subs: [
-      { id: 'core-service', title: '4.1. Basic Service' },
-      { id: 'service-hooks', title: '4.2. Life-cycle Hooks' }
+      { id: 'core-service', title: '4.1. Basic Service', content: 'Service implementation, CRUD methods base' },
+      { id: 'service-hooks', title: '4.2. Life-cycle Hooks', content: 'beforeCreate, afterUpdate, can thiệp luồng xử lý' }
     ]
   },
   { 
     id: 'controller-layer', title: '5. Controller Layer', component: 'ControllerLayerSection', 
+    content: 'API endpoints, RestController, RequestMapping',
     subs: [
-      { id: 'core-controller', title: '5.1. Standard Controller' },
-      { id: 'controller-traits', title: '5.2. Controller Traits' },
-      { id: 'custom-api', title: '5.3. Custom API Endpoints' }
+      { id: 'core-controller', title: '5.1. Standard Controller', content: 'AbController, getResponseSummaryDtoClass, getResponseDetailDtoClass' },
+      { id: 'controller-traits', title: '5.2. Controller Traits', content: 'Modular API, ICreateController, IReadController, IUpdateController, IDeleteController, Read-only' },
+      { id: 'custom-api', title: '5.3. Custom API Endpoints', content: 'Custom processing, add-on methods' }
     ]
   },
   { 
     id: 'architecture-system', title: '6. Architecture & Life-cycle', component: 'ArchitectureSection', 
+    content: 'Technical spec, request flow, generic structure',
     subs: [
-      { id: 'framework-spec', title: '6.1. Class Hierarchy' },
-      { id: 'generic-system', title: '6.2. Generic Type System' },
-      { id: 'request-lifecycle', title: '6.3. Request Life-cycle' }
+      { id: 'framework-spec', title: '6.1. Class Hierarchy', content: 'AbBaseService, AbReadSummaryService, AbReadDetailService, AbCreateService, AbUpdateService, AbDeleteService' },
+      { id: 'generic-system', title: '6.2. Generic Type System', content: 'Entity Class E, PK Type ID, Request DTO RQ' },
+      { id: 'request-lifecycle', title: '6.3. Request Life-cycle', content: 'DTO Validation, Payload Mapping, Hooks, Persistence' }
     ]
   },
   { 
-    id: 'dtos', title: '7. Data Transfer Objects', component: 'UsageSection', 
+    id: 'dtos', title: '7. Data Transfer Objects', content: 'DTO Model, API separation, database isolation', component: 'UsageSection', 
     subs: [
-      { id: 'dto-request', title: '7.1. Request DTO' },
-      { id: 'dto-response', title: '7.2. Response DTO' },
-      { id: 'dto-i18n', title: '7.3. Multi-language' }
+      { id: 'dto-request', title: '7.1. Request DTO', content: 'CreateReq, UpdateReq, input control' },
+      { id: 'dto-response', title: '7.2. Response DTO', content: 'IDto mapping, BeanUtils, copyProperties' },
+      { id: 'dto-i18n', title: '7.3. Multi-language', content: 'Multi-language support, fromEntity language parameter' }
     ]
   },
   { 
     id: 'api-list', title: '8. Base Service Methods', component: 'ApiListSection', 
+    content: 'AbService methods, CRUD API reference',
     subs: [
-      { id: 'api-read', title: '8.1. Read Operations' },
-      { id: 'api-write', title: '8.2. Write Operations' }
+      { id: 'api-read', title: '8.1. Read Operations', content: 'findById, findOne, findAll, Pageable, count, exists' },
+      { id: 'api-write', title: '8.2. Write Operations', content: 'create, update, save, delete, bulk delete' },
+      { id: 'api-hooks', title: '8.3. Service Hooks', content: 'beforeCreate, afterCreate, beforeUpdate, afterUpdate, beforeDelete, afterDelete' }
     ]
   },
   { 
     id: 'specifications', title: '9. Specification & Dynamic Search', component: 'SpecificationSection', 
+    content: 'Dynamic query, complex filters, JPA Specification',
     subs: [
-      { id: 'spec-default', title: '9.1. Built-in Search API' },
-      { id: 'spec-custom', title: '9.2. Custom Filter (Advanced)' }
+      { id: 'spec-default', title: '9.1. Built-in Search API', content: 'page, size, sort, dir, search, searchField' },
+      { id: 'spec-custom', title: '9.2. Custom Filter (Advanced)', content: 'BaseRequestParam, ProductFilterParam, override getSpecification' }
     ]
   },
   { 
     id: 'validation', title: '10. Validation System', component: 'ValidationSection', 
+    content: 'Input check, constraints, Spring Validation',
     subs: [
-      { id: 'val-basic', title: '10.1. Basic Constraints' },
-      { id: 'val-custom', title: '10.2. Custom Validators' },
-      { id: 'val-advanced', title: '10.3. Native SQL Constraint' }
+      { id: 'val-basic', title: '10.1. Basic Constraints', content: '@Exists, @Unique, @EnumValue, @PhoneNumber, @NoSpecialChars, @IdsExist' },
+      { id: 'val-custom', title: '10.2. Custom Validators', content: '@SpecValidation, @DtoSpecValidation, SpecificationLoader' },
+      { id: 'val-advanced', title: '10.3. Native SQL Constraint', content: '@SqlConstraint, Native SQL, DB level constraints' }
     ]
   },
   { 
     id: 'response-handling', title: '11. Response Handling', component: 'ResponseSection', 
+    content: 'Final results, standard format, consistent API',
     subs: [
-      { id: 'res-structure', title: '11.1. Response Structure' },
-      { id: 'res-exception', title: '11.2. Exception Handling' }
+      { id: 'res-structure', title: '11.1. Response Structure', content: 'HttpApiResponse, PagedResponse, status, message, data' },
+      { id: 'res-exception', title: '11.2. Exception Handling', content: 'HttpException, GlobalExceptionHandler, centralized error' }
     ]
   },
   { 
     id: 'notes', title: '12. Important Notes', component: 'NotesSection', 
+    content: 'Tips, best practices, pitfalls',
     subs: [
-      { id: 'notes-best-practices', title: '12.1. Best Practices' },
-      { id: 'notes-troubleshooting', title: '12.2. Troubleshooting' },
-      { id: 'notes-advanced', title: '12.3. Advanced Patterns' }
+      { id: 'notes-best-practices', title: '12.1. Best Practices', content: 'DTO Constructor, Override methods, Optimization' },
+      { id: 'notes-troubleshooting', title: '12.2. Troubleshooting', content: 'N+1 Query, EntityGraph, FetchType' },
+      { id: 'notes-advanced', title: '12.3. Advanced Patterns', content: 'Composite Service, Aggregator pattern' }
     ] 
   }
 ]);

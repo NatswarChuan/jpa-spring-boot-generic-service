@@ -5,7 +5,10 @@
 
     <!-- 7.1 Basic Constraints -->
     <article id="val-basic" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-3">10.1. Basic Constraints</h3>
+      <h3 class="text-xl font-bold text-slate-800 mb-3">
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">10.1</span>
+        Basic Constraints
+      </h3>
       <p class="text-slate-600 mb-4">Các annotation kiểm tra định dạng hoặc ràng buộc đơn giản.</p>
       
       <div class="space-y-6">
@@ -37,7 +40,10 @@
 
     <!-- 7.2 Custom Validators -->
     <article id="val-custom" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-3">10.2. Custom Validators</h3>
+      <h3 class="text-xl font-bold text-slate-800 mb-3">
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">10.2</span>
+        Custom Validators
+      </h3>
       <p class="text-slate-600 mb-4">Sử dụng <strong>Specification</strong> để thực hiện các validation phức tạp.</p>
 
       <h4 class="font-semibold text-slate-700 mt-4">@SpecValidation (Field Level)</h4>
@@ -54,7 +60,10 @@
 
     <!-- 7.3 Advanced Validators -->
     <article id="val-advanced" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-3">10.3. Native SQL Constraint</h3>
+      <h3 class="text-xl font-bold text-slate-800 mb-3">
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">10.3</span>
+        Native SQL Constraint
+      </h3>
       <p class="text-slate-600 mb-4">Sử dụng <strong>Native SQL</strong> để viết các ràng buộc kiểm tra dữ liệu trực tiếp dưới DB.</p>
 
       <h4 class="font-semibold text-slate-700 mt-4">@SqlConstraint</h4>

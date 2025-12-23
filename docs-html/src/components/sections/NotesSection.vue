@@ -5,7 +5,10 @@
     
     <!-- 9.1 Best Practices -->
     <article id="notes-best-practices" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-3">12.1. Best Practices</h3>
+      <h3 class="text-xl font-bold text-slate-800 mb-3">
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">12.1</span>
+        Best Practices
+      </h3>
       
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <div class="bg-blue-50 p-6 rounded-lg border-l-4 border-blue-500 shadow-sm">
@@ -40,7 +43,10 @@
 
     <!-- 9.2 Troubleshooting -->
     <article id="notes-troubleshooting" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-3">12.2. Troubleshooting</h3>
+      <h3 class="text-xl font-bold text-slate-800 mb-3">
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">12.2</span>
+        Troubleshooting
+      </h3>
 
       <!-- N+1 Solution -->
       <div class="bg-white border border-slate-200 rounded-lg p-6 shadow-sm mb-6">
@@ -75,7 +81,10 @@
 
     <!-- 12.3 Advanced Patterns -->
     <article id="notes-advanced" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-3">12.3. Advanced Usage Patterns</h3>
+      <h3 class="text-xl font-bold text-slate-800 mb-3">
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">12.3</span>
+        Advanced Usage Patterns
+      </h3>
       <p class="text-slate-600 mb-6">Tận dụng tối đa sức mạnh của kế thừa và generic để xây dựng hệ thống linh hoạt.</p>
 
       <div class="space-y-6">

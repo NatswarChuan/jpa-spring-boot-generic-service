@@ -4,7 +4,10 @@
     <p class="text-slate-600 italic mb-6">Đặc tả kỹ thuật của framework và luồng xử lý request.</p>
 
     <article id="framework-spec" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-3">6.1. Class Hierarchy (Service)</h3>
+      <h3 class="text-xl font-bold text-slate-800 mb-3">
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">6.1</span>
+        Class Hierarchy (Service)
+      </h3>
       <p class="text-slate-600 mb-6">
         Thiết kế theo mô hình phân tầng, phân chia rạch ròi trách nhiệm giữa các loại thao tác (Read, Create, Update, Delete).
       </p>
@@ -56,7 +59,10 @@
     </article>
 
     <article id="generic-system" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-3">6.2. Generic Type System</h3>
+      <h3 class="text-xl font-bold text-slate-800 mb-3">
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">6.2</span>
+        Generic Type System
+      </h3>
       <p class="text-slate-600 mb-4">Type safety giúp kiểm soát chặt chẽ dữ liệu từ Controller xuống Service.</p>
       
       <div class="overflow-x-auto rounded-lg border border-slate-200">
@@ -86,7 +92,10 @@
     </article>
 
     <article id="request-lifecycle" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-3">6.3. Request Life-cycle</h3>
+      <h3 class="text-xl font-bold text-slate-800 mb-3">
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">6.3</span>
+        Request Life-cycle
+      </h3>
       <p class="text-slate-600 mb-6">Luồng đi của dữ liệu khi gọi API <code>POST /api/v1/products</code>:</p>
       
       <div class="relative pl-8 border-l-2 border-blue-500 space-y-8 ml-4">

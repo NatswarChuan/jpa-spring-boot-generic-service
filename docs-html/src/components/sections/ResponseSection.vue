@@ -5,7 +5,10 @@
 
     <!-- 8.1 Response Structures -->
     <article id="res-structure" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-3">11.1. Response Structure</h3>
+      <h3 class="text-xl font-bold text-slate-800 mb-3">
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">11.1</span>
+        Response Structure
+      </h3>
       <p class="text-slate-600 mb-3">
         Thư viện cung cấp 2 lớp wrap chuẩn: <code>HttpApiResponse</code> cho đối tượng đơn/list và <code>PagedResponse</code> cho phân trang.
       </p>
@@ -30,7 +33,10 @@
 
     <!-- 8.2 Exception Handling -->
     <article id="res-exception" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-3">11.2. Exception Handling</h3>
+      <h3 class="text-xl font-bold text-slate-800 mb-3">
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">11.2</span>
+        Exception Handling
+      </h3>
       <p class="text-slate-600 mb-4">
         Sử dụng <code>HttpException</code> để ném lỗi từ Service/Controller. <code>GlobalExceptionHandler</code> sẽ tự động bắt và trả về format chuẩn.
       </p>

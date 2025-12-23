@@ -5,7 +5,10 @@
 
     <!-- 6.1 Default Capabilities -->
     <article id="spec-default" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-3">9.1. Built-in Search API</h3>
+      <h3 class="text-xl font-bold text-slate-800 mb-3">
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">9.1</span>
+        Built-in Search API
+      </h3>
       <p class="text-slate-600 mb-4">
         Ngay khi kế thừa <code>AbController</code>, bạn đã có sẵn API <code>GET /api/products</code> hỗ trợ phân trang, sắp xếp và tìm kiếm cơ bản mà <strong>không cần viết thêm code</strong>.
       </p>
@@ -34,7 +37,10 @@ GET /api/products?page=0&size=20&sort=price&dir=desc&search=iphone&searchField=n
 
     <!-- 6.2 Custom Specification -->
     <article id="spec-custom" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-3">9.2. Custom Filter (Advanced)</h3>
+      <h3 class="text-xl font-bold text-slate-800 mb-3">
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">9.2</span>
+        Custom Filter (Advanced)
+      </h3>
       <p class="text-slate-600 mb-4">
         Khi bạn cần các bộ lọc phức tạp hơn (ví dụ: khoảng giá, lọc theo danh mục), hãy mở rộng <code>BaseRequestParam</code> và Override method trong Controller.
       </p>

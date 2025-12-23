@@ -4,7 +4,10 @@
     <p class="text-slate-600 italic mb-6">Định nghĩa API endpoint và các trait hỗ trợ.</p>
 
     <article id="core-controller" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-3">5.1. Standard Controller</h3>
+      <h3 class="text-xl font-bold text-slate-800 mb-3">
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">5.1</span>
+        Standard Controller
+      </h3>
       <p class="text-slate-600 mb-3">
         Kế thừa <code>AbController</code> và implement các trait (ICreateController, IReadController...) để kích hoạt API.
       </p>
@@ -15,7 +18,10 @@
     </article>
 
     <article id="controller-traits" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-3">5.2. Controller Traits (Modular API)</h3>
+      <h3 class="text-xl font-bold text-slate-800 mb-3">
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">5.2</span>
+        Controller Traits (Modular API)
+      </h3>
       <p class="text-slate-600 mb-4">Chọn lọc API muốn cung cấp bằng cách implement Interface Trait tương ứng.</p>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-slate-700">
@@ -31,7 +37,10 @@
     </article>
 
     <article id="custom-api" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-3">5.3. Custom API Endpoints</h3>
+      <h3 class="text-xl font-bold text-slate-800 mb-3">
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">5.3</span>
+        Custom API Endpoints
+      </h3>
       <p class="text-slate-600 mb-4">Thêm các xử lý riêng biệt bên cạnh generic API.</p>
       <CodeBlock filename="ProductController.java" :code="customApiCode" />
     </article>
