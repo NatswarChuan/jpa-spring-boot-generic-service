@@ -1,4 +1,4 @@
-import{_ as s}from"./CodeBlock-C_9X1jlT.js";import{f as r,c as p,o as i,a as l,b as t,e as c,d as a}from"./index-CC0Oy2c1.js";const d={id:"specifications",class:"scroll-mt-20 mb-16"},m={id:"spec-custom",class:"mb-10 scroll-mt-24"},h={__name:"SpecificationSection",setup(u){const o=r(`package com.example.demo.dto.product;
+import{_ as s}from"./CodeBlock-CUrVyKBF.js";import{f as r,c as p,o as i,a as l,b as t,e as c,d as a}from"./index-ByupLFOq.js";const d={id:"specifications",class:"scroll-mt-20 mb-16"},m={id:"spec-custom",class:"mb-10 scroll-mt-24"},h={__name:"SpecificationSection",setup(u){const o=r(`package com.example.demo.dto.product;
 
 import com.natswarchuan.genericservice.payload.request.BaseRequestParam;
 import lombok.Data;

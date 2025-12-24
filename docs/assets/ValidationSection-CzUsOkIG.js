@@ -1,4 +1,4 @@
-import{_ as a}from"./CodeBlock-C_9X1jlT.js";import{f as o,c as b,o as x,a as i,b as e,d as l,e as s}from"./index-CC0Oy2c1.js";const h={id:"validation",class:"scroll-mt-20 mb-16"},v={id:"val-basic",class:"mb-10 scroll-mt-24"},S={class:"space-y-6"},f={id:"val-custom",class:"mb-10 scroll-mt-24"},C={id:"val-advanced",class:"mb-10 scroll-mt-24"},E={__name:"ValidationSection",setup(D){const n=o(`package com.example.demo.dto;
+import{_ as a}from"./CodeBlock-CUrVyKBF.js";import{f as o,c as b,o as x,a as i,b as e,d as l,e as s}from"./index-ByupLFOq.js";const h={id:"validation",class:"scroll-mt-20 mb-16"},v={id:"val-basic",class:"mb-10 scroll-mt-24"},S={class:"space-y-6"},f={id:"val-custom",class:"mb-10 scroll-mt-24"},C={id:"val-advanced",class:"mb-10 scroll-mt-24"},E={__name:"ValidationSection",setup(D){const n=o(`package com.example.demo.dto;
 
 import com.example.demo.entity.Category;
 import com.natswarchuan.genericservice.validation.Exists;

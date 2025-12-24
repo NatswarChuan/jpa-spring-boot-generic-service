@@ -101,44 +101,75 @@
       </p>
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-6">
-        <!-- Visual Timeline -->
-        <div class="bg-slate-50 rounded-xl p-6 border border-slate-200">
-             <h4 class="font-bold text-slate-700 mb-4 flex items-center">
-                <span class="w-2 h-6 bg-blue-500 rounded-sm mr-2"></span>
-                Luồng xử lý (Ví dụ: Create)
-             </h4>
-             <div class="relative pl-4 border-l-2 border-slate-300 space-y-6">
-                <!-- Step 1 -->
-                <div class="relative">
-                    <div class="absolute -left-[23px] top-1 w-3 h-3 rounded-full bg-slate-400 border-2 border-white"></div>
-                    <div class="text-sm font-bold text-slate-400 uppercase text-xs mb-1">Input</div>
-                    <div class="text-slate-600 text-sm">Entity từ Controller</div>
-                </div>
-                 <!-- Step 2: Before Hook -->
-                <div class="relative">
-                    <div class="absolute -left-[25px] top-0 w-4 h-4 rounded-full bg-amber-500 border-2 border-white shadow-sm ring-1 ring-amber-200"></div>
-                    <div class="text-sm font-bold text-amber-700 text-xs mb-1 bg-amber-50 inline-block px-2 py-0.5 rounded">HOOK: beforeCreate(entity)</div>
-                    <div class="text-slate-600 text-xs">Validation logic, tính toán giá trị mặc định...</div>
-                </div>
-                 <!-- Step 3: Save -->
-                 <div class="relative">
-                    <div class="absolute -left-[23px] top-1 w-3 h-3 rounded-full bg-blue-500 border-2 border-white"></div>
-                    <div class="text-sm font-bold text-blue-700 text-xs mb-1">Repository.save()</div>
-                    <div class="text-slate-600 text-xs">Lưu xuống Database</div>
-                </div>
-                 <!-- Step 4: After Hook -->
-                 <div class="relative">
-                    <div class="absolute -left-[25px] top-0 w-4 h-4 rounded-full bg-purple-500 border-2 border-white shadow-sm ring-1 ring-purple-200"></div>
-                    <div class="text-sm font-bold text-purple-700 text-xs mb-1 bg-purple-50 inline-block px-2 py-0.5 rounded">HOOK: afterCreate(entity)</div>
-                    <div class="text-slate-600 text-xs">Gửi email, ghi log audit, push notification...</div>
-                </div>
-                 <!-- Step 5: Return -->
-                <div class="relative">
-                    <div class="absolute -left-[23px] top-1 w-3 h-3 rounded-full bg-green-500 border-2 border-white"></div>
-                    <div class="text-sm font-bold text-green-700 text-xs mb-1">Return</div>
-                    <div class="text-slate-600 text-xs">Trả kết quả về Controller</div>
-                </div>
-             </div>
+        <!-- Visual Timelines -->
+        <div class="space-y-6">
+          <!-- Write Flow -->
+          <div class="bg-slate-50 rounded-xl p-6 border border-slate-200">
+               <h4 class="font-bold text-slate-700 mb-4 flex items-center">
+                  <span class="w-2 h-6 bg-amber-500 rounded-sm mr-2"></span>
+                  Luồng Ghi (Create/Update/Delete)
+               </h4>
+               <div class="relative pl-4 border-l-2 border-slate-300 space-y-6">
+                  <!-- Step 1 -->
+                  <div class="relative">
+                      <div class="absolute -left-[23px] top-1 w-3 h-3 rounded-full bg-slate-400 border-2 border-white"></div>
+                      <div class="text-sm font-bold text-slate-400 uppercase text-xs mb-1">Input</div>
+                      <div class="text-slate-600 text-sm">Entity từ Controller</div>
+                  </div>
+                   <!-- Step 2: Before Hook -->
+                  <div class="relative">
+                      <div class="absolute -left-[25px] top-0 w-4 h-4 rounded-full bg-amber-500 border-2 border-white shadow-sm ring-1 ring-amber-200"></div>
+                      <div class="text-sm font-bold text-amber-700 text-xs mb-1 bg-amber-50 inline-block px-2 py-0.5 rounded">HOOK: beforeCreate/Update/Delete</div>
+                      <div class="text-slate-600 text-xs">Validation, set default, check business rules...</div>
+                  </div>
+                   <!-- Step 3: Action -->
+                   <div class="relative">
+                      <div class="absolute -left-[23px] top-1 w-3 h-3 rounded-full bg-blue-500 border-2 border-white"></div>
+                      <div class="text-sm font-bold text-blue-700 text-xs mb-1">Repository Action</div>
+                      <div class="text-slate-600 text-xs">Save / Delete xuống DB</div>
+                  </div>
+                   <!-- Step 4: After Hook -->
+                   <div class="relative">
+                      <div class="absolute -left-[25px] top-0 w-4 h-4 rounded-full bg-purple-500 border-2 border-white shadow-sm ring-1 ring-purple-200"></div>
+                      <div class="text-sm font-bold text-purple-700 text-xs mb-1 bg-purple-50 inline-block px-2 py-0.5 rounded">HOOK: afterCreate/Update/Delete</div>
+                      <div class="text-slate-600 text-xs">Audit log, notification, trigger events...</div>
+                  </div>
+               </div>
+          </div>
+
+          <!-- Read Flow -->
+          <div class="bg-sky-50 rounded-xl p-6 border border-sky-200">
+               <h4 class="font-bold text-sky-800 mb-4 flex items-center">
+                  <span class="w-2 h-6 bg-sky-500 rounded-sm mr-2"></span>
+                  Luồng Đọc (Read)
+               </h4>
+               <div class="relative pl-4 border-l-2 border-sky-300 space-y-6">
+                  <!-- Step 1 -->
+                  <div class="relative">
+                      <div class="absolute -left-[23px] top-1 w-3 h-3 rounded-full bg-blue-500 border-2 border-white"></div>
+                      <div class="text-sm font-bold text-blue-700 text-xs mb-1">Repository.find...()</div>
+                      <div class="text-slate-600 text-xs">Lấy dữ liệu thô từ Database</div>
+                  </div>
+                   <!-- Step 2: After Entity Hook -->
+                  <div class="relative">
+                      <div class="absolute -left-[25px] top-0 w-4 h-4 rounded-full bg-sky-500 border-2 border-white shadow-sm ring-1 ring-sky-200"></div>
+                      <div class="text-sm font-bold text-sky-700 text-xs mb-1 bg-white inline-block px-2 py-0.5 rounded border border-sky-100">HOOK: afterReadEntity(entity)</div>
+                      <div class="text-slate-600 text-xs">Tính toán transient fields, filter nhạy cảm trên Entity...</div>
+                  </div>
+                   <!-- Step 3: Mapping -->
+                   <div class="relative">
+                      <div class="absolute -left-[23px] top-1 w-3 h-3 rounded-full bg-slate-400 border-2 border-white"></div>
+                      <div class="text-sm font-bold text-slate-500 text-xs mb-1">Map to DTO</div>
+                      <div class="text-slate-600 text-xs">Chuyển đổi Entity -> DTO</div>
+                  </div>
+                   <!-- Step 4: After DTO Hook -->
+                   <div class="relative">
+                      <div class="absolute -left-[25px] top-0 w-4 h-4 rounded-full bg-indigo-500 border-2 border-white shadow-sm ring-1 ring-indigo-200"></div>
+                      <div class="text-sm font-bold text-indigo-700 text-xs mb-1 bg-white inline-block px-2 py-0.5 rounded border border-indigo-100">HOOK: afterReadDto(dto)</div>
+                      <div class="text-slate-600 text-xs">Enrich data từ service khác, format dữ liệu cho FE...</div>
+                  </div>
+               </div>
+          </div>
         </div>
 
         <!-- Code Example -->
@@ -147,6 +178,7 @@
                  <h4 class="font-bold text-indigo-900 text-sm mb-2">Các Hook khả dụng:</h4>
                  <ul class="grid grid-cols-1 gap-2 text-xs font-mono text-indigo-800">
                     <li><span class="text-amber-600">beforeCreate</span> / <span class="text-purple-600">afterCreate</span></li>
+                    <li><span class="text-purple-600">afterReadEntity</span> / <span class="text-purple-600">afterReadDto</span></li>
                     <li><span class="text-amber-600">beforeUpdate</span> / <span class="text-purple-600">afterUpdate</span></li>
                     <li><span class="text-amber-600">beforeDelete</span> / <span class="text-purple-600">afterDelete</span></li>
                  </ul>

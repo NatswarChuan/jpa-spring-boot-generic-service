@@ -6,6 +6,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.lang.NonNull;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Lớp trừu tượng triển khai các thao tác cập nhật (Update) và lưu (Save).
@@ -29,6 +30,7 @@ public abstract class AbUpdateService<E, ID> extends AbCreateService<E, ID> impl
     /** {@inheritDoc} */
     @Override
     @SuppressWarnings("null")
+    @Transactional(rollbackFor = Exception.class)
     public E update(@NonNull E updateEntity, ID id) {
         this.findById(id);
         E entity = beforeUpdate(updateEntity);
@@ -39,6 +41,7 @@ public abstract class AbUpdateService<E, ID> extends AbCreateService<E, ID> impl
     /** {@inheritDoc} */
     @Override
     @SuppressWarnings("null")
+    @Transactional(rollbackFor = Exception.class)
     public E update(@NonNull E entity) {
         entity = beforeUpdate(entity);
         E savedEntity = repository.save(entity);
@@ -48,6 +51,7 @@ public abstract class AbUpdateService<E, ID> extends AbCreateService<E, ID> impl
     /** {@inheritDoc} */
     @Override
     @SuppressWarnings("null")
+    @Transactional(rollbackFor = Exception.class)
     public E save(@NonNull E entity) {
         entity = beforeUpdate(entity);
         E savedEntity = repository.save(entity);
@@ -57,6 +61,7 @@ public abstract class AbUpdateService<E, ID> extends AbCreateService<E, ID> impl
     /** {@inheritDoc} */
     @Override
     @SuppressWarnings("null")
+    @Transactional(rollbackFor = Exception.class)
     public <S extends IDto<E>> E update(@NonNull S updateEntity, @NonNull ID id) {
         E oldEntity = this.findById(id);
         E ent = updateEntity.updateEntity(oldEntity);
@@ -68,6 +73,7 @@ public abstract class AbUpdateService<E, ID> extends AbCreateService<E, ID> impl
     /** {@inheritDoc} */
     @Override
     @SuppressWarnings("null")
+    @Transactional(rollbackFor = Exception.class)
     public <S extends IDto<E>> S update(@NonNull Class<S> dtoClass, @NonNull E entity) {
         entity = beforeUpdate(entity);
         E savedEntity = repository.save(entity);
@@ -78,6 +84,7 @@ public abstract class AbUpdateService<E, ID> extends AbCreateService<E, ID> impl
     /** {@inheritDoc} */
     @Override
     @SuppressWarnings("null")
+    @Transactional(rollbackFor = Exception.class)
     public <S extends IDto<E>> S save(@NonNull Class<S> dtoClass, @NonNull E entity) {
         entity = beforeUpdate(entity);
         E savedEntity = repository.save(entity);
@@ -88,6 +95,7 @@ public abstract class AbUpdateService<E, ID> extends AbCreateService<E, ID> impl
     /** {@inheritDoc} */
     @Override
     @SuppressWarnings("null")
+    @Transactional(rollbackFor = Exception.class)
     public <S extends IDto<E>, T extends IDto<E>> S update(@NonNull Class<S> dtoClass, @NonNull T dto) {
         E entity = dto.toEntity();
         entity = beforeUpdate(entity);
@@ -99,6 +107,7 @@ public abstract class AbUpdateService<E, ID> extends AbCreateService<E, ID> impl
     /** {@inheritDoc} */
     @Override
     @SuppressWarnings("null")
+    @Transactional(rollbackFor = Exception.class)
     public <S extends IDto<E>, T extends IDto<E>> S save(@NonNull Class<S> dtoClass, @NonNull T dto) {
         E entity = dto.toEntity();
         entity = beforeUpdate(entity);
@@ -110,6 +119,7 @@ public abstract class AbUpdateService<E, ID> extends AbCreateService<E, ID> impl
     /** {@inheritDoc} */
     @Override
     @SuppressWarnings("null")
+    @Transactional(rollbackFor = Exception.class)
     public <RQ extends IDto<E>, RP extends IDto<E>> RP update(
             @NonNull RQ updateEntity, @NonNull ID id, @NonNull Class<RP> rsClass) {
         E oldEntity = this.findById(id);
@@ -123,6 +133,7 @@ public abstract class AbUpdateService<E, ID> extends AbCreateService<E, ID> impl
     /** {@inheritDoc} */
     @Override
     @SuppressWarnings("null")
+    @Transactional(rollbackFor = Exception.class)
     public <S extends IDto<E>> S update(@NonNull E updateEntity, @NonNull ID id, @NonNull Class<S> dtoClass) {
         this.findById(id);
         E entity = beforeUpdate(updateEntity);
@@ -133,6 +144,7 @@ public abstract class AbUpdateService<E, ID> extends AbCreateService<E, ID> impl
 
     /** {@inheritDoc} */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public List<E> update(@NonNull E updateEntity, @NonNull Specification<E> spec) {
         List<E> entities = specExecutor.findAll(spec);
         for (int i = 0; i < entities.size(); i++) {

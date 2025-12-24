@@ -42,7 +42,7 @@
     </div>
 
 
-    <div class="mb-8">
+    <div id="installation-maven" class="mb-8 scroll-mt-24">
       <h3 class="text-2xl font-bold text-slate-800 mb-4 flex items-center">
         <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">3.1</span>
         Cấu hình Maven/Gradle

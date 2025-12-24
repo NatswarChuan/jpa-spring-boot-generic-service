@@ -6,6 +6,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.lang.NonNull;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Lớp trừu tượng triển khai các thao tác xóa (Delete).
@@ -29,6 +30,7 @@ public abstract class AbDeleteService<E, ID> extends AbUpdateService<E, ID> impl
 
     /** {@inheritDoc} */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void delete(ID id) {
         E deleteEntity = this.findById(id);
         deleteEntity = beforeDelete(deleteEntity);
@@ -38,6 +40,7 @@ public abstract class AbDeleteService<E, ID> extends AbUpdateService<E, ID> impl
 
     /** {@inheritDoc} */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void delete(@NonNull E deleteEntity, @NonNull ID id) {
         E entity = this.findById(id);
         entity = beforeDelete(entity);
@@ -47,6 +50,7 @@ public abstract class AbDeleteService<E, ID> extends AbUpdateService<E, ID> impl
 
     /** {@inheritDoc} */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public <S extends IDto<E>> void delete(@NonNull S deleteEntity, @NonNull ID id) {
         E entity = this.findById(id);
         entity = beforeDelete(entity);
@@ -57,6 +61,7 @@ public abstract class AbDeleteService<E, ID> extends AbUpdateService<E, ID> impl
 
     /** {@inheritDoc} */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public <S extends IDto<E>> S delete(@NonNull Class<S> dtoClass, @NonNull E entity) {
         entity = beforeDelete(entity);
         repository.delete(entity);
@@ -66,6 +71,7 @@ public abstract class AbDeleteService<E, ID> extends AbUpdateService<E, ID> impl
 
     /** {@inheritDoc} */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public <S extends IDto<E>, T extends IDto<E>> S delete(@NonNull Class<S> dtoClass, @NonNull T dto) {
         E entity = dto.toEntity();
         entity = beforeDelete(entity);
@@ -76,6 +82,7 @@ public abstract class AbDeleteService<E, ID> extends AbUpdateService<E, ID> impl
 
     /** {@inheritDoc} */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public <S extends IDto<E>> S delete(@NonNull ID id, @NonNull Class<S> dtoClass) {
         E entity = findById(id);
         entity = beforeDelete(entity);
@@ -86,6 +93,7 @@ public abstract class AbDeleteService<E, ID> extends AbUpdateService<E, ID> impl
 
     /** {@inheritDoc} */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void delete(@NonNull Specification<E> spec) {
         List<E> entities = specExecutor.findAll(spec);
         for (int i = 0; i < entities.size(); i++) {

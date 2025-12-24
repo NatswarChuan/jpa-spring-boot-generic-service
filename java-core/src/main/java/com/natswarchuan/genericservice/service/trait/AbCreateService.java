@@ -4,6 +4,7 @@ import com.natswarchuan.genericservice.dto.IDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.lang.NonNull;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Lớp trừu tượng triển khai các thao tác tạo mới (Create).
@@ -27,6 +28,7 @@ public abstract class AbCreateService<E, ID> extends AbReadDetailService<E, ID> 
 
     /** {@inheritDoc} */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public E create(@NonNull E newEntity) {
         E entity = beforeCreate(newEntity);
         E savedEntity = repository.save(entity);
@@ -35,6 +37,7 @@ public abstract class AbCreateService<E, ID> extends AbReadDetailService<E, ID> 
 
     /** {@inheritDoc} */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public <S extends IDto<E>> E create(@NonNull S newEntity) {
         E ent = newEntity.toEntity();
         ent = beforeCreate(ent);
@@ -44,6 +47,7 @@ public abstract class AbCreateService<E, ID> extends AbReadDetailService<E, ID> 
 
     /** {@inheritDoc} */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public <S extends IDto<E>> S create(Class<S> dtoClass, @NonNull E entity) {
         entity = beforeCreate(entity);
         E savedEntity = repository.save(entity);
@@ -53,6 +57,7 @@ public abstract class AbCreateService<E, ID> extends AbReadDetailService<E, ID> 
 
     /** {@inheritDoc} */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public <D extends IDto<E>, S extends IDto<E>> D create(@NonNull S newEntity, @NonNull Class<D> dtoClass) {
         E ent = newEntity.toEntity();
         ent = beforeCreate(ent);
@@ -63,6 +68,7 @@ public abstract class AbCreateService<E, ID> extends AbReadDetailService<E, ID> 
 
     /** {@inheritDoc} */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public <S extends IDto<E>, T extends IDto<E>> S create(@NonNull Class<S> dtoClass, @NonNull T dto) {
         E entity = dto.toEntity();
         entity = beforeCreate(entity);

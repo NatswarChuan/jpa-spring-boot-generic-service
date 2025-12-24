@@ -1,7 +1,9 @@
 <template>
-  <section id="controller-layer" class="scroll-mt-20 mb-16">
-    <h2 class="text-3xl font-bold text-slate-900 border-b pb-4 mb-8">8. Tầng Controller</h2>
-    <p class="text-slate-600 italic mb-6">Định nghĩa API endpoint và các trait hỗ trợ.</p>
+  <section class="mb-16">
+    <div id="controller-layer" class="scroll-mt-20">
+      <h2 class="text-3xl font-bold text-slate-900 border-b pb-4 mb-8">8. Tầng Controller</h2>
+      <p class="text-slate-600 italic mb-6">Định nghĩa API endpoint và các trait hỗ trợ.</p>
+    </div>
 
     <article id="controller-hierarchy" class="mb-10 scroll-mt-24">
       <h3 class="text-xl font-bold text-slate-800 mb-3">

@@ -72,7 +72,7 @@ const sections = ref([
     id: 'installation', title: '3. Cài đặt & Cấu hình', component: 'InstallationSection',
     content: 'Maven Central, tích hợp dự án, repository',
     subs: [
-      { id: 'installation', title: '3.1. Cấu hình Maven/Gradle', content: 'dependency, pom.xml, build.gradle' },
+      { id: 'installation-maven', title: '3.1. Cấu hình Maven/Gradle', content: 'dependency, pom.xml, build.gradle' },
       { id: 'installation-local', title: '3.2. Môi trường Local', content: 'mvn clean install' },
       { id: 'installation-config', title: '3.3. Cấu hình Ứng dụng', content: 'Package Scanning, scanBasePackages' }
     ]
@@ -147,7 +147,7 @@ const sections = ref([
     subs: [
       { id: 'api-read', title: '12.1. Thao tác Đọc (Read)', content: 'findById, findOne, findAll' },
       { id: 'api-write', title: '12.2. Thao tác Ghi (Write)', content: 'create, update, save, delete' },
-      { id: 'api-hooks', title: '12.3. Service Hooks', content: 'beforeCreate, afterCreate, beforeUpdate' }
+      { id: 'api-hooks', title: '12.3. Service Hooks', content: 'beforeCreate, afterCreate, beforeUpdate, afterReadEntity, afterReadDto' }
     ]
   },
   {
@@ -203,27 +203,7 @@ const handleHashChange = () => {
   }
 };
 
-onMounted(() => {
-  window.addEventListener('hashchange', handleHashChange);
-  handleHashChange();
-  setupObserver();
 
-
-  const mainEl = document.querySelector('main');
-  if (mainEl) {
-    mutationObserver = new MutationObserver(() => {
-
-      setupObserver();
-    });
-    mutationObserver.observe(mainEl, { childList: true, subtree: true });
-  }
-});
-
-onUnmounted(() => {
-  window.removeEventListener('hashchange', handleHashChange);
-  if (observer) observer.disconnect();
-  if (mutationObserver) mutationObserver.disconnect();
-});
 
 watch(() => currentSectionIndex.value, () => {
   activeId.value = currentSection.value.id;
@@ -248,6 +228,8 @@ const setupObserver = () => {
 
 
   observer = new IntersectionObserver((entries) => {
+    // If navigation lock is active, ignore observer updates to prevent jumping back
+    if (isNavigating.value) return;
 
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -316,4 +298,87 @@ const goToPreviousSection = () => {
 
 const toggleSidebar = () => isSidebarOpen.value = !isSidebarOpen.value;
 const closeSidebar = () => isSidebarOpen.value = false;
+
+const isNavigating = ref(false);
+
+// Keyboard Navigation
+const flatNavigationList = computed(() => {
+  const list = [];
+  sections.value.forEach(section => {
+    // Top-level section
+    list.push({ id: section.id, sectionId: section.id, isSub: false });
+    // Subsections
+    if (section.subs && section.subs.length > 0) {
+      section.subs.forEach(sub => {
+        list.push({ id: sub.id, sectionId: section.id, isSub: true });
+      });
+    }
+  });
+  return list;
+});
+
+const handleKeydown = (e) => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+    navigate(e.key === 'ArrowRight' ? 1 : -1);
+  }
+};
+
+const navigate = (direction) => {
+  const currentId = activeId.value || sections.value[currentSectionIndex.value].id;
+  const currentIndex = flatNavigationList.value.findIndex(item => item.id === currentId);
+
+  if (currentIndex === -1) return;
+
+  const targetIndex = currentIndex + direction;
+  
+  // Boundary checks
+  if (targetIndex < 0 || targetIndex >= flatNavigationList.value.length) return;
+
+  const targetItem = flatNavigationList.value[targetIndex];
+  const currentItem = flatNavigationList.value[currentIndex];
+
+  // Set navigation lock
+  isNavigating.value = true;
+  activeId.value = targetItem.id; // Force update UI immediately
+
+  // Unlock after animation
+  setTimeout(() => {
+    isNavigating.value = false;
+  }, 800);
+
+  if (targetItem.sectionId === currentItem.sectionId) {
+    // Same section: scroll smoothly
+    const el = document.getElementById(targetItem.id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  } else {
+    // Different section: use hash to navigate
+    window.location.hash = targetItem.id;
+  }
+};
+
+onMounted(() => {
+  window.addEventListener('keydown', handleKeydown);
+  window.addEventListener('hashchange', handleHashChange);
+  handleHashChange();
+  setupObserver();
+
+
+  const mainEl = document.querySelector('main');
+  if (mainEl) {
+    mutationObserver = new MutationObserver(() => {
+
+      setupObserver();
+    });
+    mutationObserver.observe(mainEl, { childList: true, subtree: true });
+  }
+});
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeydown);
+  window.removeEventListener('hashchange', handleHashChange);
+  if (observer) observer.disconnect();
+  if (mutationObserver) mutationObserver.disconnect();
+});
 </script>
