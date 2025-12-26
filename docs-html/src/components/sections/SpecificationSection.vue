@@ -51,7 +51,12 @@ GET /api/products?page=0&size=20&sort=price&dir=desc&search=iphone&searchField=n
       <CodeBlock filename="ProductRequestParam.java" :code="customParamCode" />
 
       <!-- Step 2 -->
-      <h4 class="font-bold text-slate-700 mt-6 mb-2">Bước 2: Override Controller</h4>
+      <h4 class="font-bold text-slate-700 mt-6 mb-2">Bước 2: Triển khai Custom Specification</h4>
+      <p class="text-sm text-slate-600 mb-2">Tạo class <code>ProductSpecification</code> kế thừa <code>GenericSpecification</code> để xử lý logic filter chuyên sâu.</p>
+      <CodeBlock filename="ProductSpecification.java" :code="productSpecCode" />
+
+      <!-- Step 3 -->
+      <h4 class="font-bold text-slate-700 mt-6 mb-2">Bước 3: Override Controller</h4>
       <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4 text-sm text-yellow-800">
         <strong>Lưu ý quan trọng:</strong> Bạn bắt buộc phải override hàm <code>findAll</code> để Spring có thể map đúng class <code>ProductRequestParam</code> của bạn thay vì lớp cha.
       </div>
@@ -77,6 +82,52 @@ public class ProductFilterParam extends BaseRequestParam {
     private Double maxPrice;
     private String brandName; // Lọc theo tên Brand (Join)
     // Các field khác: modelId, categoryId...
+}
+`);
+
+const productSpecCode = ref(`package com.example.demo.specification;
+
+import com.example.demo.domain.Brand;
+import com.example.demo.domain.Product;
+import com.example.demo.dto.product.ProductFilterParam;
+import com.natswarchuan.genericservice.specification.GenericSpecification;
+import jakarta.persistence.criteria.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ProductSpecification extends GenericSpecification<Product> {
+
+    private final ProductFilterParam productParam;
+
+    public ProductSpecification(ProductFilterParam requestParam) {
+        super(requestParam);
+        this.productParam = requestParam;
+    }
+
+    @Override
+    public Predicate toPredicate(Root<Product> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+        // 1. Reuse logic default
+        Predicate basePredicate = super.toPredicate(root, query, cb);
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(basePredicate);
+
+        // 2. Custom logic: Price Range
+        if (productParam.getMinPrice() != null) {
+            predicates.add(cb.greaterThanOrEqualTo(root.get("price"), productParam.getMinPrice()));
+        }
+        if (productParam.getMaxPrice() != null) {
+            predicates.add(cb.lessThanOrEqualTo(root.get("price"), productParam.getMaxPrice()));
+        }
+
+        // 3. Custom logic: Join Brand
+        if (productParam.getBrandName() != null && !productParam.getBrandName().isEmpty()) {
+            Join<Product, Brand> brandJoin = root.join("brand", JoinType.INNER);
+            predicates.add(cb.like(cb.lower(brandJoin.get("name")), 
+                "%" + productParam.getBrandName().toLowerCase() + "%"));
+        }
+
+        return cb.and(predicates.toArray(new Predicate[0]));
+    }
 }
 `);
 

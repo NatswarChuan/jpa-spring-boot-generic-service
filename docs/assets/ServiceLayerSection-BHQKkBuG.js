@@ -1,4 +1,4 @@
-import{_ as l}from"./CodeBlock-CUrVyKBF.js";import{f as a,c as o,o as n,b as t,a as s,e as i,d as c}from"./index-ByupLFOq.js";const p={id:"service-layer",class:"scroll-mt-20 mb-16"},b={id:"core-service",class:"mb-10 scroll-mt-24"},x={class:"bg-slate-50 rounded-lg p-5 border border-slate-200 font-mono text-sm overflow-x-auto"},m={id:"service-hooks",class:"mb-10 scroll-mt-24"},v={class:"grid grid-cols-1 lg:grid-cols-2 gap-8 mb-6"},u={class:"space-y-4"},w={__name:"ServiceLayerSection",setup(g){const r=a(`package com.example.demo.service;
+import{_ as l}from"./CodeBlock-Buf5vUgz.js";import{f as a,c as o,o as n,b as t,a as s,e as i,d as c}from"./index-dSggIF9O.js";const p={id:"service-layer",class:"scroll-mt-20 mb-16"},b={id:"core-service",class:"mb-10 scroll-mt-24"},x={class:"bg-slate-50 rounded-lg p-5 border border-slate-200 font-mono text-sm overflow-x-auto"},m={id:"service-hooks",class:"mb-10 scroll-mt-24"},v={class:"grid grid-cols-1 lg:grid-cols-2 gap-8 mb-6"},u={class:"space-y-4"},w={__name:"ServiceLayerSection",setup(g){const r=a(`package com.example.demo.service;
 
 import com.example.demo.domain.Product;
 import com.example.demo.repository.ProductRepository;

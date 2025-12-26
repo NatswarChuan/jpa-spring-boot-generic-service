@@ -1,4 +1,4 @@
-import{_ as o}from"./CodeBlock-CUrVyKBF.js";import{f as a,c as d,o as c,b as t,a as s,e as r,d as l}from"./index-ByupLFOq.js";const p={id:"core-entity-repo",class:"scroll-mt-20 mb-16"},m={id:"core-entity",class:"mb-10 scroll-mt-24"},b={id:"core-repo",class:"mb-10 scroll-mt-24"},v={__name:"EntityRepositorySection",setup(u){const i=a(`package com.example.demo.domain;
+import{_ as o}from"./CodeBlock-Buf5vUgz.js";import{f as a,c as d,o as c,b as t,a as s,e as r,d as l}from"./index-dSggIF9O.js";const p={id:"core-entity-repo",class:"scroll-mt-20 mb-16"},m={id:"core-entity",class:"mb-10 scroll-mt-24"},b={id:"core-repo",class:"mb-10 scroll-mt-24"},v={__name:"EntityRepositorySection",setup(u){const i=a(`package com.example.demo.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
