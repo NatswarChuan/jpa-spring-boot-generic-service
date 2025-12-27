@@ -1,11 +1,16 @@
 <template>
   <aside class="w-full md:w-72 bg-white border-r border-slate-200 h-screen sticky top-0 z-40 hidden md:flex md:flex-col"
     id="sidebar">
-    <div class="p-6 border-b border-slate-100 bg-white flex-shrink-0">
+    <div class="p-6 border-b border-slate-100 bg-white flex-shrink-0 flex justify-between items-center">
       <h1 class="text-xl font-bold text-slate-800 flex items-center">
         <i class="fas fa-cube text-blue-500 mr-2"></i>
-        Generic Service
+        {{ $t('app.title') }}
       </h1>
+      <button @click="toggleLanguage"
+        class="text-xs font-semibold text-blue-600 hover:text-blue-800 border border-blue-200 px-2 py-1 rounded bg-slate-50 hover:bg-white shadow-sm transition-colors"
+        title="Switch Language">
+        {{ locale === 'en' ? 'VN' : 'EN' }}
+      </button>
     </div>
 
     <div class="px-4 py-3 border-b border-slate-100">
@@ -13,7 +18,7 @@
         <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
           <i class="fas fa-search text-slate-400 text-xs"></i>
         </span>
-        <input v-model="searchQuery" type="text" placeholder="Tìm kiếm..."
+        <input v-model="searchQuery" type="text" :placeholder="$t('app.search_placeholder')"
           class="block w-full pl-9 pr-3 py-2 border border-slate-200 rounded-md leading-5 bg-slate-50 text-sm placeholder-slate-400 focus:outline-none focus:bg-white focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-all font-sans" />
       </div>
     </div>
@@ -50,7 +55,7 @@
 
     <!-- Author Footer -->
     <div class="p-4 border-t border-slate-100 bg-slate-50 text-xs text-slate-500 text-center flex-shrink-0">
-      <p>Tác giả: <strong class="text-slate-700">NatswarChuan</strong></p>
+      <p>{{ $t('app.author') }}: <strong class="text-slate-700">NatswarChuan</strong></p>
       <p class="mt-1 opacity-75">&copy; 2025 Generic Service</p>
     </div>
   </aside>
@@ -58,6 +63,13 @@
 
 <script setup>
 import { ref, watch, onMounted, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+const { t, locale } = useI18n();
+
+const toggleLanguage = () => {
+  locale.value = locale.value === 'en' ? 'vi' : 'en';
+};
 
 const props = defineProps({
   sections: Array,

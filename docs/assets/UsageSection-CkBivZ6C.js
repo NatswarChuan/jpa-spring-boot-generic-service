@@ -1,49 +1,4 @@
-<template>
-  <section id="dtos" class="scroll-mt-20 mb-16">
-    <h2 class="text-3xl font-bold text-slate-900 border-b pb-4 mb-8">{{ $t('dtos.title') }}</h2>
-    <p class="text-slate-600 italic mb-6">{{ $t('dtos.subtitle') }}</p>
-    
-    <article id="dto-request" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-3">
-        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">6.1</span>
-        {{ $t('dtos.req.title') }}
-      </h3>
-      <p class="text-slate-600 mb-3">{{ $t('dtos.req.desc') }}</p>
-      <CodeBlock filename="ProductCreateReq.java" :code="createReqCode" />
-      <CodeBlock filename="ProductUpdateReq.java" :code="updateReqCode" />
-    </article>
-
-    <article id="dto-response" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-3">
-        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">6.2</span>
-        {{ $t('dtos.res.title') }}
-      </h3>
-      <p class="text-slate-600 mb-3">{{ $t('dtos.res.desc') }}</p>
-      <CodeBlock filename="ProductResponse.java" :code="resCode" />
-
-      <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4 mt-4 text-sm text-blue-800 shadow-sm" v-html="$t('dtos.res.tips')"></div>
-    </article>
-
-    <article id="dto-i18n" class="mb-10 scroll-mt-24">
-      <h3 class="text-xl font-bold text-slate-800 mb-3">
-        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">6.3</span>
-        {{ $t('dtos.i18n.title') }}
-      </h3>
-      <p class="text-slate-600 mb-3" v-html="$t('dtos.i18n.desc')"></p>
-      <CodeBlock filename="ProductResponse.java" :code="i18nCode" />
-    </article>
-
-  </section>
-</template>
-
-<script setup>
-import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
-import CodeBlock from '../CodeBlock.vue';
-
-const { t } = useI18n();
-
-const createReqCode = computed(() => `package com.example.demo.dto.product;
+import{u,e as i,c as g,o as b,a as t,t as o,f as r,b as c}from"./index-tzEnmmga.js";import{_ as l}from"./CodeBlock-43NKrjhX.js";const v={id:"dtos",class:"scroll-mt-20 mb-16"},x={class:"text-3xl font-bold text-slate-900 border-b pb-4 mb-8"},y={class:"text-slate-600 italic mb-6"},h={id:"dto-request",class:"mb-10 scroll-mt-24"},_={class:"text-xl font-bold text-slate-800 mb-3"},I={class:"text-slate-600 mb-3"},f={id:"dto-response",class:"mb-10 scroll-mt-24"},D={class:"text-xl font-bold text-slate-800 mb-3"},P={class:"text-slate-600 mb-3"},C=["innerHTML"],S={id:"dto-i18n",class:"mb-10 scroll-mt-24"},B={class:"text-xl font-bold text-slate-800 mb-3"},$=["innerHTML"],k={__name:"UsageSection",setup(E){const{t:a}=u(),d=i(()=>`package com.example.demo.dto.product;
 
 import java.math.BigDecimal;
 import java.util.Set;
@@ -78,7 +33,7 @@ public class ProductCreateReq implements IDto<Product> {
     @IdsExist(entity = Category.class, message = "Given categories do not exist")
     private Set<Long> categoryIds;
 
-    ${t('dtos.code.comment_convert')}
+    ${a("dtos.code.comment_convert")}
     @Override
     public Product toEntity() {
         Product product = new Product();
@@ -92,9 +47,7 @@ public class ProductCreateReq implements IDto<Product> {
         return product;
     }
 }
-`);
-
-const updateReqCode = computed(() => `package com.example.demo.dto.product;
+`),n=i(()=>`package com.example.demo.dto.product;
 
 import java.math.BigDecimal;
 import java.util.Set;
@@ -125,7 +78,7 @@ public class ProductUpdateReq implements IDto<Product> {
 
     @Override
     public Product updateEntity(Product entity) {
-        ${t('dtos.code.comment_update')}
+        ${a("dtos.code.comment_update")}
         if (this.categoryIds != null) {
             Set<Category> categories = this.categoryIds.stream()
                     .map(id -> Category.builder().id(id).build())
@@ -135,9 +88,7 @@ public class ProductUpdateReq implements IDto<Product> {
         return entity;
     }
 }
-`);
-
-const resCode = computed(() => `package com.example.demo.dto.product;
+`),m=i(()=>`package com.example.demo.dto.product;
 
 import java.math.BigDecimal;
 import com.example.demo.domain.Product;
@@ -150,15 +101,12 @@ public class ProductRes implements IDto<Product> {
     private String name;
     private BigDecimal price;
 
-    ${t('dtos.code.comment_auto')}
+    ${a("dtos.code.comment_auto")}
 }
-`);
-
-const i18nCode = computed(() => `${t('dtos.code.comment_i18n')}
+`),p=i(()=>`${a("dtos.code.comment_i18n")}
 @Override
 public void fromEntity(Product entity, String language) {
     IDto.super.fromEntity(entity, language);
     // ...
 }
-`);
-</script>
+`);return(e,s)=>(b(),g("section",v,[t("h2",x,o(e.$t("dtos.title")),1),t("p",y,o(e.$t("dtos.subtitle")),1),t("article",h,[t("h3",_,[s[0]||(s[0]=t("span",{class:"bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3"},"6.1",-1)),c(" "+o(e.$t("dtos.req.title")),1)]),t("p",I,o(e.$t("dtos.req.desc")),1),r(l,{filename:"ProductCreateReq.java",code:d.value},null,8,["code"]),r(l,{filename:"ProductUpdateReq.java",code:n.value},null,8,["code"])]),t("article",f,[t("h3",D,[s[1]||(s[1]=t("span",{class:"bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3"},"6.2",-1)),c(" "+o(e.$t("dtos.res.title")),1)]),t("p",P,o(e.$t("dtos.res.desc")),1),r(l,{filename:"ProductResponse.java",code:m.value},null,8,["code"]),t("div",{class:"bg-blue-50 border-l-4 border-blue-500 p-4 mb-4 mt-4 text-sm text-blue-800 shadow-sm",innerHTML:e.$t("dtos.res.tips")},null,8,C)]),t("article",S,[t("h3",B,[s[2]||(s[2]=t("span",{class:"bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3"},"6.3",-1)),c(" "+o(e.$t("dtos.i18n.title")),1)]),t("p",{class:"text-slate-600 mb-3",innerHTML:e.$t("dtos.i18n.desc")},null,8,$),r(l,{filename:"ProductResponse.java",code:p.value},null,8,["code"])])]))}};export{k as default};

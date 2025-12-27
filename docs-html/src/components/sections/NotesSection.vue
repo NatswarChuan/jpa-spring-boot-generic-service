@@ -1,69 +1,64 @@
 <template>
   <section id="notes" class="scroll-mt-20 mb-16">
-    <h2 class="text-3xl font-bold text-slate-900 border-b pb-4 mb-8">13. Lưu ý Quan trọng</h2>
-    <p class="text-slate-600 mb-6 italic">Các lưu ý quan trọng để sử dụng framework hiệu quả và tránh các lỗi thường gặp.</p>
-    
-    <!-- 12.1 Modularity Strategy (Tips) -->
+    <h2 class="text-3xl font-bold text-slate-900 border-b pb-4 mb-8">{{ $t('notes.title') }}</h2>
+    <p class="text-slate-600 mb-6 italic">{{ $t('notes.subtitle') }}</p>
+
+    <!-- 13.1 Modularity Strategy (Tips) -->
     <article id="notes-modularity" class="mb-10 scroll-mt-24">
       <h3 class="text-xl font-bold text-slate-800 mb-3">
         <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">13.1</span>
-        Chiến lược Module hóa
+        {{ $t('notes.modularity.title') }}
       </h3>
-      <p class="text-slate-600 mb-6">
-        Thay vì tạo ra các "God Class" khổng lồ, hãy áp dụng chiến lược <strong>"Right-sizing"</strong> (dùng đủ chức năng) cho cả Controller và Service.
-      </p>
+      <p class="text-slate-600 mb-6" v-html="$t('notes.modularity.desc')"></p>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <!-- Controller Tip -->
         <div class="bg-white border border-slate-200 rounded-lg p-5 shadow-sm hover:border-blue-400 transition-colors">
-            <h4 class="font-bold text-slate-800 mb-2 flex items-center">
-                <i class="fas fa-gamepad text-blue-600 mr-2"></i> Controller Layer
-            </h4>
-            <p class="text-sm text-slate-600 mb-4">
-                Dùng cơ chế <strong>Traits (Interface)</strong> để lắp ghép API.
-            </p>
-            <div class="bg-slate-50 p-3 rounded text-xs font-mono text-slate-700 mb-3 border border-slate-200">
-                public class MyCtrl implements <span class="font-bold text-blue-600">IReadController</span>, <span class="font-bold text-purple-600">ICreateController</span> {...}
-            </div>
-            <a href="#controller-traits" class="text-xs font-bold text-blue-600 hover:underline">
-                Xem Menu Traits tại Section 8.3 <i class="fas fa-arrow-right ml-1"></i>
-            </a>
+          <h4 class="font-bold text-slate-800 mb-2 flex items-center">
+            <i class="fas fa-gamepad text-blue-600 mr-2"></i> {{ $t('notes.modularity.controller_title') }}
+          </h4>
+          <p class="text-sm text-slate-600 mb-4" v-html="$t('notes.modularity.controller_desc')"></p>
+          <div class="bg-slate-50 p-3 rounded text-xs font-mono text-slate-700 mb-3 border border-slate-200">
+            public class MyCtrl implements <span class="font-bold text-blue-600">IReadController</span>, <span
+              class="font-bold text-purple-600">ICreateController</span> {...}
+          </div>
+          <a href="#controller-traits" class="text-xs font-bold text-blue-600 hover:underline">
+            {{ $t('notes.modularity.controller_link') }} <i class="fas fa-arrow-right ml-1"></i>
+          </a>
         </div>
 
         <!-- Service Tip -->
         <div class="bg-white border border-slate-200 rounded-lg p-5 shadow-sm hover:border-amber-400 transition-colors">
-            <h4 class="font-bold text-slate-800 mb-2 flex items-center">
-                <i class="fas fa-cogs text-amber-600 mr-2"></i> Service Layer
-            </h4>
-            <p class="text-sm text-slate-600 mb-4">
-                Chọn đúng <strong>Base Class</strong> để giới hạn quyền truy cập DB.
-            </p>
-            <div class="bg-slate-50 p-3 rounded text-xs font-mono text-slate-700 mb-3 border border-slate-200">
-                public class MyService extends <span class="font-bold text-amber-600">AbReadDetailService</span> {...}
-            </div>
-             <a href="#core-service" class="text-xs font-bold text-amber-600 hover:underline">
-                Xem Base Class Selector tại Section 7.1 <i class="fas fa-arrow-right ml-1"></i>
-            </a>
+          <h4 class="font-bold text-slate-800 mb-2 flex items-center">
+            <i class="fas fa-cogs text-amber-600 mr-2"></i> {{ $t('notes.modularity.service_title') }}
+          </h4>
+          <p class="text-sm text-slate-600 mb-4" v-html="$t('notes.modularity.service_desc')"></p>
+          <div class="bg-slate-50 p-3 rounded text-xs font-mono text-slate-700 mb-3 border border-slate-200">
+            public class MyService extends <span class="font-bold text-amber-600">AbReadDetailService</span> {...}
+          </div>
+          <a href="#core-service" class="text-xs font-bold text-amber-600 hover:underline">
+            {{ $t('notes.modularity.service_link') }} <i class="fas fa-arrow-right ml-1"></i>
+          </a>
         </div>
       </div>
     </article>
 
-    <!-- 12.2 Advanced Patterns -->
+    <!-- 13.2 Advanced Patterns -->
     <article id="notes-advanced" class="mb-10 scroll-mt-24">
       <h3 class="text-xl font-bold text-slate-800 mb-3">
         <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">13.2</span>
-        Mẫu Sử dụng Nâng cao
+        {{ $t('notes.advanced.title') }}
       </h3>
-      <p class="text-slate-600 mb-6">Tận dụng tối đa sức mạnh của kế thừa và generic để xây dựng hệ thống linh hoạt.</p>
+      <p class="text-slate-600 mb-6">{{ $t('notes.advanced.desc') }}</p>
 
       <div class="space-y-6">
         <!-- Composite Service -->
         <div class="bg-indigo-50 p-6 rounded-lg border-l-4 border-indigo-500 shadow-sm">
           <h4 class="text-lg font-bold text-indigo-800 mb-2">
-            <i class="fas fa-layer-group mr-2"></i>Composite Service (Aggregator)
+            <i class="fas fa-layer-group mr-2"></i>{{ $t('notes.advanced.composite.title') }}
           </h4>
           <p class="text-sm text-indigo-700 mb-4">
-            Đừng cố nhồi nhét mọi thứ vào một Generic Service. Hãy tạo một Service "Điều phối" (Aggregator) để gọi nhiều Service generic khác nhau.
+            {{ $t('notes.advanced.composite.desc') }}
           </p>
           <CodeBlock filename="OrderService.java" :code="compositeServiceCode" />
         </div>
@@ -71,22 +66,22 @@
         <!-- Soft Delete -->
         <div class="bg-pink-50 p-6 rounded-lg border-l-4 border-pink-500 shadow-sm">
           <h4 class="text-lg font-bold text-pink-800 mb-2">
-            <i class="fas fa-trash-restore mr-2"></i>Global Soft Delete Logic
+            <i class="fas fa-trash-restore mr-2"></i>{{ $t('notes.advanced.soft_delete.title') }}
           </h4>
           <p class="text-sm text-pink-700 mb-4">
-            Triển khai xóa mềm (không xóa vật lý khỏi DB) theo hai cách phổ biến:
+            {{ $t('notes.advanced.soft_delete.desc') }}
           </p>
-          
+
           <div class="space-y-4">
             <div>
-              <h5 class="font-bold text-pink-900 mb-2 text-sm">Cách 1: Override tại Service Layer</h5>
-              <p class="text-xs text-pink-600 mb-2">Phù hợp khi bạn muốn kiểm soát logic xóa tập trung tại Service.</p>
+              <h5 class="font-bold text-pink-900 mb-2 text-sm">{{ $t('notes.advanced.soft_delete.method1_title') }}</h5>
+              <p class="text-xs text-pink-600 mb-2">{{ $t('notes.advanced.soft_delete.method1_desc') }}</p>
               <CodeBlock filename="BaseAppService.java" :code="softDeleteCode" />
             </div>
-            
+
             <div>
-              <h5 class="font-bold text-pink-900 mb-2 text-sm">Cách 2: Sử dụng Hibernate Annotation tại Entity</h5>
-              <p class="text-xs text-pink-600 mb-2">Trong suốt (transparent), tự động áp dụng cho tất cả các câu query (Find, List, v.v.).</p>
+              <h5 class="font-bold text-pink-900 mb-2 text-sm">{{ $t('notes.advanced.soft_delete.method2_title') }}</h5>
+              <p class="text-xs text-pink-600 mb-2">{{ $t('notes.advanced.soft_delete.method2_desc') }}</p>
               <CodeBlock filename="BaseEntity.java" :code="hibernateSoftDeleteCode" />
             </div>
           </div>
@@ -95,71 +90,69 @@
         <!-- Complex Dynamic Filtering -->
         <div class="bg-emerald-50 p-6 rounded-lg border-l-4 border-emerald-500 shadow-sm">
           <h4 class="text-lg font-bold text-emerald-800 mb-2">
-            <i class="fas fa-filter mr-2"></i>Complex Dynamic Filtering (Full Spec)
+            <i class="fas fa-filter mr-2"></i>{{ $t('notes.advanced.filter.title') }}
           </h4>
-          <p class="text-sm text-emerald-700 mb-4">
-            Khi cần lọc nâng cao (khoảng giá, join bảng phức tạp), hãy kết hợp <code>Custom Param</code> và <code>Custom Specification</code>.
-          </p>
+          <p class="text-sm text-emerald-700 mb-4" v-html="$t('notes.advanced.filter.desc')"></p>
           <CodeBlock filename="FilteringImplementation.java" :code="complexFilterCode" />
         </div>
       </div>
     </article>
 
-    <!-- 12.3 Best Practices -->
+    <!-- 13.3 Best Practices -->
     <article id="notes-best-practices" class="mb-10 scroll-mt-24">
       <h3 class="text-xl font-bold text-slate-800 mb-3">
         <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">13.3</span>
-        Thực hành Tốt nhất
+        {{ $t('notes.best_practices.title') }}
       </h3>
-      
+
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <div class="bg-blue-50 p-6 rounded-lg border-l-4 border-blue-500 shadow-sm">
           <h4 class="text-lg font-bold text-blue-800 mb-2">
-            <i class="fas fa-exclamation-triangle mr-2"></i>DTO Constructor
+            <i class="fas fa-exclamation-triangle mr-2"></i>{{ $t('notes.best_practices.constructor_title') }}
           </h4>
-          <p class="text-sm text-blue-700">
-            Tất cả DTO bắt buộc phải có <strong>Public No-Args Constructor</strong> để Reflection hoạt động.
-          </p>
+          <p class="text-sm text-blue-700" v-html="$t('notes.best_practices.constructor_desc')"></p>
         </div>
 
         <div class="bg-yellow-50 p-6 rounded-lg border-l-4 border-yellow-500 shadow-sm">
           <h4 class="text-lg font-bold text-yellow-800 mb-2">
-            <i class="fas fa-code-branch mr-2"></i>Override Method
+            <i class="fas fa-code-branch mr-2"></i>{{ $t('notes.best_practices.override_title') }}
           </h4>
           <ul class="text-sm text-yellow-800 list-disc list-inside">
-            <li><strong>CreateReq:</strong> override <code>toEntity()</code></li>
-            <li><strong>UpdateReq:</strong> override <code>updateEntity()</code></li>
-            <li><strong>Response:</strong> override <code>fromEntity()</code></li>
+            <li v-html="$t('notes.best_practices.override_create')"></li>
+            <li v-html="$t('notes.best_practices.override_update')"></li>
+            <li v-html="$t('notes.best_practices.override_res')"></li>
           </ul>
         </div>
       </div>
 
-       <div class="bg-white border border-slate-200 rounded-lg p-6 shadow-sm mb-6">
-          <h4 class="text-lg font-bold text-slate-800 mb-3"><i class="fas fa-lightbulb text-yellow-500 mr-2"></i>Mẹo Tối ưu (Optimization Tips)</h4>
-          <ul class="list-disc list-inside text-slate-600 space-y-2">
-            <li>Đánh index cho các cột <code>@JoinColumn</code>.</li>
-            <li>Luôn dùng <code>FetchType.LAZY</code> cho quan hệ To-Many.</li>
-          </ul>
-       </div>
+      <div class="bg-white border border-slate-200 rounded-lg p-6 shadow-sm mb-6">
+        <h4 class="text-lg font-bold text-slate-800 mb-3"><i class="fas fa-lightbulb text-yellow-500 mr-2"></i>{{
+          $t('notes.best_practices.optimization_title') }}</h4>
+        <ul class="list-disc list-inside text-slate-600 space-y-2">
+          <li v-html="$t('notes.best_practices.opt_index')"></li>
+          <li v-html="$t('notes.best_practices.opt_lazy')"></li>
+        </ul>
+      </div>
     </article>
 
-    <!-- 12.4 Troubleshooting -->
+    <!-- 13.4 Troubleshooting -->
     <article id="notes-troubleshooting" class="mb-10 scroll-mt-24">
       <h3 class="text-xl font-bold text-slate-800 mb-3">
         <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">13.4</span>
-        Xử lý Sự cố
+        {{ $t('notes.troubleshooting.title') }}
       </h3>
 
       <!-- N+1 Solution -->
       <div class="bg-white border border-slate-200 rounded-lg p-6 shadow-sm mb-6">
-        <h4 class="text-lg font-bold text-slate-800 mb-3 text-red-600"><i class="fas fa-bug mr-2"></i>Vấn đề N+1 Query</h4>
+        <h4 class="text-lg font-bold text-slate-800 mb-3 text-red-600"><i class="fas fa-bug mr-2"></i>{{
+          $t('notes.troubleshooting.n1_title') }}</h4>
         <div class="space-y-4">
           <div class="p-4 bg-slate-50 rounded border border-slate-200">
-            <h5 class="font-bold text-slate-700 mb-2 text-sm">Cách 1: Sử dụng EntityGraph</h5>
+            <h5 class="font-bold text-slate-700 mb-2 text-sm">{{ $t('notes.troubleshooting.n1_method1') }}</h5>
             <CodeBlock filename="UserRepository.java" :code="n1FixCode1" />
           </div>
           <div class="p-4 bg-slate-50 rounded border border-slate-200">
-            <h5 class="font-bold text-slate-700 mb-2 text-sm">Cách 2: Sử dụng Specification fetch</h5>
+            <h5 class="font-bold text-slate-700 mb-2 text-sm">{{ $t('notes.troubleshooting.n1_method2') }}</h5>
             <CodeBlock filename="UserController.java" :code="n1FixCode2" />
           </div>
         </div>
@@ -168,12 +161,12 @@
       <!-- Over-fetching Solution -->
       <div class="bg-white border border-slate-200 rounded-lg p-6 shadow-sm">
         <h4 class="text-lg font-bold text-slate-800 mb-3 text-orange-600">
-          <i class="fas fa-weight-hanging mr-2"></i>Vấn đề Over-fetching (Lấy dư dữ liệu)
+          <i class="fas fa-weight-hanging mr-2"></i>{{ $t('notes.troubleshooting.over_fetching_title') }}
         </h4>
         <div class="space-y-6">
           <div class="p-4 bg-orange-50 rounded border border-orange-200">
             <h5 class="font-bold text-orange-800 mb-2 text-sm">
-              Tách bảng vật lý (OneToOne Lazy)
+              {{ $t('notes.troubleshooting.over_fetching_method') }}
             </h5>
             <CodeBlock filename="User.java" :code="overFetchingOneToOne" />
           </div>
@@ -184,18 +177,21 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import CodeBlock from '../CodeBlock.vue';
 
-const readOnlyControllerCode = ref(`@RestController
+const { t } = useI18n();
+
+const readOnlyControllerCode = computed(() => `@RestController
 @RequestMapping("/api/v1/public/products")
 public class ProductPublicController implements 
-    IReadController<Product, Long>, // 1. Trait Read
-    IBaseController<Product, Long>  // 2. Base
+    IReadController<Product, Long>, ${t('notes.code.trait_read')}
+    IBaseController<Product, Long>  ${t('notes.code.trait_base')}
 {
     private final ProductService service;
 
-    // Inject Service (có thể là ReadOnlyService)
+    ${t('notes.code.inject_service')}
     public ProductPublicController(ProductService service) {
         this.service = service;
     }
@@ -207,7 +203,7 @@ public class ProductPublicController implements
 }
 `);
 
-const createOnlyControllerCode = ref(`@RestController
+const createOnlyControllerCode = computed(() => `@RestController
 @RequestMapping("/api/v1/logs")
 public class AuditLogController implements 
     ICreateController<Log, String, LogCreateReq> {
@@ -224,28 +220,28 @@ public class AuditLogController implements
 `);
 
 
-const readOnlyServiceCode = ref(`@Service
+const readOnlyServiceCode = computed(() => `@Service
 public class ProductViewService extends AbReadDetailService<Product, Long> {
     public ProductViewService(ProductRepository repo) {
         super(repo);
     }
-    // Chỉ có các method: findById, findAll, findOne...
-    // Không có: create, update, delete
+    ${t('notes.code.only_methods')}
+    ${t('notes.code.no_methods')}
 }
 `);
 
-const safeUpdateServiceCode = ref(`@Service
+const safeUpdateServiceCode = computed(() => `@Service
 public class ConfigurationService extends AbUpdateService<Config, String> {
     public ConfigurationService(ConfigRepository repo) {
         super(repo);
     }
-    // Có: create, update, save, find...
-    // KHÔNG CÓ: delete
+    ${t('notes.code.has_methods')}
+    ${t('notes.code.no_delete')}
 }
 `);
 
 
-const n1FixCode1 = ref(`package com.example.demo.repository;
+const n1FixCode1 = computed(() => `package com.example.demo.repository;
 
 import com.example.demo.entity.Product;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -259,7 +255,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 }
 `);
 
-const n1FixCode2 = ref(`// Trong ProductController / Service
+const n1FixCode2 = computed(() => `// Trong ProductController / Service
 import com.example.demo.entity.Product;
 import com.example.demo.dto.res.ProductResponse;
 import jakarta.persistence.criteria.JoinType;
@@ -267,7 +263,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 // ...
 Specification<Product> spec = (root, query, cb) -> {
-    // Chỉ fetch khi return type không phải là count (Long)
+    ${t('notes.code.only_fetch')}
     if (query.getResultType() != Long.class && query.getResultType() != long.class) {
         root.fetch("brand", JoinType.LEFT);
         root.fetch("category", JoinType.LEFT);
@@ -277,7 +273,7 @@ Specification<Product> spec = (root, query, cb) -> {
 service.findAll(page, size, spec, ProductResponse.class);
 `);
 
-const overFetchingOneToOne = ref(`package com.example.demo.entity;
+const overFetchingOneToOne = computed(() => `package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -289,8 +285,8 @@ public class Product {
     @Id private Long id;
     private String name;
 
-    // Tách cột nặng sang bảng 'product_details'
-    // Quan trọng: fetch = LAZY và optional = false
+    ${t('notes.code.split_column')}
+    ${t('notes.code.important_fetch')}
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "detail_id")
     private ProductDescription detail;
@@ -301,12 +297,12 @@ public class Product {
 @Data
 public class ProductDescription {
     @Id private Long id;
-    @Lob private String fullDescriptionHTML; // Cột nặng
+    @Lob private String fullDescriptionHTML; ${t('notes.code.heavy_column')}
     @Column(columnDefinition="TEXT") private String technicalSpecs;
 }
 `);
 
-const compositeServiceCode = ref(`@Service
+const compositeServiceCode = computed(() => `@Service
 public class OrderService {
     private final ProductService productService;
     private final CustomerService customerService;
@@ -314,28 +310,28 @@ public class OrderService {
 
     @Transactional
     public void createOrder(OrderReq req) {
-        // Tận dụng findById có sẵn của Generic Service
+        ${t('notes.code.use_findbyid')}
         Product p = productService.findById(req.getProductId());
         Customer c = customerService.findById(req.getCustomerId());
         
-        // Thực hiện logic nghiệp vụ tổng hợp...
+        ${t('notes.code.business_logic')}
     }
 }
 `);
 
-const softDeleteCode = ref(`public abstract class BaseAppService<E extends BaseEntity, ID> 
+const softDeleteCode = computed(() => `public abstract class BaseAppService<E extends BaseEntity, ID> 
     extends AbService<E, ID> {
     
     @Override
     public void delete(ID id) {
         E entity = findById(id);
-        entity.setDeleted(true); // Logic xóa mềm
+        entity.setDeleted(true); ${t('notes.code.soft_delete_logic')}
         repository.save(entity);
     }
 }
 `);
 
-const hibernateSoftDeleteCode = ref(`@MappedSuperclass
+const hibernateSoftDeleteCode = computed(() => `@MappedSuperclass
 @SQLDelete(sql = "UPDATE {table_name} SET deleted = true WHERE id = ?")
 // Hibernate <= 6.2 dùng @Where(clause = "deleted = false")
 @SQLRestriction("deleted = false") // Hibernate 6.3+
@@ -346,14 +342,14 @@ public abstract class BaseEntity {
 }
 `);
 
-const complexFilterCode = ref(`// 1. Request Param hỗ trợ filter đa dạng
+const complexFilterCode = computed(() => `${t('notes.code.param_filter')}
 public class ProductFilterParam extends BaseRequestParam {
     private Double minPrice;
     private Double maxPrice;
     private String brandName;
 }
 
-// 2. Specification xử lý Join và Range
+${t('notes.code.spec_join')}
 public class ProductSpecification extends GenericSpecification<Product> {
     private final ProductFilterParam param;
 
@@ -365,7 +361,7 @@ public class ProductSpecification extends GenericSpecification<Product> {
     @Override
     public Predicate toPredicate(Root<Product> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
         List<Predicate> predicates = new ArrayList<>();
-        // Tận dụng logic search cơ bản của framework
+        ${t('notes.code.leverage_search')}
         predicates.add(super.toPredicate(root, query, cb));
 
         if (param.getMinPrice() != null) 

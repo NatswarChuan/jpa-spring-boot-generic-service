@@ -1,9 +1,7 @@
 <template>
   <section id="quick-start" class="scroll-mt-20 mb-16">
-    <h2 class="text-4xl font-bold text-slate-900 mb-6">4. Bắt đầu nhanh (Quick Start)</h2>
-    <p class="text-lg text-slate-600 mb-8">
-      Tạo ngay một bộ CRUD API hoàn chỉnh chỉ trong vài phút. Dưới đây là mã nguồn tối thiểu cần thiết cho một module quản lý sản phẩm (Product).
-    </p>
+    <h2 class="text-4xl font-bold text-slate-900 mb-6">{{ $t('quick_start.title') }}</h2>
+    <p class="text-lg text-slate-600 mb-8">{{ $t('quick_start.intro') }}</p>
 
     <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
       <!-- Tabs -->
@@ -24,6 +22,7 @@
       <!-- Code Content -->
       <div class="p-0">
         <CodeBlock 
+          v-if="steps[activeTab]"
           :filename="steps[activeTab].filename" 
           :code="steps[activeTab].code" 
           language="java"
@@ -32,32 +31,34 @@
       </div>
       
       <!-- Explanation -->
-      <div class="p-6 bg-blue-50 border-t border-blue-100">
+      <div v-if="steps[activeTab]" class="p-6 bg-blue-50 border-t border-blue-100">
         <h4 class="font-bold text-blue-900 mb-2">Giải thích: {{ steps[activeTab].title }}</h4>
         <p class="text-sm text-blue-800">{{ steps[activeTab].desc }}</p>
       </div>
     </div>
 
     <div class="mt-8 text-center">
-      <p class="text-slate-600 mb-4">Bạn muốn hiểu rõ hơn về từng thành phần?</p>
+      <p class="text-slate-600 mb-4">{{ $t('quick_start.more_info') }}</p>
       <a href="#core-entity-repo" class="inline-flex items-center text-blue-600 font-bold hover:underline">
-        Xem hướng dẫn chi tiết từng bước <i class="fas fa-arrow-right ml-2"></i>
+        {{ $t('quick_start.view_details') }} <i class="fas fa-arrow-right ml-2"></i>
       </a>
     </div>
   </section>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import CodeBlock from '../CodeBlock.vue';
 
+const { t } = useI18n();
 const activeTab = ref('1. Entity');
 
-const steps = {
+const steps = computed(() => ({
   '1. Entity': {
     filename: 'Product.java',
-    title: 'Định nghĩa Entity',
-    desc: 'Entity JPA tiêu chuẩn. Framework hỗ trợ mọi loại ID (Long, String, UUID...).',
+    title: t('quick_start.steps.entity.title'),
+    desc: t('quick_start.steps.entity.desc'),
     code: `import jakarta.persistence.*;
 import lombok.*;
 
@@ -77,39 +78,39 @@ public class Product {
   },
   '2. Repository': {
     filename: 'ProductRepo.java',
-    title: 'Tạo Repository',
-    desc: 'Kế thừa JpaRepository và JpaSpecificationExecutor để hỗ trợ CRUD và tìm kiếm động.',
+    title: t('quick_start.steps.repo.title'),
+    desc: t('quick_start.steps.repo.desc'),
     code: `import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProductRepo extends JpaRepository<Product, Long>, JpaSpecificationExecutor<Product> {
-    // Không cần viết thêm code nào
+    ${t('quick_start.steps.repo.comment')}
 }`
   },
   '3. DTOs': {
     filename: 'ProductDTOs.java',
-    title: 'Định nghĩa các DTO',
-    desc: 'Implement IDto<E> để mapping tự động. Tách biệt Create, Update và Response.',
+    title: t('quick_start.steps.dto.title'),
+    desc: t('quick_start.steps.dto.desc'),
     code: `import com.natswarchuan.genericservice.dto.IDto;
 import lombok.Data;
 
-// 1. Request tạo mới
+${t('quick_start.steps.dto.comment_create')}
 @Data
 public class ProductCreateReq implements IDto<Product> {
     private String name;
     private Double price;
 }
 
-// 2. Request cập nhật
+${t('quick_start.steps.dto.comment_update')}
 @Data
 public class ProductUpdateReq implements IDto<Product> {
     private String name;
     private Double price;
 }
 
-// 3. Response trả về
+${t('quick_start.steps.dto.comment_res')}
 @Data
 public class ProductRes implements IDto<Product> {
     private Long id;
@@ -119,8 +120,8 @@ public class ProductRes implements IDto<Product> {
   },
   '4. Service': {
     filename: 'ProductService.java',
-    title: 'Extend Base Service',
-    desc: 'Kế thừa AbService<E, ID> để có đầy đủ tính năng CRUD. Không cần khai báo DTO type tại đây.',
+    title: t('quick_start.steps.service.title'),
+    desc: t('quick_start.steps.service.desc'),
     code: `import com.natswarchuan.genericservice.service.AbService;
 import org.springframework.stereotype.Service;
 
@@ -134,8 +135,8 @@ public class ProductService extends AbService<Product, Long> {
   },
   '5. Controller': {
     filename: 'ProductController.java',
-    title: 'Extend Base Controller',
-    desc: 'Kế thừa AbController và implement các interface Traits (ICreate, IUpdate...) để kích hoạt API.',
+    title: t('quick_start.steps.controller.title'),
+    desc: t('quick_start.steps.controller.desc'),
     code: `import com.natswarchuan.genericservice.controller.AbController;
 import com.natswarchuan.genericservice.controller.trait.*;
 import org.springframework.web.bind.annotation.*;
@@ -152,18 +153,18 @@ public class ProductController extends AbController<Product, Long>
         super(service);
     }
 
-    // Chỉ định DTO dùng cho phản hồi danh sách
+    ${t('quick_start.steps.controller.comment_summ')}
     @Override
     public <R extends IDto<Product>> Class<R> getResponseSummaryDtoClass() {
         return (Class<R>) ProductRes.class;
     }
 
-    // Chỉ định DTO dùng cho phản hồi chi tiết
+    ${t('quick_start.steps.controller.comment_detail')}
     @Override
     public <R extends IDto<Product>> Class<R> getResponseDetailDtoClass() {
         return (Class<R>) ProductRes.class;
     }
 }`
   }
-};
+}));
 </script>

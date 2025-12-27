@@ -26,9 +26,11 @@
 
 <script setup>
 import { ref, computed, defineAsyncComponent, onMounted, onUnmounted, nextTick, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import Sidebar from './components/Sidebar.vue';
 import MainContent from './components/MainContent.vue';
 
+const { t } = useI18n();
 
 const sectionComponents = {
   IntroductionSection: defineAsyncComponent(() => import('./components/sections/IntroductionSection.vue')),
@@ -47,117 +49,117 @@ const sectionComponents = {
   NotesSection: defineAsyncComponent(() => import('./components/sections/NotesSection.vue')),
 };
 
-const sections = ref([
+const sections = computed(() => [
   {
-    id: 'intro', title: '1. Giới thiệu', component: 'IntroductionSection',
-    content: 'Generic Service Framework, giải pháp CRUD, boilerplate code, Spring Boot Backend',
+    id: 'intro', title: t('app.menu.intro'), component: 'IntroductionSection',
+    content: t('app.keywords.intro'),
     subs: [
-      { id: 'intro-solution', title: '1.1. Giải pháp', content: 'Base Service, Business Logic, CRUD toàn diện, Validation, Tra cứu linh hoạt' },
-      { id: 'intro-features', title: '1.2. Các chức năng chính', content: 'Generic CRUD, Dynamic Filtering JPA Spec, Automatic DTO Mapping' },
-      { id: 'intro-pros-cons', title: '1.3. Ưu nhược điểm', content: 'Giảm boilerplate, tính nhất quán, dễ bảo trì' },
-      { id: 'intro-security', title: '1.4. Sự an toàn & Minh bạch', content: 'Cam kết mã nguồn mở, không mã độc' }
+      { id: 'intro-solution', title: t('app.menu.intro_solution'), content: 'Base Service' },
+      { id: 'intro-features', title: t('app.menu.intro_features'), content: 'Generic CRUD' },
+      { id: 'intro-pros-cons', title: t('app.menu.intro_pros_cons'), content: 'Less boilerplate' },
+      { id: 'intro-security', title: t('app.menu.intro_security'), content: 'Open source' }
     ]
   },
   {
-    id: 'architecture-system', title: '2. Kiến trúc & Vòng đời', component: 'ArchitectureSection',
-    content: 'Technical spec, request flow, generic structure',
+    id: 'architecture-system', title: t('app.menu.architecture'), component: 'ArchitectureSection',
+    content: t('app.keywords.architecture'),
     subs: [
-      { id: 'architecture-diagram', title: '2.1. Sơ đồ Kiến trúc', content: 'Mô hình tổng quan, Data flow, Controller Service Repository' },
-      { id: 'framework-spec', title: '2.2. Phân cấp Class', content: 'AbBaseService, AbReadSummaryService, AbReadDetailService' },
-      { id: 'generic-system', title: '2.3. Hệ thống Generic Type', content: 'Entity Class E, PK Type ID, Request DTO RQ' },
-      { id: 'request-lifecycle', title: '2.4. Vòng đời Request', content: 'DTO Validation, Payload Mapping, Hooks, Persistence' }
+      { id: 'architecture-diagram', title: t('app.menu.architecture_diagram'), content: 'Diagram' },
+      { id: 'framework-spec', title: t('app.menu.framework_spec'), content: 'Class Hierarchy' },
+      { id: 'generic-system', title: t('app.menu.generic_system'), content: 'Generic Types' },
+      { id: 'request-lifecycle', title: t('app.menu.request_lifecycle'), content: 'Lifecycle' }
     ]
   },
   {
-    id: 'installation', title: '3. Cài đặt & Cấu hình', component: 'InstallationSection',
-    content: 'Maven Central, tích hợp dự án, repository',
+    id: 'installation', title: t('app.menu.installation'), component: 'InstallationSection',
+    content: t('app.keywords.installation'),
     subs: [
-      { id: 'installation-maven', title: '3.1. Cấu hình Maven/Gradle', content: 'dependency, pom.xml, build.gradle' },
-      { id: 'installation-local', title: '3.2. Môi trường Local', content: 'mvn clean install' },
-      { id: 'installation-config', title: '3.3. Cấu hình Ứng dụng', content: 'Package Scanning, scanBasePackages' }
+      { id: 'installation-maven', title: t('app.menu.installation_maven'), content: 'Maven' },
+      { id: 'installation-local', title: t('app.menu.installation_local'), content: 'Local' },
+      { id: 'installation-config', title: t('app.menu.installation_config'), content: 'Config' }
     ]
   },
   {
-    id: 'quick-start', title: '4. Bắt đầu nhanh', component: 'QuickStartSection',
-    content: 'Quick start guide, copy paste code example, 5 step tutorial',
+    id: 'quick-start', title: t('app.menu.quick_start'), component: 'QuickStartSection',
+    content: t('app.keywords.quick_start'),
     subs: []
   },
   {
-    id: 'core-entity-repo', title: '5. Entity & Repository', component: 'EntityRepositorySection',
-    content: 'Database mapping, JPA, module Product',
+    id: 'core-entity-repo', title: t('app.menu.core_entity_repo'), component: 'EntityRepositorySection',
+    content: t('app.keywords.core_entity_repo'),
     subs: [
-      { id: 'core-entity', title: '5.1. Định nghĩa Entity', content: 'ManyToOne, OneToMany, Table indexes' },
-      { id: 'core-repo', title: '5.2. Triển khai Repository', content: 'JpaRepository, JpaSpecificationExecutor' }
+      { id: 'core-entity', title: t('app.menu.core_entity'), content: 'Entity' },
+      { id: 'core-repo', title: t('app.menu.core_repo'), content: 'Repository' }
     ]
   },
   {
-    id: 'dtos', title: '6. Data Transfer Objects (DTO)', content: 'DTO Model, API separation', component: 'UsageSection',
+    id: 'dtos', title: t('app.menu.dtos'), content: t('app.keywords.dtos'), component: 'UsageSection',
     subs: [
-      { id: 'dto-request', title: '6.1. Request DTO', content: 'CreateReq, UpdateReq, input control' },
-      { id: 'dto-response', title: '6.2. Response DTO', content: 'IDto mapping, BeanUtils' },
-      { id: 'dto-i18n', title: '6.3. Hỗ trợ Đa ngôn ngữ', content: 'Multi-language support' }
+      { id: 'dto-request', title: t('app.menu.dto_request'), content: 'Request DTO' },
+      { id: 'dto-response', title: t('app.menu.dto_response'), content: 'Response DTO' },
+      { id: 'dto-i18n', title: t('app.menu.dto_i18n'), content: 'I18n' }
     ]
   },
   {
-    id: 'service-layer', title: '7. Tầng Service', component: 'ServiceLayerSection',
-    content: 'Business logic, ServiceImpl, AbService',
+    id: 'service-layer', title: t('app.menu.service_layer'), component: 'ServiceLayerSection',
+    content: t('app.keywords.service_layer'),
     subs: [
-      { id: 'core-service', title: '7.1. Lựa chọn Base Class', content: 'Service implementation, CRUD methods base' },
-      { id: 'service-hooks', title: '7.2. Các Hooks Vòng đời', content: 'beforeCreate, afterUpdate' }
+      { id: 'core-service', title: t('app.menu.core_service'), content: 'Base Service' },
+      { id: 'service-hooks', title: t('app.menu.service_hooks'), content: 'Hooks' }
     ]
   },
   {
-    id: 'controller-layer', title: '8. Tầng Controller', component: 'ControllerLayerSection',
-    content: 'API endpoints, RestController',
+    id: 'controller-layer', title: t('app.menu.controller_layer'), component: 'ControllerLayerSection',
+    content: t('app.keywords.controller_layer'),
     subs: [
-      { id: 'controller-hierarchy', title: '8.1. Phân cấp Class', content: 'IBaseController, AbController' },
-      { id: 'core-controller', title: '8.2. Controller Tiêu chuẩn', content: 'AbController, getResponseSummaryDtoClass' },
-      { id: 'controller-traits', title: '8.3. Controller Traits (Module hóa)', content: 'Modular API, ICreateController, Lego System' },
-      { id: 'custom-api', title: '8.4. API Custom (Tùy chỉnh)', content: 'Custom processing, add-on methods' }
+      { id: 'controller-hierarchy', title: t('app.menu.controller_hierarchy'), content: 'Controller Hierarchy' },
+      { id: 'core-controller', title: t('app.menu.core_controller'), content: 'Standard Controller' },
+      { id: 'controller-traits', title: t('app.menu.controller_traits'), content: 'Traits' },
+      { id: 'custom-api', title: t('app.menu.custom_api'), content: 'Custom API' }
     ]
   },
   {
-    id: 'validation', title: '9. Hệ thống Validation', component: 'ValidationSection',
-    content: 'Input check, constraints',
+    id: 'validation', title: t('app.menu.validation'), component: 'ValidationSection',
+    content: t('app.keywords.validation'),
     subs: [
-      { id: 'val-basic', title: '9.1. Ràng buộc Cơ bản', content: '@Exists, @Unique, @EnumValue' },
-      { id: 'val-custom', title: '9.2. Validator Tùy chỉnh', content: '@SpecValidation, @DtoSpecValidation' },
-      { id: 'val-advanced', title: '9.3. Ràng buộc SQL Tự nhiên', content: '@SqlConstraint, Native SQL' }
+      { id: 'val-basic', title: t('app.menu.val_basic'), content: 'Basic' },
+      { id: 'val-custom', title: t('app.menu.val_custom'), content: 'Custom' },
+      { id: 'val-advanced', title: t('app.menu.val_advanced'), content: 'SQL' }
     ]
   },
   {
-    id: 'specifications', title: '10. Specification & Tìm kiếm', component: 'SpecificationSection',
-    content: 'Dynamic query, complex filters',
+    id: 'specifications', title: t('app.menu.specifications'), component: 'SpecificationSection',
+    content: t('app.keywords.specifications'),
     subs: [
-      { id: 'spec-default', title: '10.1. API Tìm kiếm Tích hợp', content: 'page, size, sort, search' },
-      { id: 'spec-custom', title: '10.2. Bộ lọc Tùy chỉnh (Advance)', content: 'BaseRequestParam, ProductFilterParam' }
+      { id: 'spec-default', title: t('app.menu.spec_default'), content: 'Default Spec' },
+      { id: 'spec-custom', title: t('app.menu.spec_custom'), content: 'Custom Spec' }
     ]
   },
   {
-    id: 'response-handling', title: '11. Xử lý Phản hồi (Response)', component: 'ResponseSection',
-    content: 'Final results, standard format',
+    id: 'response-handling', title: t('app.menu.response_handling'), component: 'ResponseSection',
+    content: t('app.keywords.response_handling'),
     subs: [
-      { id: 'res-structure', title: '11.1. Cấu trúc Phản hồi', content: 'HttpApiResponse, PagedResponse' },
-      { id: 'res-exception', title: '11.2. Xử lý Ngoại lệ', content: 'HttpException, GlobalExceptionHandler' }
+      { id: 'res-structure', title: t('app.menu.res_structure'), content: 'Response' },
+      { id: 'res-exception', title: t('app.menu.res_exception'), content: 'Exception' }
     ]
   },
   {
-    id: 'api-list', title: '12. Các phương thức Base Service', component: 'ApiListSection',
-    content: 'AbService methods, CRUD API reference',
+    id: 'api-list', title: t('app.menu.api_list'), component: 'ApiListSection',
+    content: t('app.keywords.api_list'),
     subs: [
-      { id: 'api-read', title: '12.1. Thao tác Đọc (Read)', content: 'findById, findOne, findAll' },
-      { id: 'api-write', title: '12.2. Thao tác Ghi (Write)', content: 'create, update, save, delete' },
-      { id: 'api-hooks', title: '12.3. Service Hooks', content: 'beforeCreate, afterCreate, beforeUpdate, afterReadEntity, afterReadDto' }
+      { id: 'api-read', title: t('app.menu.api_read'), content: 'Read' },
+      { id: 'api-write', title: t('app.menu.api_write'), content: 'Write' },
+      { id: 'api-hooks', title: t('app.menu.api_hooks'), content: 'Hooks' }
     ]
   },
   {
-    id: 'notes', title: '13. Lưu ý Quan trọng', component: 'NotesSection',
-    content: 'Tips, best practices',
+    id: 'notes', title: t('app.menu.notes'), component: 'NotesSection',
+    content: t('app.keywords.notes'),
     subs: [
-      { id: 'notes-modularity', title: '13.1. Chiến lược Module hóa', content: 'Right-sizing, Controller Traits' },
-      { id: 'notes-advanced', title: '13.2. Mẫu Sử dụng Nâng cao', content: 'Composite Service' },
-      { id: 'notes-best-practices', title: '13.3. Thực hành Tốt nhất', content: 'DTO Constructor, Override methods' },
-      { id: 'notes-troubleshooting', title: '13.4. Xử lý Sự cố', content: 'N+1 Query' }
+      { id: 'notes-modularity', title: t('app.menu.notes_modularity'), content: 'Modularity' },
+      { id: 'notes-advanced', title: t('app.menu.notes_advanced'), content: 'Advanced' },
+      { id: 'notes-best-practices', title: t('app.menu.notes_best_practices'), content: 'Best Practices' },
+      { id: 'notes-troubleshooting', title: t('app.menu.notes_troubleshooting'), content: 'Troubleshooting' }
     ]
   }
 ]);
@@ -330,7 +332,7 @@ const navigate = (direction) => {
   if (currentIndex === -1) return;
 
   const targetIndex = currentIndex + direction;
-  
+
   // Boundary checks
   if (targetIndex < 0 || targetIndex >= flatNavigationList.value.length) return;
 

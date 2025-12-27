@@ -1,28 +1,25 @@
 <template>
   <section id="installation" class="scroll-mt-20 mb-16">
-    <h2 class="text-4xl font-bold text-slate-900 mb-6">3. Cài đặt</h2>
+    <h2 class="text-4xl font-bold text-slate-900 mb-6">{{ $t('install.title') }}</h2>
 
-    <p class="text-lg text-slate-600 leading-relaxed mb-8">
-      Thư viện này đã được publish lên <strong>Maven Central</strong>. Bạn có thể dễ dàng tích hợp vào dự án Spring Boot
-      của mình bằng Maven hoặc Gradle mà không cần cấu hình repository phức tạp.
-    </p>
+    <p class="text-lg text-slate-600 leading-relaxed mb-8" v-html="$t('install.intro')"></p>
 
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
       <div class="bg-blue-50 border border-blue-200 rounded-lg p-5">
         <h4 class="font-bold text-blue-900 mb-3 flex items-center">
-          <i class="fas fa-check-circle mr-2"></i> Yêu cầu Hệ thống
+          <i class="fas fa-check-circle mr-2"></i> {{ $t('install.requirements.title') }}
         </h4>
         <ul class="space-y-2 text-sm text-blue-800">
-          <li class="flex items-center"><span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>Java 17 trở lên</li>
-          <li class="flex items-center"><span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>Spring Boot 3.0+</li>
-          <li class="flex items-center"><span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>Hibernate Validator
+          <li class="flex items-center"><span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>{{ $t('install.requirements.java') }}</li>
+          <li class="flex items-center"><span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>{{ $t('install.requirements.springboot') }}</li>
+          <li class="flex items-center"><span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>{{ $t('install.requirements.hibernate') }}
           </li>
         </ul>
       </div>
       <div class="bg-green-50 border border-green-200 rounded-lg p-5">
         <h4 class="font-bold text-green-900 mb-3 flex items-center">
-          <i class="fas fa-flask mr-2"></i> Phiên bản đã Test
+          <i class="fas fa-flask mr-2"></i> {{ $t('install.tested_versions.title') }}
         </h4>
         <div class="flex flex-wrap gap-2">
           <span
@@ -36,7 +33,7 @@
             Boot 3.1.x</span>
         </div>
         <p class="text-xs text-green-700 mt-3 pt-3 border-t border-green-200 uppercase font-bold">
-          Mức độ Ưu tiên: <span class="bg-green-200 text-green-900 px-1 rounded">Cao</span>
+          {{ $t('install.tested_versions.priority_label') }} <span class="bg-green-200 text-green-900 px-1 rounded">{{ $t('install.tested_versions.priority_value') }}</span>
         </p>
       </div>
     </div>
@@ -45,16 +42,16 @@
     <div id="installation-maven" class="mb-8 scroll-mt-24">
       <h3 class="text-2xl font-bold text-slate-800 mb-4 flex items-center">
         <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">3.1</span>
-        Cấu hình Maven/Gradle
+        {{ $t('install.maven.title') }}
       </h3>
 
       <div class="bg-slate-900 rounded-lg p-4 shadow-lg overflow-x-auto">
-        <p class="text-slate-400 text-sm mb-2 font-mono">&lt;!-- Thêm dependency vào pom.xml --&gt;</p>
+        <p class="text-slate-400 text-sm mb-2 font-mono" v-html="$t('install.maven.comment_xml')"></p>
         <pre class="text-green-400 font-mono text-sm">
 &lt;dependency&gt;
     &lt;groupId&gt;io.github.natswarchuan&lt;/groupId&gt;
     &lt;artifactId&gt;jpa-spring-boot-generic-service&lt;/artifactId&gt;
-    &lt;version&gt;LATEST_VERSION&lt;/version&gt; &lt;!-- Xem phiên bản mới nhất tại GitHub Releases --&gt;
+    &lt;version&gt;LATEST_VERSION&lt;/version&gt; <span class="text-slate-500" v-html="$t('install.maven.comment_version')"></span>
 &lt;/dependency&gt;</pre>
       </div>
     </div>
@@ -63,14 +60,14 @@
     <div class="mb-10">
 
       <h4 class="font-bold text-slate-700 mb-3 mt-6 flex items-center">
-        <i class="fas fa-cubes text-blue-600 mr-2"></i> Triển khai bằng Gradle
+        <i class="fas fa-cubes text-blue-600 mr-2"></i> {{ $t('install.gradle.title') }}
       </h4>
 
       <div class="bg-slate-900 rounded-lg p-4 shadow-lg overflow-x-auto">
-        <p class="text-slate-400 text-sm mb-2 font-mono">// Thêm dependency vào build.gradle</p>
+        <p class="text-slate-400 text-sm mb-2 font-mono" v-html="$t('install.gradle.comment_file')"></p>
         <pre class="text-green-400 font-mono text-sm">
 dependencies {
-    // Thay LATEST_VERSION bằng phiên bản mới nhất từ GitHub Releases
+    <span class="text-slate-500" v-html="$t('install.gradle.comment_version')"></span>
     implementation 'io.github.natswarchuan:jpa-spring-boot-generic-service:LATEST_VERSION'
 }</pre>
       </div>
@@ -80,40 +77,35 @@ dependencies {
     <div id="installation-local" class="mb-10 p-6 bg-slate-50 border border-slate-200 rounded-xl scroll-mt-24">
       <h3 class="text-2xl font-bold text-slate-800 mb-4 flex items-center">
         <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">3.2</span>
-        Môi trường Local
+        {{ $t('install.local.title') }}
       </h3>
       <p class="text-slate-600 mb-4">
-        Nếu bạn đang phát triển hoặc tùy chỉnh trực tiếp mã nguồn của framework, hãy cài đặt nó vào Local Maven
-        Repository của bạn:
+        {{ $t('install.local.desc') }}
       </p>
 
       <div class="bg-slate-900 rounded-lg p-4 mb-4 font-mono text-sm text-green-400">
-        # Chạy lệnh này tại thư mục java-core<br />
+        <span class="text-slate-500" v-html="$t('install.local.comment_cmd')"></span><br />
         mvn clean install
       </div>
 
-      <p class="text-sm text-slate-500 italic">
-        Sau khi chạy lệnh trên, bạn có thể sử dụng phiên bản vừa build (ví dụ <code>LATEST_VERSION</code>) trong các dự
-        án local khác.
-      </p>
+      <p class="text-sm text-slate-500 italic" v-html="$t('install.local.note')"></p>
     </div>
 
 
     <div id="installation-config" class="mb-10 scroll-mt-24">
       <h3 class="text-2xl font-bold text-slate-800 mb-4 flex items-center">
         <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">3.3</span>
-        Cấu hình Ứng dụng
+        {{ $t('install.config.title') }}
       </h3>
       <p class="text-slate-600 mb-4">
-        Để Spring Boot có thể nhận diện các Beans và Validators từ thư viện, bạn cần cấu hình Package Scanning tại lớp
-        Application chính.
+        {{ $t('install.config.desc') }}
       </p>
 
       <div class="bg-slate-900 rounded-lg p-4 shadow-lg overflow-x-auto">
         <pre class="text-green-400 font-mono text-sm">
 @SpringBootApplication(scanBasePackages = { 
-    "com.your.package",             // Package dự án của bạn
-    "com.natswarchuan.genericservice" // Package của thư viện
+    "com.your.package",             <span class="text-slate-500" v-html="$t('install.config.comment_package')"></span>
+    "com.natswarchuan.genericservice" <span class="text-slate-500" v-html="$t('install.config.comment_lib')"></span>
 })
 public class YourApplication { ... }</pre>
       </div>
@@ -121,7 +113,7 @@ public class YourApplication { ... }</pre>
 
     <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-r-lg">
       <p class="text-yellow-800">
-        <strong>Quan trọng:</strong> Hãy kiểm tra và sử dụng phiên bản (Release Tag) mới nhất tại
+        <span v-html="$t('install.important')"></span>
         <a href="https://github.com/NatswarChuan/jpa-spring-boot-generic-service/releases" target="_blank"
           class="underline font-bold text-blue-700">
           GitHub Releases <i class="fas fa-external-link-alt ml-1"></i>
