@@ -42,7 +42,7 @@ Available on **Maven Central**.
 
 ### Gradle
 ```groovy
-implementation 'io.github.natswarchuan:jpa-spring-boot-generic-service:1.3.5'
+implementation 'io.github.natswarchuan:jpa-spring-boot-generic-service:1.3.7'
 ```
 
 ---
