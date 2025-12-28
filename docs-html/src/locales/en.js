@@ -178,7 +178,8 @@ export default {
                 builder: 'Creates Builder pattern for easy object initialization.'
             },
             code: {
-                comment: 'Entity representing a Product.'
+                comment: 'Entity representing a Product.',
+                comment_helper: '// Helper method for Many-to-Many via transient'
             }
         },
         repo: {
@@ -244,7 +245,9 @@ export default {
             },
             hooks_list: 'Available Hooks:',
             code_comment_before: '// Automatically calculate promotional price',
-            code_comment_after: '// Send notification after successful creation'
+            code_comment_after: '// Send notification after successful creation',
+            code_javadoc_desc: 'Service handling business logic for Product.',
+            code_javadoc_extends: 'Extend AbService to leverage built-in CRUD logic.'
         }
     },
     controller_layer: {
@@ -500,7 +503,8 @@ export default {
                 title: 'Delete Hooks',
                 before: '- Check constraints.',
                 after: '- Cleanup resources.'
-            }
+            },
+            code_comment_logic: '// Custom logic: check business constraints, set default values...'
         }
     },
     notes: {
@@ -529,7 +533,9 @@ export default {
                 method1_title: 'Method 1: Override at Service Layer',
                 method1_desc: 'Suitable when you want centralized delete logic control at Service.',
                 method2_title: 'Method 2: Use Hibernate Annotation at Entity',
-                method2_desc: 'Transparent, automatically applied to all queries (Find, List, etc.).'
+                method2_desc: 'Transparent, automatically applied to all queries (Find, List, etc.).',
+                hibernate_old: '// Hibernate <= 6.2 uses @Where(clause = "deleted = false")',
+                hibernate_new: '// Hibernate 6.3+'
             },
             filter: {
                 title: 'Complex Dynamic Filtering (Full Spec)',

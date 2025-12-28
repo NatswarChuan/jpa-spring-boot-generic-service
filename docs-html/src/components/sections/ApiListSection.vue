@@ -592,7 +592,7 @@
         <pre class="font-mono text-xs">
 @Override
 protected Product beforeCreate(Product entity) {
-    // Custom logic: check business constraints, set default values...
+    {{ $t('api_list.hooks.code_comment_logic') }}
     if (entity.getPrice() < 0) throw new HttpException("Price must be positive", HttpStatus.BAD_REQUEST);
     return entity;
 }</pre>

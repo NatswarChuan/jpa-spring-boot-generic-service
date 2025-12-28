@@ -204,8 +204,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.lang.NonNull;
 
 /**
- * Service xử lý nghiệp vụ cho Product.
- * Kế thừa AbService để tận dụng logic CRUD có sẵn.
+ * ${t('service_layer.hooks.code_javadoc_desc')}
+ * ${t('service_layer.hooks.code_javadoc_extends')}
  */
 @Service
 public class ProductService extends AbService<Product, Long> {

@@ -178,7 +178,8 @@ export default {
                 builder: 'Tạo Builder pattern giúp khởi tạo object dễ dãng.'
             },
             code: {
-                comment: 'Entity đại diện cho Sản phẩm (Product).'
+                comment: 'Entity đại diện cho Sản phẩm (Product).',
+                comment_helper: '// Phương thức Helper cho Many-to-Many thông qua transient'
             }
         },
         repo: {
@@ -244,7 +245,9 @@ export default {
             },
             hooks_list: 'Các Hook khả dụng:',
             code_comment_before: '// Tự động tính toán giá khuyến mãi',
-            code_comment_after: '// Gửi thông báo sau khi tạo thành công'
+            code_comment_after: '// Gửi thông báo sau khi tạo thành công',
+            code_javadoc_desc: 'Service xử lý nghiệp vụ cho Product.',
+            code_javadoc_extends: 'Kế thừa AbService để tận dụng logic CRUD có sẵn.'
         }
     },
     controller_layer: {
@@ -500,7 +503,8 @@ export default {
                 title: 'Delete Hooks',
                 before: '- Check constraints.',
                 after: '- Cleanup resources.'
-            }
+            },
+            code_comment_logic: '// Custom logic: check business constraints, set default values...'
         }
     },
     notes: {
@@ -529,7 +533,9 @@ export default {
                 method1_title: 'Cách 1: Override tại Service Layer',
                 method1_desc: 'Phù hợp khi bạn muốn kiểm soát logic xóa tập trung tại Service.',
                 method2_title: 'Cách 2: Sử dụng Hibernate Annotation tại Entity',
-                method2_desc: 'Trong suốt (transparent), tự động áp dụng cho tất cả các câu query (Find, List, v.v.).'
+                method2_desc: 'Trong suốt (transparent), tự động áp dụng cho tất cả các câu query (Find, List, v.v.).',
+                hibernate_old: '// Hibernate <= 6.2 dùng @Where(clause = "deleted = false")',
+                hibernate_new: '// Hibernate 6.3+'
             },
             filter: {
                 title: 'Complex Dynamic Filtering (Full Spec)',

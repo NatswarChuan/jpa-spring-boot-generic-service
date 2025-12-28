@@ -333,8 +333,8 @@ const softDeleteCode = computed(() => `public abstract class BaseAppService<E ex
 
 const hibernateSoftDeleteCode = computed(() => `@MappedSuperclass
 @SQLDelete(sql = "UPDATE {table_name} SET deleted = true WHERE id = ?")
-// Hibernate <= 6.2 dùng @Where(clause = "deleted = false")
-@SQLRestriction("deleted = false") // Hibernate 6.3+
+${t('notes.soft_delete.hibernate_old')}
+@SQLRestriction("deleted = false") ${t('notes.soft_delete.hibernate_new')}
 @Getter @Setter
 public abstract class BaseEntity {
     @Column(name = "deleted", nullable = false)
