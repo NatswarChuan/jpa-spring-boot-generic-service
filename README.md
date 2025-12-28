@@ -1,36 +1,42 @@
-# jpa-spring-boot-generic-service
+# Generic Service Framework (Spring Boot)
 
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.natswarchuan/jpa-spring-boot-generic-service.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/io.github.natswarchuan/jpa-spring-boot-generic-service)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**Clean Architecture Generic Service Framework cho Spring Boot**
+**Clean Architecture Generic Service Framework for Spring Boot**
 
-Thư viện này cung cấp một tầng Service & Controller tiêu chuẩn hóa giúp **tự động hóa 80%** các thao tác CRUD lặp lại, tích hợp sẵn Validation mạnh mẽ và hệ thống Dynamic Search linh hoạt.
+A powerful, lightweight library providing a standardized Service & Controller layer that **automates 80%** of repetitive CRUD operations, integrates robust validation, and offers a flexible dynamic search system.
 
-## ✨ Tính năng nổi bật
+---
 
-*   **Zero-Boilerplate CRUD**: 
-    *   Sử dụng các **Trait Interfaces** (`ICreateController`, `IReadController`, `IUpdateController`, `IDeleteController`) để kích hoạt API chọn lọc.
-    *   `AbService`: Xử lý logic nghiệp vụ transaction-safe với các Points of intervention (Hooks).
-*   **Dynamic Search & Paging**:
-    *   Mặc định hỗ trợ các query params: `page`, `size`, `sort`, `dir`, `search`, `searchField`.
-    *   Hỗ trợ lọc nâng cao (Join, Range...) thông qua **Custom Specification**.
+## 🚀 Key Features
+
+*   **Zero-Boilerplate CRUD**:
+    *   **Trait-based Controllers**: Use `ICreateController`, `IReadController`, `IUpdateController`, and `IDeleteController` to selectively enable APIs.
+    *   **Standardized Service Layer**: `AbService` handles complex business logic and transactions with a precise, standardized interface.
+*   **Dynamic Search & Pagination**:
+    *   Built-in support for query parameters: `page`, `size`, `sort`, `dir`, `search`, and `searchField`.
+    *   Advanced filtering (Joins, Ranges, etc.) via **Generic Specifications**.
+*   **Standardized Lifecycle Hooks**:
+    *   Customize behavior at any stage: `beforeCreate`, `afterCreate`, `beforeUpdate`, `afterUpdate`, `beforeDelete`, `afterDelete`, `afterReadEntity`, `afterReadDto`.
 *   **Validation System**:
-    *   Annotations mạnh mẽ: `@Exists`, `@Unique`, `@IdsExist`, `@EnumValue`, `@PhoneNumber`, `@NoSpecialChars`.
-    *   Hỗ trợ **Native SQL Constraint** (`@SqlConstraint`) và **Cross-field Validation** (`@DtoSpecValidation`).
-*   **Auto DTO Mapping**: Interface `IDto` tích hợp sẵn logic mapping 2 chiều Entity-DTO tự động qua BeanUtils.
-*   **I18n Service**: Tự động xử lý đa ngôn ngữ (Localization) dựa trên header `Accept-Language`.
+    *   Strong Annotations: `@Exists`, `@Unique`, `@IdsExist`, `@EnumValue`, `@PhoneNumber`.
+    *   Complex Logic: Support for **Native SQL Constraints** (`@SqlConstraint`) and **Cross-field Validation** (`@DtoSpecValidation`).
+*   **Intelligent DTO Mapping**: `IDto` interface integrates two-way Entity-DTO mapping with support for multi-language responses.
+*   **I18n Out-of-the-box**: Automatic multi-language handling based on the `Accept-Language` header.
 
-## 📦 Cài đặt
+---
 
-Thư viện có sẵn trên **Maven Central**.
+## 📦 Installation
+
+Available on **Maven Central**.
 
 ### Maven
 ```xml
 <dependency>
     <groupId>io.github.natswarchuan</groupId>
     <artifactId>jpa-spring-boot-generic-service</artifactId>
-    <version>1.3.5</version>
+    <version>1.3.7</version>
 </dependency>
 ```
 
@@ -39,10 +45,12 @@ Thư viện có sẵn trên **Maven Central**.
 implementation 'io.github.natswarchuan:jpa-spring-boot-generic-service:1.3.5'
 ```
 
-## 🚀 Hướng dẫn nhanh
+---
 
-### 1. Cấu hình Package Scanning (Bắt buộc)
-Để Spring có thể quét được các Component và Validator của thư viện, hãy thêm vào lớp Application:
+## 📖 Quick Start
+
+### 1. Enable Package Scanning
+Add the base package of the library to your `@SpringBootApplication`:
 
 ```java
 @SpringBootApplication(scanBasePackages = { 
@@ -52,12 +60,11 @@ implementation 'io.github.natswarchuan:jpa-spring-boot-generic-service:1.3.5'
 public class DemoApplication { ... }
 ```
 
-### 2. Entity & Repository
-Repository cần extends `JpaSpecificationExecutor`.
+### 2. Define Entity & Repository
+Your repository must extend `JpaSpecificationExecutor<E>`.
 
 ```java
 @Entity
-@Getter @Setter
 public class Product {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -66,12 +73,12 @@ public class Product {
 }
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Long>, 
-                                           JpaSpecificationExecutor<Product> {
-}
+public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpecificationExecutor<Product> { }
 ```
 
-### 3. Service Layer
+### 3. Implement Service
+Extend `AbService` to inherit all standard CRUD logic.
+
 ```java
 @Service
 public class ProductService extends AbService<Product, Long> {
@@ -81,41 +88,42 @@ public class ProductService extends AbService<Product, Long> {
 }
 ```
 
-### 4. Controller Layer (Sử dụng Traits)
+### 4. Implement Controller
+Select your CRUD capabilities using Interfaces.
+
 ```java
 @RestController
 @RequestMapping("/api/v1/products")
 public class ProductController extends AbController<Product, Long>
-        implements
-        ICreateController<Product, Long, ProductCreateReq>,
-        IUpdateController<Product, Long, ProductUpdateReq>,
-        IDeleteController<Product, Long>,
-        IReadController<Product, Long> {
+        implements ICreateController<Product, Long, ProductReq>,
+                   IUpdateController<Product, Long, ProductReq>,
+                   IReadController<Product, Long>,
+                   IDeleteController<Product, Long> {
 
     public ProductController(ProductService service) {
         super(service);
     }
 
     @Override
-    public <R extends IDto<Product>> Class<R> getResponseSummaryDtoClass() {
-        return (Class<R>) ProductRes.class;
-    }
+    public <R extends IDto<Product>> Class<R> getResponseSummaryDtoClass() { return (Class<R>) ProductRes.class; }
 
     @Override
-    public <R extends IDto<Product>> Class<R> getResponseDetailDtoClass() {
-        return (Class<R>) ProductDetailRes.class;
-    }
+    public <R extends IDto<Product>> Class<R> getResponseDetailDtoClass() { return (Class<R>) ProductRes.class; }
 }
 ```
 
-## 📖 Demo & Tài liệu
+---
 
-*   **Demo Project**: Xem thư mục [java-demo](./java-demo) để tham khảo code thực tế đầy đủ.
-*   **Documentation Site**: Mở file `docs/index.html` hoặc chạy dự án trong thư mục `docs-html`.
+## 📚 Documentation & Demo
 
-## 👨‍💻 Tác giả
+*   **Documentation Site**: Explore the full API documentation and advanced usage in [docs-html/](docs-html/) (run with `npm run dev`) or view the static site in the repository.
+*   **Reference Implementation**: See the [java-demo/](java-demo/) folder for a complete project example including custom validations, filters, and data seeding.
 
-*   **NatswarChuan**
+---
+
+## 👨‍💻 Author
+
+Developed and maintained by **NatswarChuan**.
 
 ## 📄 License
 

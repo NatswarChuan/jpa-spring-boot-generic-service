@@ -1,59 +1,82 @@
-# Java Demo - Generic Service Reference Implementation
+# Reference Implementation: Java Demo
 
-Dự án này là một ví dụ mẫu (Reference Implementation) hoàn chỉnh sử dụng thư viện **jpa-spring-boot-generic-service**. Nó mô phỏng một hệ thống quản lý kho hàng/sản phẩm cơ bản.
+This project serves as a comprehensive **Reference Implementation** of the **jpa-spring-boot-generic-service** framework. It demonstrates how to build a production-ready inventory management system with minimal boilerplate while maintaining full control over complex logic.
 
-## 🚀 Tính năng nổi bật trong Demo
+---
 
-Dự án demo này minh họa các khả năng chính của framework:
+## 🌟 Demo Features
 
-*   **Trait-based Controllers**: Xem `ProductController`, `CategoryController` để thấy cách implement chọn lọc các API (chỉ Read, Full CRUD, hoặc Custom).
-*   **Advanced Dynamic Filtering**: Xem `ProductSpecification` và `ProductFilterParam` để thấy cách xây dựng bộ lọc phức tạp (Price Range, Join tables).
-*   **Complex Validations**:
-    *   `@DtoSpecValidation`: Kiểm tra tính duy nhất (Name + StoreId) trong `ProductCreateReq`.
-    *   `@SqlConstraint`: Kiểm tra ràng buộc logic giữa Model và Brand trong `BrandUpdateReq`.
-    *   `@IdsExist`: Kiểm tra danh sách ID tồn tại trong database.
-*   **Data Seeding**: Tự động tạo dữ liệu mẫu khi khởi chạy ứng dụng (`DataSeeder`).
-*   **Audit Logging**: Metadata tự động (`createdAt`, `updatedAt`, `createdBy`).
+Explore how the framework handles real-world scenarios:
 
-## 🛠️ Yêu cầu hệ thống
+*   **Trait-based API Selective Implementation**:
+    *   `CategoryController`: Demonstrates a selective implementation (Read-only + Create).
+    *   `ProductController`: Full CRUD implementation including complex search.
+*   **Advanced Dynamic Filtering**:
+    *   `ProductSpecification`: Custom filtering for price ranges, stock status, and joined table criteria (Brand/Category).
+*   **Production-Grade Validation**:
+    *   **Unique Constraints**: `ProductCreateReq` uses `@DtoSpecValidation` to ensure name uniqueness within a specific store.
+    *   **Referential Integrity**: `@IdsExist` protects against orphaned records during batch operations.
+    *   **Enum Safety**: `@EnumValue` ensures input matches predefined domain values.
+*   **Framework Integration**:
+    *   **Data Seeding**: Shows how to use `DataSeeder` for initial environment setup.
+    *   **I18n Strategy**: Localized error messages and response mapping demonstrated in the DTOs.
+    *   **Audit Tracking**: Automatic lifecycle hooks manage `createdAt`, `updatedAt`, and user attribution.
 
-*   Java 17 trở lên
-*   Maven 3.6+
-*   Lớp thư viện lõi (**java-core**) đã được cài đặt vào local Maven repository.
+---
 
-## ⚙️ Hướng dẫn cài đặt
+## 🛠️ System Requirements
 
-### 1. Cài đặt thư viện java-core (Bắt buộc)
-Do dự án demo phụ thuộc vào bản build local của framework, bạn cần cài đặt thư viện core trước:
+*   **Java 17** or higher
+*   **Maven 3.6+**
+*   **java-core**: The framework core must be installed in your local Maven repository (`~/.m2`).
+
+---
+
+## ⚙️ Setup & Execution
+
+### 1. Build and Install Core Framework
+Since this demo tracks the latest local developments, you must first build the core module:
 
 ```bash
 cd ../java-core
-mvn clean install
+mvn clean install -DskipTests
 ```
 
-### 2. Chạy dự án Demo
-Di chuyển vào thư mục `java-demo` và chạy lệnh:
+### 2. Run the Demo Application
+Navigate back to the demo folder and launch the Spring Boot server:
 
 ```bash
+cd ../java-demo
 mvn spring-boot:run
 ```
 
-## 🔍 Khám phá
+---
 
-### API Documentation (Swagger UI)
-Sau khi ứng dụng khởi chạy, bạn có thể truy cập vào:
+## 🔍 Exploration Guide
+
+### API Documentation (Swagger)
+Once running, explore and test the endpoints visually:
 👉 [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
 
-### Database Console (H2)
-Demo sử dụng cơ sở dữ liệu H2 lưu trên bộ nhớ (In-memory). Để kiểm tra dữ liệu trực tiếp:
-*   URL: [http://localhost:8080/h2-console](http://localhost:8080/h2-console)
-*   JDBC URL: `jdbc:h2:mem:testdb`
-*   User: `sa`, Password: `password`
+### Database Exploration (H2 Console)
+The demo uses an in-memory H2 database. Inspect the schema and data live:
+*   **Console**: [http://localhost:8080/h2-console](http://localhost:8080/h2-console)
+*   **JDBC URL**: `jdbc:h2:mem:testdb`
+*   **Credentials**: `sa` / `password`
 
-## 📁 Cấu trúc quan trọng
+---
 
-*   `src/main/java/com/example/demo/domain`: Chứa các JPA Entities.
-*   `src/main/java/com/example/demo/dto`: Chứa các Request/Response DTOs tích hợp `IDto`.
-*   `src/main/java/com/example/demo/controller`: Chứa các Controller kế thừa từ `AbController`.
-*   `src/main/java/com/example/demo/specification`: Logic lọc dữ liệu tùy chỉnh.
-*   `src/main/java/com/example/demo/validation/specs`: Logic validation phức tạp.
+## 📁 Key File Map
+
+| Component | Path | Description |
+| :--- | :--- | :--- |
+| **Entities** | `src/.../domain/*.java` | Domain models with JPA mappings. |
+| **DTOs** | `src/.../dto/*.java` | Request/Response models using `IDto`. |
+| **Controllers** | `src/.../controller/*.java` | REST endpoints using Traits. |
+| **Search Logic** | `src/.../specification/*.java` | Custom dynamic query filters. |
+| **Complex Validations** | `src/.../validation/specs/*.java` | Cross-field and DB-level validation rules. |
+| **Sample Data** | `src/.../config/DataSeeder.java` | Bootstrapping logic for initial data. |
+
+---
+
+Developed by **NatswarChuan**.
