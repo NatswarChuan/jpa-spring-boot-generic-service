@@ -6,7 +6,6 @@
     <!-- 10.1 Default Capabilities -->
     <article id="spec-default" class="mb-10 scroll-mt-24">
       <h3 class="text-xl font-bold text-slate-800 mb-3">
-        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">10.1</span>
         {{ $t('specification.default.title') }}
       </h3>
       <p class="text-slate-600 mb-4" v-html="$t('specification.default.desc')"></p>
@@ -14,25 +13,25 @@
       <div class="bg-slate-50 border border-slate-200 rounded-lg p-5 mb-6">
         <h4 class="font-bold text-slate-700 mb-3 text-sm uppercase">{{ $t('specification.default.params_title') }}</h4>
         <ul class="space-y-3 text-sm font-mono text-slate-600">
-          <li><span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded">page</span> : {{
-            $t('specification.default.params.page') }}</li>
-          <li><span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded">size</span> : {{
-            $t('specification.default.params.size') }}</li>
-          <li><span class="bg-purple-100 text-purple-800 px-2 py-0.5 rounded">sort</span> : {{
-            $t('specification.default.params.sort') }}</li>
-          <li><span class="bg-purple-100 text-purple-800 px-2 py-0.5 rounded">dir</span> : {{
-            $t('specification.default.params.dir') }}</li>
-          <li><span class="bg-green-100 text-green-800 px-2 py-0.5 rounded">search</span> : {{
-            $t('specification.default.params.search') }}</li>
-          <li><span class="bg-green-100 text-green-800 px-2 py-0.5 rounded">searchField</span> : {{
-            $t('specification.default.params.searchField') }}</li>
+          <li><span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded">page</span> : <span
+              v-html="$t('specification.default.params.page')"></span></li>
+          <li><span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded">size</span> : <span
+              v-html="$t('specification.default.params.size')"></span></li>
+          <li><span class="bg-purple-100 text-purple-800 px-2 py-0.5 rounded">sortBy</span> : <span
+              v-html="$t('specification.default.params.sort')"></span></li>
+          <li><span class="bg-purple-100 text-purple-800 px-2 py-0.5 rounded">sortDir</span> : <span
+              v-html="$t('specification.default.params.dir')"></span></li>
+          <li><span class="bg-green-100 text-green-800 px-2 py-0.5 rounded">search</span> : <span
+              v-html="$t('specification.default.params.search')"></span></li>
+          <li><span class="bg-green-100 text-green-800 px-2 py-0.5 rounded">searchField</span> : <span
+              v-html="$t('specification.default.params.searchField')"></span></li>
         </ul>
       </div>
 
       <div class="mb-4">
         <h4 class="font-semibold text-slate-700 mb-2">{{ $t('specification.default.example_title') }}</h4>
         <pre class="bg-slate-900 text-green-400 p-4 rounded-lg font-mono text-sm overflow-x-auto">
-GET /api/products?page=0&size=20&sort=price&dir=desc&search=iphone&searchField=name</pre>
+GET /api/products?page=0&size=20&sortBy=price&sortDir=desc&search=iphone&searchField=name</pre>
         <p class="text-xs text-slate-500 mt-2 italic">
           {{ $t('specification.default.example_explain') }}
         </p>
@@ -42,7 +41,6 @@ GET /api/products?page=0&size=20&sort=price&dir=desc&search=iphone&searchField=n
     <!-- 10.2 Custom Specification -->
     <article id="spec-custom" class="mb-10 scroll-mt-24">
       <h3 class="text-xl font-bold text-slate-800 mb-3">
-        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">10.2</span>
         {{ $t('specification.custom.title') }}
       </h3>
       <p class="text-slate-600 mb-4" v-html="$t('specification.custom.desc')"></p>
@@ -135,29 +133,40 @@ public class ProductSpecification extends GenericSpecification<Product> {
 }
 `);
 
-const overrideCtrlCode = computed(() => `@RestController
+const overrideCtrlCode = computed(() => `package com.example.demo.controller;
+// ... imports ...
+
+@RestController
 @RequestMapping("/api/products")
-public class ProductController extends AbController<Product, Long, ProductCreateReq, ProductUpdateReq> {
+public class ProductController implements IController<Product, Long, ProductCreateReq, ProductUpdateReq> {
 
-    // ... constructor ...
+    private final ProductService service;
 
-    ${t('specification.code.comment_override_findall')}
+    public ProductController(ProductService service) {
+        this.service = service;
+    }
+
     @Override
-    @GetMapping
-    public ResponseEntity<HttpApiResponse<PagedResponse<ProductRes>>> findAll(
-            ProductFilterParam requestParam, ${t('specification.code.comment_use_custom')}
-            @RequestHeader(name = "Accept-Language", defaultValue = "en") String language) {
-        return super.findAll(requestParam, language);
+    public ProductService getBaseService() {
+        return service;
     }
 
     ${t('specification.code.comment_override_spec')}
     @Override
-    protected Specification<Product> getSpecification(BaseRequestParam baseParam) {
-        if (baseParam instanceof ProductFilterParam param) {
+    public Specification<Product> getSpecification(BaseRequestParam requestParam) {
+        if (requestParam instanceof ProductFilterParam param) {
             ${t('specification.code.comment_return_spec')}
             return new ProductSpecification(param);
         }
-        return super.getSpecification(baseParam);
+        return IController.super.getSpecification(requestParam);
+    }
+    
+    // You can also create a separate endpoint for custom filtering
+    @GetMapping("/filter")
+    public ResponseEntity<HttpApiResponse<PagedResponse<? extends IDto<Product>>>> filterProducts(
+            ProductFilterParam requestParam,
+            @RequestHeader(name = "Accept-Language", defaultValue = "en") String language) {
+        return this.findAll(requestParam, language);
     }
 }
 `);

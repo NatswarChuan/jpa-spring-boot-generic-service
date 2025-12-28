@@ -6,6 +6,8 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 
 /**
  * Lớp cài đặt mặc định cho {@link Specification} để hỗ trợ tìm kiếm động.
@@ -50,15 +52,27 @@ public class GenericSpecification<E> implements Specification<E> {
      * @return {@link Predicate} đại diện cho điều kiện lọc.
      */
     @Override
-    @SuppressWarnings("null")
-    public Predicate toPredicate(Root<E> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-        if (requestParam.getSearch() != null && !requestParam.getSearch().isEmpty() &&
-                requestParam.getSearchField() != null && !requestParam.getSearchField().isEmpty()) {
 
-            return criteriaBuilder.like(
-                    criteriaBuilder.lower(root.get(requestParam.getSearchField()).as(String.class)),
-                    "%" + requestParam.getSearch().toLowerCase() + "%");
+    public Predicate toPredicate(@NonNull Root<E> root, @Nullable CriteriaQuery<?> query,
+            @NonNull CriteriaBuilder criteriaBuilder) {
+        if (requestParam.getSearch() == null || requestParam.getSearch().isEmpty() ||
+                requestParam.getSearchField() == null || requestParam.getSearchField().isEmpty()) {
+            return criteriaBuilder.conjunction();
         }
-        return criteriaBuilder.conjunction();
+
+        try {
+            Class<?> fieldType = root.get(requestParam.getSearchField()).getJavaType();
+
+            if (fieldType != null && String.class.isAssignableFrom(fieldType)) {
+                return criteriaBuilder.like(
+                        criteriaBuilder.lower(root.get(requestParam.getSearchField()).as(String.class)),
+                        "%" + requestParam.getSearch().toLowerCase() + "%");
+            }
+
+            return criteriaBuilder.conjunction();
+
+        } catch (IllegalArgumentException e) {
+            return criteriaBuilder.conjunction();
+        }
     }
 }

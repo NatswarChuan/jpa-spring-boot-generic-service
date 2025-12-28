@@ -6,59 +6,57 @@
 
     <!-- Architecture Overview Diagram -->
     <article id="architecture-diagram" class="mb-10 scroll-mt-24">
-       <h3 class="text-xl font-bold text-slate-800 mb-3">
-        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">2.1</span>
+      <h3 class="text-xl font-bold text-slate-800 mb-3">
         {{ $t('arch.diagram_title') }}
       </h3>
       <p class="text-slate-600 mb-4">{{ $t('arch.diagram_desc') }}</p>
       <div class="bg-slate-50 rounded-xl p-4 border border-slate-200">
-         <ArchitectureDiagram />
+        <ArchitectureDiagram />
       </div>
     </article>
 
     <article id="framework-spec" class="mb-10 scroll-mt-24">
       <h3 class="text-xl font-bold text-slate-800 mb-3">
-        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">2.2</span>
         {{ $t('arch.class_hierarchy_title') }}
       </h3>
       <p class="text-slate-600 mb-6">
         {{ $t('arch.class_hierarchy_desc') }}
       </p>
-      
+
       <div class="mb-6 bg-white border border-slate-200 rounded-lg p-6 shadow-sm overflow-x-auto">
         <div class="space-y-2 font-mono text-sm leading-relaxed">
           <div class="flex items-center">
-            <span class="bg-slate-500 text-white px-3 py-0.5 rounded shadow-sm">AbBaseService</span>
+            <span class="bg-slate-500 text-white px-3 py-0.5 rounded shadow-sm">IBaseService</span>
             <span class="mx-3 text-slate-400">→ {{ $t('arch.services.base') }}</span>
           </div>
           <div class="ml-8 border-l-2 border-slate-200 pl-4 space-y-2">
             <div class="flex items-center">
-              <span class="bg-amber-500 text-white px-3 py-0.5 rounded shadow-sm">AbReadSummaryService</span>
+              <span class="bg-amber-500 text-white px-3 py-0.5 rounded shadow-sm">IReadSummaryService</span>
               <span class="mx-3 text-slate-400">→ {{ $t('arch.services.read_summary') }}</span>
             </div>
             <div class="ml-8 border-l-2 border-slate-200 pl-4 space-y-2">
               <div class="flex items-center">
-                <span class="bg-orange-500 text-white px-3 py-0.5 rounded shadow-sm">AbReadDetailService</span>
+                <span class="bg-orange-500 text-white px-3 py-0.5 rounded shadow-sm">IReadDetailService</span>
                 <span class="mx-3 text-slate-400">→ {{ $t('arch.services.read_detail') }}</span>
               </div>
               <div class="ml-8 border-l-2 border-slate-200 pl-4 space-y-2">
                 <div class="flex items-center">
-                  <span class="bg-pink-500 text-white px-3 py-0.5 rounded shadow-sm">AbCreateService</span>
+                  <span class="bg-pink-500 text-white px-3 py-0.5 rounded shadow-sm">ICreateService</span>
                   <span class="mx-3 text-slate-400">→ {{ $t('arch.services.create') }}</span>
                 </div>
                 <div class="ml-8 border-l-2 border-slate-200 pl-4 space-y-2">
                   <div class="flex items-center">
-                    <span class="bg-purple-500 text-white px-3 py-0.5 rounded shadow-sm">AbUpdateService</span>
+                    <span class="bg-purple-500 text-white px-3 py-0.5 rounded shadow-sm">IUpdateService</span>
                     <span class="mx-3 text-slate-400">→ {{ $t('arch.services.update') }}</span>
                   </div>
                   <div class="ml-8 border-l-2 border-slate-200 pl-4 space-y-2">
                     <div class="flex items-center">
-                      <span class="bg-indigo-500 text-white px-3 py-0.5 rounded shadow-sm">AbDeleteService</span>
+                      <span class="bg-indigo-500 text-white px-3 py-0.5 rounded shadow-sm">IDeleteService</span>
                       <span class="mx-3 text-slate-400">→ {{ $t('arch.services.delete') }}</span>
                     </div>
                     <div class="ml-8 border-l-2 border-slate-200 pl-4">
                       <div class="flex items-center">
-                        <span class="bg-blue-600 text-white px-3 py-0.5 rounded shadow-sm">AbService</span>
+                        <span class="bg-blue-600 text-white px-3 py-0.5 rounded shadow-sm">IService</span>
                         <span class="mx-3 text-slate-400 font-bold">→ {{ $t('arch.services.full') }}</span>
                       </div>
                     </div>
@@ -73,11 +71,10 @@
 
     <article id="generic-system" class="mb-10 scroll-mt-24">
       <h3 class="text-xl font-bold text-slate-800 mb-3">
-        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">2.3</span>
         {{ $t('arch.generic_type_title') }}
       </h3>
       <p class="text-slate-600 mb-4">{{ $t('arch.generic_type_desc') }}</p>
-      
+
       <div class="overflow-x-auto rounded-lg border border-slate-200">
         <table class="w-full text-left text-sm border-collapse">
           <thead>
@@ -96,8 +93,12 @@
               <td class="p-3 border-b" v-html="$t('arch.types.id')"></td>
             </tr>
             <tr>
-              <td class="p-3 border-b font-mono font-bold text-blue-600">RQ</td>
-              <td class="p-3 border-b" v-html="$t('arch.types.rq')"></td>
+              <td class="p-3 border-b font-mono font-bold text-blue-600">CREATE_REQ</td>
+              <td class="p-3 border-b" v-html="$t('arch.types.c_rq')"></td>
+            </tr>
+            <tr>
+              <td class="p-3 border-b font-mono font-bold text-blue-600">UPDATE_REQ</td>
+              <td class="p-3 border-b" v-html="$t('arch.types.u_rq')"></td>
             </tr>
           </tbody>
         </table>
@@ -106,16 +107,17 @@
 
     <article id="request-lifecycle" class="mb-10 scroll-mt-24">
       <h3 class="text-xl font-bold text-slate-800 mb-3">
-        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">2.4</span>
         {{ $t('arch.lifecycle_title') }}
       </h3>
       <p class="text-slate-600 mb-6" v-html="$t('arch.lifecycle_desc')"></p>
-      
+
       <div class="relative pl-8 border-l-2 border-blue-500 space-y-8 ml-4">
         <div v-for="(step, index) in lifecycleSteps" :key="index" class="relative">
-          <div class="absolute -left-[41px] top-1.5 w-4 h-4 rounded-full bg-blue-500 border-4 border-white shadow-sm"></div>
-          <h4 class="font-bold text-slate-800 text-sm uppercase tracking-wider mb-1">{{ index + 1 }}. {{ step.title }}</h4>
-          <p class="text-sm text-slate-500">{{ step.desc }}</p>
+          <div class="absolute -left-[41px] top-1.5 w-4 h-4 rounded-full bg-blue-500 border-4 border-white shadow-sm">
+          </div>
+          <h4 class="font-bold text-slate-800 text-sm uppercase tracking-wider mb-1">{{ index + 1 }}. {{ step.title }}
+          </h4>
+          <p class="text-sm text-slate-500" v-html="step.desc"></p>
         </div>
       </div>
     </article>

@@ -8,7 +8,7 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import java.lang.reflect.Field;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.ResolvableType;
@@ -37,6 +37,7 @@ import org.springframework.http.HttpStatus;
  *
  * @author NatswarChuan
  */
+@Slf4j
 @Component
 public class DtoSpecValidationValidator
     implements ConstraintValidator<DtoSpecValidation, Object> {
@@ -78,7 +79,7 @@ public class DtoSpecValidationValidator
    */
   @Override
   @Transactional(readOnly = true)
-  @SuppressWarnings({ "unchecked", "null" })
+  @SuppressWarnings({ "unchecked" })
   public boolean isValid(Object value, ConstraintValidatorContext context) {
     if (value == null) {
       return true;
@@ -101,8 +102,6 @@ public class DtoSpecValidationValidator
 
       SpecificationLoader<Object, Object> loader = (SpecificationLoader<Object, Object>) getLoaderInstance();
 
-      // Create typed array for varargs explicitly to avoid ClassCastException
-      // implementation expects T[] (e.g. ProductCreateReq[]), not Object[]
       Object[] args = (Object[]) java.lang.reflect.Array.newInstance(value.getClass(), 1);
       args[0] = value;
 
@@ -114,7 +113,10 @@ public class DtoSpecValidationValidator
       CriteriaBuilder cb = entityManager.getCriteriaBuilder();
       CriteriaQuery<Long> query = cb.createQuery(Long.class);
       Root<Object> root = (Root<Object>) query.from(entityClass);
-
+      if (root == null) {
+        throw new HttpException(HttpStatus.INTERNAL_SERVER_ERROR,
+            "Không thể tạo Root từ Entity: " + entityClass.getName());
+      }
       Predicate predicate = spec.toPredicate(root, query, cb);
 
       if (predicate != null) {
@@ -135,7 +137,8 @@ public class DtoSpecValidationValidator
       if (e instanceof HttpException) {
         throw (HttpException) e;
       }
-      e.printStackTrace();
+      log.error("Error executing DtoSpecValidation for DTO: {}, loader: {}. Error: {}",
+          value.getClass().getSimpleName(), loaderClass.getSimpleName(), e.getMessage(), e);
 
       return false;
     }
@@ -152,16 +155,20 @@ public class DtoSpecValidationValidator
    * @return Instance của SpecificationLoader.
    * @throws RuntimeException Nếu không thể khởi tạo instance.
    */
-  @SuppressWarnings("null")
   private SpecificationLoader<?, ?> getLoaderInstance() {
+    Class<? extends SpecificationLoader<?, ?>> currentLoaderClass = this.loaderClass;
+    if (currentLoaderClass == null) {
+      throw new HttpException(HttpStatus.INTERNAL_SERVER_ERROR,
+          "Không thể khởi tạo SpecificationLoader: loaderClass is null");
+    }
     try {
-      return applicationContext.getBean(loaderClass);
+      return applicationContext.getBean(currentLoaderClass);
     } catch (Exception e) {
       try {
-        return loaderClass.getDeclaredConstructor().newInstance();
+        return currentLoaderClass.getDeclaredConstructor().newInstance();
       } catch (Exception ex) {
         throw new HttpException(HttpStatus.INTERNAL_SERVER_ERROR, ex,
-            "Không thể khởi tạo SpecificationLoader: " + loaderClass.getName());
+            "Không thể khởi tạo SpecificationLoader: " + currentLoaderClass.getName());
       }
     }
   }

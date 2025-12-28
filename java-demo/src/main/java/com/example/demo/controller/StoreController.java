@@ -1,17 +1,15 @@
 package com.example.demo.controller;
 
 import com.example.demo.domain.Store;
-import com.example.demo.dto.store.StoreCreateReq;
 import com.example.demo.dto.store.StoreDetailRes;
 import com.example.demo.dto.store.StoreRes;
+import com.example.demo.dto.store.StoreCreateReq;
 import com.example.demo.dto.store.StoreUpdateReq;
 import com.example.demo.service.StoreService;
-import com.natswarchuan.genericservice.controller.trait.ICreateController;
-import com.natswarchuan.genericservice.controller.trait.IDeleteController;
-import com.natswarchuan.genericservice.controller.trait.IReadController;
-import com.natswarchuan.genericservice.controller.trait.IUpdateController;
-import com.natswarchuan.genericservice.controller.AbController;
+import com.natswarchuan.genericservice.controller.IController;
 import com.natswarchuan.genericservice.dto.IDto;
+import com.natswarchuan.genericservice.service.IBaseService;
+import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,7 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
  * Controller quản lý Cửa hàng (Store).
  * <p>
  * Cung cấp các endpoint API để quản lý thông tin cửa hàng.
- * Tận dụng {@link AbController} để có sẵn các chức năng CRUD:
+ * Implement {@link IController} để có sẵn các chức năng CRUD qua default
+ * methods:
  * <ul>
  * <li>POST /api/v1/stores: Tạo mới Store</li>
  * <li>GET /api/v1/stores/{id}: Xem chi tiết Store</li>
@@ -30,12 +29,9 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api/v1/stores")
-public class StoreController extends AbController<Store, Long>
-        implements
-        ICreateController<Store, Long, StoreCreateReq>,
-        IUpdateController<Store, Long, StoreUpdateReq>,
-        IDeleteController<Store, Long>,
-        IReadController<Store, Long> {
+public class StoreController implements IController<Store, Long, StoreCreateReq, StoreUpdateReq> {
+
+    private final StoreService service;
 
     /**
      * Khởi tạo StoreController.
@@ -43,7 +39,13 @@ public class StoreController extends AbController<Store, Long>
      * @param service StoreService được inject bởi Spring.
      */
     public StoreController(StoreService service) {
-        super(service);
+        this.service = service;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <S extends IBaseService<Store, Long>> S getBaseService() {
+        return (S) service;
     }
 
     /**
@@ -52,9 +54,8 @@ public class StoreController extends AbController<Store, Long>
      * @return Class của StoreRes.
      */
     @Override
-    @SuppressWarnings("unchecked")
-    public <R extends IDto<Store>> Class<R> getResponseSummaryDtoClass() {
-        return (Class<R>) StoreRes.class;
+    public Class<? extends IDto<Store>> getResponseSummaryDtoClass() {
+        return StoreRes.class;
     }
 
     /**
@@ -63,8 +64,8 @@ public class StoreController extends AbController<Store, Long>
      * @return Class của StoreDetailRes.
      */
     @Override
-    @SuppressWarnings("unchecked")
-    public <R extends IDto<Store>> Class<R> getResponseDetailDtoClass() {
-        return (Class<R>) StoreDetailRes.class;
+    @NonNull
+    public Class<? extends IDto<Store>> getResponseDetailDtoClass() {
+        return StoreDetailRes.class;
     }
 }

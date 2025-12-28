@@ -5,7 +5,7 @@
     </div>
 
     <!-- Inclusive Narrative Intro (5W1H Integrated) -->
-    <div class="mb-12 text-lg text-slate-600 leading-relaxed space-y-6 text-justify">
+    <div class="mb-12 text-lg text-slate-600 leading-relaxed space-y-6">
       <p v-html="$t('intro.p1')"></p>
 
       <p v-html="$t('intro.p2')"></p>
@@ -32,7 +32,6 @@
     <!-- Detailed Features -->
     <div id="intro-features" class="mt-12 scroll-mt-24">
       <h3 class="text-2xl font-bold text-slate-800 mb-6">
-        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">1.2</span>
         {{ $t('intro.features_title') }}
       </h3>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
@@ -85,7 +84,6 @@
     <div id="intro-pros-cons" class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-16 scroll-mt-24">
       <div class="bg-emerald-50 rounded-xl p-8 border border-emerald-100">
         <h3 class="text-xl font-bold text-emerald-900 mb-4 flex items-center">
-          <span class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-sm mr-3">1.3</span>
           {{ $t('intro.pros_title') }}
         </h3>
         <ul class="space-y-3 text-emerald-800">
@@ -149,6 +147,5 @@
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
-// No script logic needed for toggle anymore
+import { useI18n } from 'vue-i18n';
 </script>

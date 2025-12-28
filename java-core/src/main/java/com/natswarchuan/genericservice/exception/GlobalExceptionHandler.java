@@ -2,11 +2,15 @@ package com.natswarchuan.genericservice.exception;
 
 import com.natswarchuan.genericservice.payload.response.HttpApiResponse;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -21,7 +25,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  * @author NatswarChuan
  */
 @RestControllerAdvice
-@SuppressWarnings("null")
 public class GlobalExceptionHandler {
 
     /**
@@ -40,7 +43,11 @@ public class GlobalExceptionHandler {
                 ex.getMessage(),
                 ex.getStatus(),
                 ex.getData());
-        return new ResponseEntity<>(response, ex.getStatus());
+        HttpStatusCode httpStatusCode = ex.getStatus();
+        if (httpStatusCode == null) {
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(response, httpStatusCode);
     }
 
     /**
@@ -66,6 +73,47 @@ public class GlobalExceptionHandler {
                 "Dữ liệu đầu vào không hợp lệ",
                 HttpStatus.BAD_REQUEST,
                 errors);
+        return ResponseEntity.badRequest().body(response);
+    }
+
+    /**
+     * Xử lý ngoại lệ validation ở mức phương thức (ví dụ: @RequestParam
+     * validation).
+     *
+     * @param ex Ngoại lệ {@link ConstraintViolationException}.
+     * @return {@link ResponseEntity} chứa danh sách các lỗi validation.
+     */
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<HttpApiResponse<Object>> handleConstraintViolationException(
+            ConstraintViolationException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getConstraintViolations().forEach(violation -> {
+            String propertyPath = violation.getPropertyPath().toString();
+            String fieldName = propertyPath.substring(propertyPath.lastIndexOf('.') + 1);
+            String errorMessage = violation.getMessage();
+            errors.put(fieldName, errorMessage);
+        });
+
+        HttpApiResponse<Object> response = HttpApiResponse.error(
+                "Tham số không hợp lệ",
+                HttpStatus.BAD_REQUEST,
+                errors);
+        return ResponseEntity.badRequest().body(response);
+    }
+
+    /**
+     * Xử lý lỗi đọc JSON (Malformed JSON, sai định dạng dữ liệu).
+     *
+     * @param ex Ngoại lệ {@link HttpMessageNotReadableException}.
+     * @return {@link ResponseEntity} báo lỗi format.
+     */
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<HttpApiResponse<Object>> handleHttpMessageNotReadableException(
+            HttpMessageNotReadableException ex) {
+        HttpApiResponse<Object> response = HttpApiResponse.error(
+                "Định dạng request không hợp lệ (JSON parse error)",
+                HttpStatus.BAD_REQUEST,
+                ex.getMessage()); 
         return ResponseEntity.badRequest().body(response);
     }
 

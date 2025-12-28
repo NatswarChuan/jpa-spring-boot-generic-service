@@ -1,8 +1,7 @@
 package com.example.demo.repository;
 
 import com.example.demo.domain.Product;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import com.natswarchuan.genericservice.repository.IRepository;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -14,5 +13,5 @@ import org.springframework.stereotype.Repository;
  * tuy nhiên hiện tại đang tận dụng Specification cho các nhu cầu lọc phức tạp.
  */
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpecificationExecutor<Product> {
+public interface ProductRepository extends IRepository<Product, Long> {
 }

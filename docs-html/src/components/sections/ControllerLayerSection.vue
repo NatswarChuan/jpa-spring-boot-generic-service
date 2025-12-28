@@ -10,34 +10,60 @@
         <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">8.1</span>
         {{ $t('controller_layer.hierarchy.title') }}
       </h3>
-      <p class="text-slate-600 mb-6">
-        {{ $t('controller_layer.hierarchy.desc') }}
-      </p>
+      <p class="text-slate-600 mb-6" v-html="$t('controller_layer.hierarchy.desc')"></p>
       
-      <div class="mb-6 bg-white border border-slate-200 rounded-lg p-6 shadow-sm overflow-x-auto">
-        <div class="space-y-2 font-mono text-sm leading-relaxed">
-          <div class="flex items-center">
-            <span class="bg-slate-500 text-white px-3 py-0.5 rounded shadow-sm">IBaseController</span>
-            <span class="mx-3 text-slate-400">{{ $t('controller_layer.hierarchy.base_desc') }}</span>
-          </div>
-          <div class="ml-8 border-l-2 border-slate-200 pl-4 space-y-2">
-            <div class="flex items-center">
-              <span class="bg-indigo-600 text-white px-3 py-0.5 rounded shadow-sm">AbController</span>
-              <span class="mx-3 text-slate-400">{{ $t('controller_layer.hierarchy.abstract_desc') }}</span>
+      <div class="mb-8 p-6 bg-slate-50 rounded-xl border border-slate-200 shadow-inner">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+          
+          <!-- Source Traits -->
+          <div class="lg:col-span-3 flex flex-col items-center p-4 bg-white rounded-lg border border-slate-200 shadow-sm">
+            <h4 class="font-bold text-slate-500 text-xs uppercase mb-3 tracking-wide">{{ $t('controller_layer.hierarchy.diagram.available_traits') }}</h4>
+            <div class="flex flex-col gap-2 w-full">
+              <div class="bg-blue-50 text-blue-700 px-3 py-2 rounded text-xs font-bold border border-blue-100 text-center">IReadSummary...</div>
+              <div class="bg-cyan-50 text-cyan-700 px-3 py-2 rounded text-xs font-bold border border-cyan-100 text-center">IReadDetail...</div>
+              <div class="bg-pink-50 text-pink-700 px-3 py-2 rounded text-xs font-bold border border-pink-100 text-center">ICreate...</div>
+              <div class="bg-purple-50 text-purple-700 px-3 py-2 rounded text-xs font-bold border border-purple-100 text-center">IUpdate...</div>
+              <div class="bg-red-50 text-red-700 px-3 py-2 rounded text-xs font-bold border border-red-100 text-center">IDelete...</div>
             </div>
+          </div>
+
+          <!-- Arrow -->
+          <div class="lg:col-span-1 flex justify-center text-slate-300">
+             <i class="fas fa-chevron-right text-2xl hidden lg:block"></i>
+             <i class="fas fa-chevron-down text-2xl lg:hidden"></i>
+          </div>
+
+          <!-- Composition Area -->
+          <div class="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-4">
             
-            <div class="ml-8 border-l-2 border-slate-200 pl-4 space-y-4 pt-2">
-              <div class="flex items-center">
-                <span class="bg-green-100 text-green-800 border border-green-200 px-3 py-0.5 rounded shadow-sm">MyController</span>
-                <span class="mx-3 text-slate-500 text-xs italic"> {{ $t('controller_layer.hierarchy.implements') }} </span>
-                <div class="flex flex-wrap gap-2">
-                  <span class="bg-amber-500 text-white px-2 py-0.5 rounded text-xs">IReadController</span>
-                  <span class="bg-pink-500 text-white px-2 py-0.5 rounded text-xs">ICreateController</span>
-                  <span class="bg-purple-500 text-white px-2 py-0.5 rounded text-xs">IUpdateController</span>
-                  <span class="bg-red-500 text-white px-2 py-0.5 rounded text-xs">IDeleteController</span>
-                </div>
+            <!-- Option 1: Aggregator -->
+            <div class="bg-white p-5 rounded-lg border-2 border-indigo-100 hover:border-indigo-300 transition-colors shadow-sm relative group">
+              <div class="absolute -top-3 -right-3 bg-indigo-600 text-white text-xs font-bold px-2 py-1 rounded shadow-sm z-10">{{ $t('controller_layer.hierarchy.diagram.standard') }}</div>
+              <h5 class="font-bold text-indigo-900 mb-2">MyStandardController</h5>
+              <div class="flex items-center gap-2 mb-3">
+                <span class="text-xs text-slate-400 italic">implements</span>
+                <span class="bg-indigo-100 text-indigo-700 px-2 py-1 rounded text-xs font-bold">IController</span>
+              </div>
+              <div class="text-xs text-slate-500 border-t border-slate-100 pt-2 mt-2">
+                <span v-html="$t('controller_layer.hierarchy.diagram.inherits')"></span>
               </div>
             </div>
+
+            <!-- Option 2: Selective -->
+            <div class="bg-white p-5 rounded-lg border-2 border-slate-200 hover:border-slate-300 transition-colors shadow-sm relative group">
+              <div class="absolute -top-3 -right-3 bg-slate-500 text-white text-xs font-bold px-2 py-1 rounded shadow-sm z-10">{{ $t('controller_layer.hierarchy.diagram.custom') }}</div>
+              <h5 class="font-bold text-slate-800 mb-2">MyCustomController</h5>
+              <div class="flex flex-wrap items-center gap-2 mb-3">
+                <span class="text-xs text-slate-400 italic">implements</span>
+                <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs font-bold">IReadSummary...</span>
+                <span class="text-slate-300">+</span>
+                <span class="bg-pink-100 text-pink-700 px-2 py-1 rounded text-xs font-bold">ICreate...</span>
+              </div>
+               <div class="text-xs text-slate-500 border-t border-slate-100 pt-2 mt-2">
+                {{ $t('controller_layer.hierarchy.diagram.selected') }}
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
@@ -72,22 +98,28 @@
           </thead>
           <tbody class="divide-y divide-slate-100">
             <tr>
-              <td class="p-3 font-mono text-blue-600">IReadController</td>
-              <td class="p-3 space-x-2">
+              <td class="p-3 font-mono text-blue-600">{{ $t('controller_layer.traits.table.read_summary.title') }}</td>
+              <td class="p-3">
                 <span class="bg-green-100 text-green-700 px-2 py-0.5 rounded text-xs font-bold">GET /</span>
-                <span class="bg-green-100 text-green-700 px-2 py-0.5 rounded text-xs font-bold">GET /{id}</span>
               </td>
-              <td class="p-3 text-slate-600">{{ $t('controller_layer.traits.table.read.usecase') }}</td>
+              <td class="p-3 text-slate-600">{{ $t('controller_layer.traits.table.read_summary.usecase') }}</td>
             </tr>
             <tr>
-              <td class="p-3 font-mono text-purple-600">ICreateController</td>
+              <td class="p-3 font-mono text-cyan-600">{{ $t('controller_layer.traits.table.read_detail.title') }}</td>
+              <td class="p-3">
+                <span class="bg-green-100 text-green-700 px-2 py-0.5 rounded text-xs font-bold">GET /{id}</span>
+              </td>
+              <td class="p-3 text-slate-600">{{ $t('controller_layer.traits.table.read_detail.usecase') }}</td>
+            </tr>
+            <tr>
+              <td class="p-3 font-mono text-purple-600">{{ $t('controller_layer.traits.table.create.title') }}</td>
               <td class="p-3">
                 <span class="bg-amber-100 text-amber-700 px-2 py-0.5 rounded text-xs font-bold">POST /</span>
               </td>
               <td class="p-3 text-slate-600">{{ $t('controller_layer.traits.table.create.usecase') }}</td>
             </tr>
             <tr>
-              <td class="p-3 font-mono text-orange-600">IUpdateController</td>
+              <td class="p-3 font-mono text-orange-600">{{ $t('controller_layer.traits.table.update.title') }}</td>
               <td class="p-3 space-x-2">
                 <span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-xs font-bold">PUT /{id}</span>
                 <span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-xs font-bold">PATCH /{id}</span>
@@ -95,7 +127,7 @@
               <td class="p-3 text-slate-600">{{ $t('controller_layer.traits.table.update.usecase') }}</td>
             </tr>
             <tr>
-              <td class="p-3 font-mono text-red-600">IDeleteController</td>
+              <td class="p-3 font-mono text-red-600">{{ $t('controller_layer.traits.table.delete.title') }}</td>
               <td class="p-3">
                 <span class="bg-red-100 text-red-700 px-2 py-0.5 rounded text-xs font-bold">DELETE /{id}</span>
               </td>
@@ -104,6 +136,9 @@
           </tbody>
         </table>
       </div>
+      
+      <!-- Pro Tip -->
+      <div class="mb-8 p-4 bg-amber-50 border-l-4 border-amber-500 text-amber-900 text-sm rounded-r" v-html="$t('controller_layer.traits.tip')"></div>
 
       <!-- Mix & Match Examples -->
       <h4 class="font-bold text-slate-700 mb-4">{{ $t('controller_layer.traits.mix_match_title') }}</h4>
@@ -157,52 +192,54 @@ const ctrlCode = computed(() => `package com.example.demo.controller;
 import com.example.demo.domain.Product;
 import com.example.demo.dto.product.*;
 import com.example.demo.service.ProductService;
-import com.natswarchuan.genericservice.controller.AbController;
-import com.natswarchuan.genericservice.controller.trait.*;
-import com.natswarchuan.genericservice.dto.IDto;
+import com.natswarchuan.genericservice.controller.IController;
+import com.natswarchuan.genericservice.service.IBaseService;
 import org.springframework.web.bind.annotation.*;
 
 ${t('controller_layer.code.comment_class')}
 @RestController
 @RequestMapping("/api/v1/products")
-public class ProductController extends AbController<Product, Long>
-        implements
-        ICreateController<Product, Long, ProductCreateReq>,
-        IUpdateController<Product, Long, ProductUpdateReq>,
-        IDeleteController<Product, Long>,
-        IReadController<Product, Long> {
+public class ProductController implements IController<Product, Long, ProductCreateReq, ProductUpdateReq> {
+
+    private final ProductService service;
 
     public ProductController(ProductService service) {
-        super(service);
+        this.service = service;
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public <R extends IDto<Product>> Class<R> getResponseSummaryDtoClass() {
+    public ProductService getBaseService() {
+        return service;
+    }
+
+    @Override
+    public Class<ProductRes> getResponseSummaryDtoClass() {
         // ${t('controller_layer.code.comment_summ')}
-        return (Class<R>) ProductRes.class;
+        return ProductRes.class;
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public <R extends IDto<Product>> Class<R> getResponseDetailDtoClass() {
+    public Class<ProductDetailRes> getResponseDetailDtoClass() {
         // ${t('controller_layer.code.comment_detail')}
-        return (Class<R>) ProductDetailRes.class;
+        return ProductDetailRes.class;
     }
 }
 `);
 
 const readOnlyCtrlCode = computed(() => `public class ReadOnlyProductController 
-    extends AbController<Product, Long>
-    implements IReadController<Product, Long> {
+    implements IReadSummaryController<Product, Long>,
+               IReadDetailController<Product, Long> {
+    
+    // ... overrides getBaseService(), etc.
     ${t('controller_layer.code.comment_readonly')}
 }
 `);
 
 const publicCtrlCode = computed(() => `public class PublicProductController 
-    extends AbController<Product, Long>
-    implements IReadController<Product, Long>,
+    implements IReadDetailController<Product, Long>,
                ICreateController<Product, Long, ProductCreateReq> {
+    
+    // ... overrides getBaseService(), etc.
     ${t('controller_layer.code.comment_public')}
 }
 `);

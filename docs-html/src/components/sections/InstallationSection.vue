@@ -11,9 +11,12 @@
           <i class="fas fa-check-circle mr-2"></i> {{ $t('install.requirements.title') }}
         </h4>
         <ul class="space-y-2 text-sm text-blue-800">
-          <li class="flex items-center"><span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>{{ $t('install.requirements.java') }}</li>
-          <li class="flex items-center"><span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>{{ $t('install.requirements.springboot') }}</li>
-          <li class="flex items-center"><span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>{{ $t('install.requirements.hibernate') }}
+          <li class="flex items-center"><span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>{{
+            $t('install.requirements.java') }}</li>
+          <li class="flex items-center"><span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>{{
+            $t('install.requirements.springboot') }}</li>
+          <li class="flex items-center"><span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>{{
+            $t('install.requirements.hibernate') }}
           </li>
         </ul>
       </div>
@@ -33,7 +36,8 @@
             Boot 3.1.x</span>
         </div>
         <p class="text-xs text-green-700 mt-3 pt-3 border-t border-green-200 uppercase font-bold">
-          {{ $t('install.tested_versions.priority_label') }} <span class="bg-green-200 text-green-900 px-1 rounded">{{ $t('install.tested_versions.priority_value') }}</span>
+          {{ $t('install.tested_versions.priority_label') }} <span class="bg-green-200 text-green-900 px-1 rounded">{{
+            $t('install.tested_versions.priority_value') }}</span>
         </p>
       </div>
     </div>
@@ -41,7 +45,6 @@
 
     <div id="installation-maven" class="mb-8 scroll-mt-24">
       <h3 class="text-2xl font-bold text-slate-800 mb-4 flex items-center">
-        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">3.1</span>
         {{ $t('install.maven.title') }}
       </h3>
 
@@ -76,12 +79,9 @@ dependencies {
 
     <div id="installation-local" class="mb-10 p-6 bg-slate-50 border border-slate-200 rounded-xl scroll-mt-24">
       <h3 class="text-2xl font-bold text-slate-800 mb-4 flex items-center">
-        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">3.2</span>
         {{ $t('install.local.title') }}
       </h3>
-      <p class="text-slate-600 mb-4">
-        {{ $t('install.local.desc') }}
-      </p>
+      <p class="text-slate-600 mb-4" v-html="$t('install.local.desc')"></p>
 
       <div class="bg-slate-900 rounded-lg p-4 mb-4 font-mono text-sm text-green-400">
         <span class="text-slate-500" v-html="$t('install.local.comment_cmd')"></span><br />
@@ -94,20 +94,18 @@ dependencies {
 
     <div id="installation-config" class="mb-10 scroll-mt-24">
       <h3 class="text-2xl font-bold text-slate-800 mb-4 flex items-center">
-        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">3.3</span>
         {{ $t('install.config.title') }}
       </h3>
-      <p class="text-slate-600 mb-4">
-        {{ $t('install.config.desc') }}
-      </p>
+      <p class="text-slate-600 mb-4" v-html="$t('install.config.desc')"></p>
 
       <div class="bg-slate-900 rounded-lg p-4 shadow-lg overflow-x-auto">
         <pre class="text-green-400 font-mono text-sm">
-@SpringBootApplication(scanBasePackages = { 
-    "com.your.package",             <span class="text-slate-500" v-html="$t('install.config.comment_package')"></span>
-    "com.natswarchuan.genericservice" <span class="text-slate-500" v-html="$t('install.config.comment_lib')"></span>
-})
-public class YourApplication { ... }</pre>
+@SpringBootApplication
+public class YourApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(YourApplication.class, args);
+    }
+}</pre>
       </div>
     </div>
 

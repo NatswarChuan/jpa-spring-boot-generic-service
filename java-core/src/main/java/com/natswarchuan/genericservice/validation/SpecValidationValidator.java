@@ -8,6 +8,7 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.jpa.domain.Specification;
@@ -33,6 +34,7 @@ import org.springframework.http.HttpStatus;
  *
  * @author NatswarChuan
  */
+@Slf4j
 @Component
 public class SpecValidationValidator implements ConstraintValidator<SpecValidation, Object> {
 
@@ -68,7 +70,7 @@ public class SpecValidationValidator implements ConstraintValidator<SpecValidati
    */
   @Override
   @Transactional(readOnly = true)
-  @SuppressWarnings({ "unchecked", "null" })
+  @SuppressWarnings({ "unchecked" })
   public boolean isValid(Object value, ConstraintValidatorContext context) {
     if (value == null) {
       return true;
@@ -86,7 +88,10 @@ public class SpecValidationValidator implements ConstraintValidator<SpecValidati
       CriteriaBuilder cb = entityManager.getCriteriaBuilder();
       CriteriaQuery<Long> query = cb.createQuery(Long.class);
       Root<Object> root = (Root<Object>) query.from(entityClass);
-
+      if (root == null) {
+        throw new HttpException(HttpStatus.INTERNAL_SERVER_ERROR,
+            "Không thể tạo Root từ Entity: " + entityClass.getName());
+      }
       Predicate predicate = ((Specification<Object>) spec).toPredicate(root, query, cb);
 
       if (predicate != null) {
@@ -107,7 +112,8 @@ public class SpecValidationValidator implements ConstraintValidator<SpecValidati
       if (e instanceof HttpException) {
         throw (HttpException) e;
       }
-      e.printStackTrace();
+      log.error("Error executing SpecValidation for entity: {}, loader: {}, value: {}. Error: {}",
+          entityClass.getSimpleName(), loaderClass.getSimpleName(), value, e.getMessage(), e);
       return false;
     }
   }
@@ -118,10 +124,14 @@ public class SpecValidationValidator implements ConstraintValidator<SpecValidati
    * @return Instance hợp lệ của SpecificationLoader.
    * @throws RuntimeException Nếu không thể khởi tạo instance.
    */
-  @SuppressWarnings("null")
   private SpecificationLoader<?, ?> getLoaderInstance() {
+    Class<? extends SpecificationLoader<?, ?>> currentLoaderClass = this.loaderClass;
+    if (currentLoaderClass == null) {
+      throw new HttpException(HttpStatus.INTERNAL_SERVER_ERROR,
+          "Không thể khởi tạo SpecificationLoader: loaderClass is null");
+    }
     try {
-      return applicationContext.getBean(loaderClass);
+      return applicationContext.getBean(currentLoaderClass);
     } catch (Exception e) {
       try {
         return loaderClass.getDeclaredConstructor().newInstance();

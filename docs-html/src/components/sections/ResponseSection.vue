@@ -6,7 +6,6 @@
     <!-- 11.1 Response Structures -->
     <article id="res-structure" class="mb-10 scroll-mt-24">
       <h3 class="text-xl font-bold text-slate-800 mb-3">
-        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">11.1</span>
         {{ $t('response_handling.structure.title') }}
       </h3>
       <p class="text-slate-600 mb-3" v-html="$t('response_handling.structure.desc')"></p>
@@ -17,6 +16,7 @@
 {
   "status": 200,            {{ $t('response_handling.code.comment_status') }}
   "message": {{ $t('response_handling.code.msg_success') }},     {{ $t('response_handling.code.comment_msg') }}
+  "success": true,          {{ $t('response_handling.code.comment_success_flag') }}
   "data": { ... }           {{ $t('response_handling.code.comment_payload') }}
 }
         </pre>
@@ -32,7 +32,6 @@
     <!-- 11.2 Exception Handling -->
     <article id="res-exception" class="mb-10 scroll-mt-24">
       <h3 class="text-xl font-bold text-slate-800 mb-3">
-        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">11.2</span>
         {{ $t('response_handling.exception.title') }}
       </h3>
       <p class="text-slate-600 mb-4" v-html="$t('response_handling.exception.desc')"></p>
@@ -51,6 +50,7 @@
 {
   "status": 404,
   "message": {{ $t('response_handling.code.msg_user_404') }},
+  "success": false,
   "data": null
 }
           </pre>
@@ -71,6 +71,7 @@ const httpResCode = computed(() => `package com.example.demo.controller;
 
 import com.example.demo.dto.ProductResponse;
 import com.natswarchuan.genericservice.payload.response.HttpApiResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -87,7 +88,7 @@ public class MyController { // ...
 
     ${t('response_handling.code.comment_manual_error')}
     public HttpApiResponse<Void> handleError() {
-        return HttpApiResponse.error(${t('response_handling.code.msg_not_found')}, 404);
+        return HttpApiResponse.error(${t('response_handling.code.msg_not_found')}, HttpStatus.NOT_FOUND);
     }
 }
 `);

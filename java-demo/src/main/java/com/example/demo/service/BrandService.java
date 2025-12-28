@@ -2,7 +2,10 @@ package com.example.demo.service;
 
 import com.example.demo.domain.Brand;
 import com.example.demo.repository.BrandRepository;
-import com.natswarchuan.genericservice.service.AbService;
+import com.natswarchuan.genericservice.repository.IRepository;
+import com.natswarchuan.genericservice.service.IReadDetailService;
+import com.natswarchuan.genericservice.service.IReadSummaryService;
+import com.natswarchuan.genericservice.service.IService;
 import org.springframework.stereotype.Service;
 
 import org.springframework.lang.NonNull;
@@ -10,8 +13,8 @@ import org.springframework.lang.NonNull;
 /**
  * Service xử lý nghiệp vụ cho Brand.
  * <p>
- * Kế thừa {@link AbService} từ thư viện java-core để có sẵn các phương thức
- * nghiệp vụ chuẩn:
+ * Implement {@link IService} từ thư viện java-core để có sẵn các phương thức
+ * nghiệp vụ chuẩn qua default methods:
  * <ul>
  * <li>create: Tạo mới entity</li>
  * <li>findById: Tìm kiếm theo ID</li>
@@ -23,7 +26,9 @@ import org.springframework.lang.NonNull;
  * logic validation hoặc xử lý dữ liệu (nếu có).
  */
 @Service
-public class BrandService extends AbService<Brand, Long> {
+public class BrandService implements IReadDetailService<Brand, Long>, IReadSummaryService<Brand, Long> {
+
+    private final BrandRepository repository;
 
     /**
      * Khởi tạo BrandService.
@@ -31,6 +36,11 @@ public class BrandService extends AbService<Brand, Long> {
      * @param repository Repository truy xuất dữ liệu Brand.
      */
     public BrandService(@NonNull BrandRepository repository) {
-        super(repository);
+        this.repository = repository;
+    }
+
+    @Override
+    public IRepository<Brand, Long> getRepository() {
+        return repository;
     }
 }

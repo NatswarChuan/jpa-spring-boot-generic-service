@@ -3,10 +3,9 @@
     <h2 class="text-3xl font-bold text-slate-900 border-b pb-4 mb-8">{{ $t('notes.title') }}</h2>
     <p class="text-slate-600 mb-6 italic">{{ $t('notes.subtitle') }}</p>
 
-    <!-- 13.1 Modularity Strategy (Tips) -->
+    <!-- Modularity Strategy (Tips) -->
     <article id="notes-modularity" class="mb-10 scroll-mt-24">
       <h3 class="text-xl font-bold text-slate-800 mb-3">
-        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">13.1</span>
         {{ $t('notes.modularity.title') }}
       </h3>
       <p class="text-slate-600 mb-6" v-html="$t('notes.modularity.desc')"></p>
@@ -19,7 +18,8 @@
           </h4>
           <p class="text-sm text-slate-600 mb-4" v-html="$t('notes.modularity.controller_desc')"></p>
           <div class="bg-slate-50 p-3 rounded text-xs font-mono text-slate-700 mb-3 border border-slate-200">
-            public class MyCtrl implements <span class="font-bold text-blue-600">IReadController</span>, <span
+            public class MyCtrl implements <span class="font-bold text-blue-600">IReadSummaryController</span>, <span
+              class="font-bold text-blue-600">IReadDetailController</span>, <span
               class="font-bold text-purple-600">ICreateController</span> {...}
           </div>
           <a href="#controller-traits" class="text-xs font-bold text-blue-600 hover:underline">
@@ -34,7 +34,7 @@
           </h4>
           <p class="text-sm text-slate-600 mb-4" v-html="$t('notes.modularity.service_desc')"></p>
           <div class="bg-slate-50 p-3 rounded text-xs font-mono text-slate-700 mb-3 border border-slate-200">
-            public class MyService extends <span class="font-bold text-amber-600">AbReadDetailService</span> {...}
+            public class MyService implements <span class="font-bold text-amber-600">IReadDetailService</span> {...}
           </div>
           <a href="#core-service" class="text-xs font-bold text-amber-600 hover:underline">
             {{ $t('notes.modularity.service_link') }} <i class="fas fa-arrow-right ml-1"></i>
@@ -43,10 +43,9 @@
       </div>
     </article>
 
-    <!-- 13.2 Advanced Patterns -->
+    <!-- Advanced Patterns -->
     <article id="notes-advanced" class="mb-10 scroll-mt-24">
       <h3 class="text-xl font-bold text-slate-800 mb-3">
-        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">13.2</span>
         {{ $t('notes.advanced.title') }}
       </h3>
       <p class="text-slate-600 mb-6">{{ $t('notes.advanced.desc') }}</p>
@@ -98,10 +97,9 @@
       </div>
     </article>
 
-    <!-- 13.3 Best Practices -->
+    <!-- Best Practices -->
     <article id="notes-best-practices" class="mb-10 scroll-mt-24">
       <h3 class="text-xl font-bold text-slate-800 mb-3">
-        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">13.3</span>
         {{ $t('notes.best_practices.title') }}
       </h3>
 
@@ -135,10 +133,9 @@
       </div>
     </article>
 
-    <!-- 13.4 Troubleshooting -->
+    <!-- Troubleshooting -->
     <article id="notes-troubleshooting" class="mb-10 scroll-mt-24">
       <h3 class="text-xl font-bold text-slate-800 mb-3">
-        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">13.4</span>
         {{ $t('notes.troubleshooting.title') }}
       </h3>
 
@@ -186,7 +183,8 @@ const { t } = useI18n();
 const readOnlyControllerCode = computed(() => `@RestController
 @RequestMapping("/api/v1/public/products")
 public class ProductPublicController implements 
-    IReadController<Product, Long>, ${t('notes.code.trait_read')}
+    IReadSummaryController<Product, Long, ProductResponse>,
+    IReadDetailController<Product, Long, ProductResponse>,
     IBaseController<Product, Long>  ${t('notes.code.trait_base')}
 {
     private final ProductService service;
@@ -221,20 +219,36 @@ public class AuditLogController implements
 
 
 const readOnlyServiceCode = computed(() => `@Service
-public class ProductViewService extends AbReadDetailService<Product, Long> {
-    public ProductViewService(ProductRepository repo) {
-        super(repo);
+public class ProductViewService implements IReadDetailService<Product, Long> {
+    private final ProductRepository repository;
+
+    public ProductViewService(ProductRepository repository) {
+        this.repository = repository;
     }
+
+    @Override
+    public IRepository<Product, Long> getRepository() {
+        return repository;
+    }
+
     ${t('notes.code.only_methods')}
     ${t('notes.code.no_methods')}
 }
 `);
 
 const safeUpdateServiceCode = computed(() => `@Service
-public class ConfigurationService extends AbUpdateService<Config, String> {
-    public ConfigurationService(ConfigRepository repo) {
-        super(repo);
+public class ConfigurationService implements IUpdateService<Config, String> {
+    private final ConfigRepository repository;
+
+    public ConfigurationService(ConfigRepository repository) {
+        this.repository = repository;
     }
+
+    @Override
+    public IRepository<Config, String> getRepository() {
+        return repository;
+    }
+
     ${t('notes.code.has_methods')}
     ${t('notes.code.no_delete')}
 }
@@ -320,7 +334,7 @@ public class OrderService {
 `);
 
 const softDeleteCode = computed(() => `public abstract class BaseAppService<E extends BaseEntity, ID> 
-    extends AbService<E, ID> {
+    implements IService<E, ID> {
     
     @Override
     public void delete(ID id) {

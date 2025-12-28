@@ -2,7 +2,8 @@ package com.example.demo.service;
 
 import com.example.demo.domain.Category;
 import com.example.demo.repository.CategoryRepository;
-import com.natswarchuan.genericservice.service.AbService;
+import com.natswarchuan.genericservice.repository.IRepository;
+import com.natswarchuan.genericservice.service.IService;
 import org.springframework.stereotype.Service;
 
 import org.springframework.lang.NonNull;
@@ -10,7 +11,8 @@ import org.springframework.lang.NonNull;
 /**
  * Service xử lý nghiệp vụ cho Category.
  * <p>
- * Kế thừa {@link AbService} giúp tận dụng logic CRUD có sẵn:
+ * Implement {@link IService} giúp tận dụng logic CRUD có sẵn qua default
+ * methods:
  * <ul>
  * <li>create: Tạo mới Category</li>
  * <li>findById: Tìm kiếm Category theo ID</li>
@@ -21,7 +23,9 @@ import org.springframework.lang.NonNull;
  * Các logic đặc thù cho Category có thể được thêm vào đây.
  */
 @Service
-public class CategoryService extends AbService<Category, Long> {
+public class CategoryService implements IService<Category, Long> {
+
+    private final CategoryRepository repository;
 
     /**
      * Khởi tạo CategoryService.
@@ -29,6 +33,11 @@ public class CategoryService extends AbService<Category, Long> {
      * @param repository Repository truy xuất dữ liệu Category.
      */
     public CategoryService(@NonNull CategoryRepository repository) {
-        super(repository);
+        this.repository = repository;
+    }
+
+    @Override
+    public IRepository<Category, Long> getRepository() {
+        return repository;
     }
 }

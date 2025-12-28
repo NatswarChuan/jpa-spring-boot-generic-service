@@ -29,9 +29,9 @@
           <div class="text-xs text-blue-500 font-bold uppercase mb-2 flex justify-between items-center">
              Generic Controller
           </div>
-          <h4 class="font-bold text-lg text-slate-800 mb-1">AbController</h4>
+          <h4 class="font-bold text-lg text-slate-800 mb-1">IController</h4>
           <div class="font-mono text-[10px] text-slate-500 bg-slate-100 p-1 rounded mb-2">
-            &lt;Product, Long, CreateReq...&gt;
+            &lt;Product, Long, Req, ...&gt;
           </div>
           <ul class="text-xs text-slate-600 space-y-1">
              <li><i class="fas fa-check text-green-500 mr-1"></i> Handle HTTP</li>
@@ -57,9 +57,9 @@
           <div class="text-xs text-purple-500 font-bold uppercase mb-2 flex justify-between items-center">
             Generic Service
           </div>
-          <h4 class="font-bold text-lg text-slate-800 mb-1">AbService</h4>
+          <h4 class="font-bold text-lg text-slate-800 mb-1">IService</h4>
           <div class="font-mono text-[10px] text-slate-500 bg-slate-100 p-1 rounded mb-2">
-            &lt;Product, Long, ...&gt;
+            &lt;Product, Long&gt;
           </div>
            <ul class="text-xs text-slate-600 space-y-1">
              <li><i class="fas fa-check text-green-500 mr-1"></i> Business Logic</li>
@@ -86,7 +86,7 @@
           <div class="text-xs text-green-500 font-bold uppercase mb-2 flex justify-between items-center">
             JPA Repository
           </div>
-          <h4 class="font-bold text-lg text-slate-800 mb-1">JpaRepository</h4>
+          <h4 class="font-bold text-lg text-slate-800 mb-1">IRepository</h4>
           <div class="font-mono text-[10px] text-slate-500 bg-slate-100 p-1 rounded mb-2">
             &lt;Product, Long&gt;
           </div>

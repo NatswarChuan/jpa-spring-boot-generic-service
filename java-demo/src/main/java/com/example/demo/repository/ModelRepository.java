@@ -1,8 +1,7 @@
 package com.example.demo.repository;
 
 import com.example.demo.domain.Model;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import com.natswarchuan.genericservice.repository.IRepository;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -11,5 +10,5 @@ import org.springframework.stereotype.Repository;
  * Tương tác với bảng models trong cơ sở dữ liệu.
  */
 @Repository
-public interface ModelRepository extends JpaRepository<Model, Long>, JpaSpecificationExecutor<Model> {
+public interface ModelRepository extends IRepository<Model, Long> {
 }

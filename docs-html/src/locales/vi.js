@@ -1,10 +1,10 @@
 export default {
     intro: {
-        title: '1. Giới thiệu',
-        p1: 'Trong hệ sinh thái <strong>Spring Boot</strong> hiện đại, việc xây dựng các ứng dụng quản lý (Admin/CMS/ERP) thường đi kèm với khối lượng lớn các tác vụ lặp lại. <strong>Generic Service Framework</strong> ra đời như một giải pháp nền tảng giúp lập trình viên <strong>Java Backend</strong> đóng gói toàn bộ quy trình nghiệp vụ cốt lõi ngay từ giai đoạn khởi tạo dự án.',
-        p2: 'Thay vì phải viết thủ công hàng trăm dòng code boilerplate, giờ đây chỉ với vài bước cấu hình đơn giản và kế thừa từ các lớp Abstract Base như <code>AbService</code> hay <code>AbController</code>, bạn sẽ sở hữu ngay <strong>5 API tiêu chuẩn</strong> (List, Detail, Create, Update, Delete) sẵn sàng sử dụng.',
+        title: 'Giới thiệu',
+        p1: 'Trong bối cảnh phát triển các ứng dụng Spring Boot quy mô lớn, các lập trình viên thường xuyên bị vướng vào vòng xoáy của các tác vụ lặp đi lặp lại — phải viết đi viết lại mã nguồn boilerplate cho Controller, Service, và Repository cho từng thực thể từ User, Product đến Order. Sự dư thừa này không chỉ kìm hãm tốc độ phát triển ban đầu mà còn tiềm ẩn rủi ro lớn về "cơn ác mộng" bảo trì cũng như sự thiếu nhất quán trong toàn bộ hệ thống.',
+        p2: '<strong>JPA Spring Boot Generic Service</strong> chính là lời giải toàn diện cho bài toán này. Đây là một khung kiến trúc (framework) mạnh mẽ được thiết kế để đóng gói toàn bộ các thao tác CRUD chuẩn, bộ lọc động (dynamic filtering), và ánh xạ dữ liệu (DTO mapping) vào một tầng xử lý tái sử dụng cao. Chỉ cần kế thừa interface <code>IController</code>, ứng dụng của bạn ngay lập tức thừa hưởng trọn vẹn bộ API chuẩn hóa. Bạn định nghĩa cấu trúc một lần, và framework sẽ lo liệu mọi tác vụ nền tảng nặng nhọc, cho phép bạn tập trung 100% vào logic nghiệp vụ cốt lõi.',
         quote: '"Framework sẽ tự động cung cấp bộ máy xử lý mạnh mẽ bao gồm CRUD, Validation nâng cao và JPA Specification ngay tại tầng <strong>Service</strong>, giải phóng bạn khỏi các công việc nhàm chán để tập trung hoàn toàn vào logic nghiệp vụ đặc thù."',
-        features_title: '1.2 Các chức năng chính',
+        features_title: 'Các chức năng chính',
         features: {
             crud: {
                 title: 'Generic CRUD Operations',
@@ -31,7 +31,7 @@ export default {
                 desc: 'Xử lý ngoại lệ tập trung, đảm bảo mọi API luôn trả về format lỗi đồng nhất.'
             }
         },
-        pros_title: '1.3 Ưu điểm',
+        pros_title: 'Ưu điểm',
         pros: {
             boilerplate: '<strong>Giảm 80% boilerplate code:</strong> Không còn phải viết hàng ngàn dòng code CRUD lặp lại.',
             consistency: '<strong>Tính nhất quán cao:</strong> Toàn bộ team sử dụng chung một cấu trúc chuẩn mực.',
@@ -67,12 +67,12 @@ export default {
         switch_lang: 'Chuyển sang Tiếng Anh'
     },
     arch: {
-        title: '2. Kiến trúc & Vòng đời',
-        subtitle: 'Đặc tả kỹ thuật của framework và luồng xử lý request.',
-        diagram_title: '2.1 Sơ đồ Kiến trúc',
+        title: 'Kiến trúc & Vòng đời',
+        subtitle: 'Hiểu rõ cách hệ thống vận hành bên trong.',
+        diagram_title: 'Sơ đồ Kiến trúc',
         diagram_desc: 'Mô hình tổng quan về sự tương tác giữa các tầng Controller, Service và Repository.',
-        class_hierarchy_title: '2.2 Phân cấp Class',
-        class_hierarchy_desc: 'Thiết kế theo mô hình phân tầng, phân chia rạch ròi trách nhiệm giữa các loại thao tác (Read, Create, Update, Delete).',
+        class_hierarchy_title: 'Phân cấp Interface',
+        class_hierarchy_desc: 'Khác với kiến trúc phân lớp truyền thống, framework sử dụng mô hình "Interface Composition" linh hoạt. Bạn lắp ghép các chức năng (Read, Create, Update, Delete) như những mảnh ghép LEGO thông qua các phương thức default trong Interface.',
         services: {
             base: 'Chứa Utils (Mapping, Logging)',
             read_summary: 'Xử lý FindAll / Paging',
@@ -82,15 +82,16 @@ export default {
             delete: 'Xử lý Delete',
             full: 'FULL CRUD + Specification'
         },
-        generic_type_title: '2.3 Hệ thống Generic Type',
-        generic_type_desc: 'Type safety giúp kiểm soát chặt chẽ dữ liệu từ Controller xuống Service.',
+        generic_type_title: 'Hệ thống Generic Type',
+        generic_type_desc: 'Type safety đảm bảo dữ liệu được kiểm soát chặt chẽ từ Controller xuống Service.',
         table: { type: 'Loại (Type)', desc: 'Mô tả' },
         types: {
             e: '<strong>Entity Class:</strong> Thực thể JPA (VD: Product).',
             id: '<strong>PK Type:</strong> Kiểu khóa chính (VD: Long, UUID).',
-            rq: '<strong>Request DTO:</strong> DTO đầu vào (VD: ProductCreateReq).'
+            c_rq: '<strong>Create Request DTO:</strong> DTO tạo mới (implement IDto).',
+            u_rq: '<strong>Update Request DTO:</strong> DTO cập nhật (implement IDto).'
         },
-        lifecycle_title: '2.4 Vòng đời Request',
+        lifecycle_title: 'Vòng đời Request',
         lifecycle_desc: 'Luồng đi của dữ liệu khi gọi API <code>POST /api/v1/products</code>:',
         steps: {
             validation: { title: 'DTO Validation', desc: 'Hibernate Validator kiểm tra các annotation (@NotBlank, @Exists...) trên ProductCreateReq.' },
@@ -102,139 +103,141 @@ export default {
         }
     },
     install: {
-        title: '3. Cài đặt',
-        intro: 'Thư viện này đã được publish lên <strong>Maven Central</strong>. Bạn có thể dễ dàng tích hợp vào dự án Spring Boot của mình bằng Maven hoặc Gradle mà không cần cấu hình repository phức tạp.',
+        title: 'Cài đặt',
+        intro: 'Framework được thiết kế để dễ dàng tích hợp vào bất kỳ dự án Spring Boot nào thông qua <strong>Maven</strong> hoặc <strong>Gradle</strong>, giảm thiểu tối đa công sức cấu hình thủ công.',
         requirements: {
             title: 'Yêu cầu Hệ thống',
-            java: 'Java 17 trở lên',
-            springboot: 'Spring Boot 3.0+',
-            hibernate: 'Hibernate Validator'
+            java: 'Java 17 trở lên (Bắt buộc cho Records & Sealed Classes)',
+            springboot: 'Spring Boot 3.0+ (Jakarta EE 9/10)',
+            hibernate: 'Hibernate Validator (Chuẩn)'
         },
         tested_versions: {
             title: 'Phiên bản đã Test',
-            priority_label: 'Mức độ Ưu tiên: ',
-            priority_value: 'Cao'
+            priority_label: 'Tương thích: ',
+            priority_value: 'Đã xác thực'
         },
         maven: {
-            title: '3.1 Cấu hình Maven/Gradle',
-            comment_xml: '&lt;!-- Thêm dependency vào pom.xml --&gt;',
-            comment_version: '&lt;!-- Xem phiên bản mới nhất tại GitHub Releases --&gt;'
+            title: 'Tích hợp qua Maven/Gradle',
+            comment_xml: '&lt;!-- Thêm vào pom.xml --&gt;',
+            comment_version: '&lt;!-- Kiểm tra LATEST_VERSION tại GitHub hoặc File pom.xml của Core --&gt;'
         },
         gradle: {
-            title: 'Triển khai bằng Gradle',
-            comment_file: '// Thêm dependency vào build.gradle',
-            comment_version: '// Thay LATEST_VERSION bằng phiên bản mới nhất từ GitHub Releases'
+            title: 'Sử dụng Gradle',
+            comment_file: '// Thêm vào build.gradle',
+            comment_version: '// Thay thế LATEST_VERSION'
         },
         local: {
-            title: '3.2 Môi trường Local',
-            desc: 'Nếu bạn đang phát triển hoặc tùy chỉnh trực tiếp mã nguồn của framework, hãy cài đặt nó vào Local Maven Repository của bạn:',
-            comment_cmd: '# Chạy lệnh này tại thư mục java-core',
-            note: 'Sau khi chạy lệnh trên, bạn có thể sử dụng phiên bản vừa build (ví dụ <code>LATEST_VERSION</code>) trong các dự án local khác.'
+            title: 'Phát triển Local',
+            desc: 'Nếu muốn tùy chỉnh core hoặc sử dụng phiên bản chưa publish lên Central, bạn hãy cài đặt vào <strong>Local Maven Repository</strong>:',
+            comment_cmd: '# 1. Di chuyển vào thư mục java-core',
+            note: 'Sau bước này, các dự án trong máy bạn có thể resolve dependency trực tiếp từ thư mục .m2 local.'
         },
         config: {
-            title: '3.3 Cấu hình Ứng dụng',
-            desc: 'Để Spring Boot có thể nhận diện các Beans và Validators từ thư viện, bạn cần cấu hình Package Scanning tại lớp Application chính.',
-            comment_package: '// Package dự án của bạn',
-            comment_lib: '// Package của thư viện'
+            title: 'Tự động Cấu hình (Auto-Config)',
+            desc: 'Nhờ cơ chế <strong>Auto Configuration</strong> của Spring Boot, các component (Service, Controller, Repository) trong thư viện sẽ được tự động scan và đăng ký. Bạn <strong>không</strong> cần phải thêm <code>@ComponentScan</code> thủ công.',
+            comment_package: '// Class ứng dụng',
+            comment_lib: ''
         },
-        important: '<strong>Quan trọng:</strong> Hãy kiểm tra và sử dụng phiên bản (Release Tag) mới nhất tại'
+        important: '<strong>Mẹo:</strong> Luôn kiểm tra phiên bản mới nhất tại'
     },
     quick_start: {
-        title: '4. Bắt đầu nhanh (Quick Start)',
-        intro: 'Tạo ngay một bộ CRUD API hoàn chỉnh chỉ trong vài phút. Dưới đây là mã nguồn tối thiểu cần thiết cho một module quản lý sản phẩm (Product).',
+        title: 'Bắt đầu nhanh',
+        explain_label: 'Giải thích',
+        intro: 'Xây dựng một bộ CRUD API hoàn chỉnh cho tài nguyên <code>Product</code> chỉ trong dưới 5 phút. Hướng dẫn này sử dụng <strong>Lombok</strong> để code tóm gọn nhất có thể.',
         steps: {
-            entity: { title: 'Định nghĩa Entity', desc: 'Entity JPA tiêu chuẩn. Framework hỗ trợ mọi loại ID (Long, String, UUID...).' },
-            repo: { title: 'Tạo Repository', desc: 'Kế thừa JpaRepository và JpaSpecificationExecutor để hỗ trợ CRUD và tìm kiếm động.', comment: '// Không cần viết thêm code nào' },
+            entity: { title: 'Định nghĩa Entity', desc: 'Một JPA Entity tiêu chuẩn đại diện cho tài nguyên <strong>Product</strong>.' },
+            repo: { title: 'Tạo Repository', desc: 'Kế thừa <code>IRepository</code> để thừa hưởng các thao tác database chuẩn.', comment: '// Không cần code thêm cho CRUD cơ bản' },
             dto: {
                 title: 'Định nghĩa các DTO',
-                desc: 'Implement IDto<E> để mapping tự động. Tách biệt Create, Update và Response.',
+                desc: 'Implement <code>IDto&lt;Product&gt;</code> để mapping tự động. Tách biệt DTO Create, Update và Response để đảm bảo bảo mật và kiểm soát dữ liệu.',
                 comment_create: '// 1. Request tạo mới',
                 comment_update: '// 2. Request cập nhật',
-                comment_res: '// 3. Response trả về'
+                comment_res: '// 3. Response DTO'
             },
-            service: { title: 'Extend Base Service', desc: 'Kế thừa AbService<E, ID> để có đầy đủ tính năng CRUD. Không cần khai báo DTO type tại đây.' },
+            service: { title: 'Triển khai Service', desc: 'Implement <code>IService</code> để cung cấp nghiệp vụ. Override <code>getRepository()</code> để liên kết repository.', comment: '// Việc implement Interface tự động cung cấp các phương thức CRUD mặc định' },
             controller: {
-                title: 'Extend Base Controller',
-                desc: 'Kế thừa AbController và implement các interface Traits (ICreate, IUpdate...) để kích hoạt API.',
-                comment_summ: '// Chỉ định DTO dùng cho phản hồi danh sách',
-                comment_detail: '// Chỉ định DTO dùng cho phản hồi chi tiết'
+                title: 'Triển khai Controller',
+                desc: 'Implement <code>IController</code> để expose REST APIs. Kết nối service và chỉ định các class DTO cho việc mapping phản hồi.',
+                comment_summ: '// Chỉ định DTO cho phản hồi danh sách (List)',
+                comment_detail: '// Chỉ định DTO cho phản hồi chi tiết (Detail)'
             }
         },
-        more_info: 'Bạn muốn hiểu rõ hơn về từng thành phần?',
-        view_details: 'Xem hướng dẫn chi tiết từng bước'
+        more_info: 'Bạn muốn tìm hiểu sâu hơn về Validation tùy chỉnh hay tìm kiếm nâng cao?',
+        view_details: 'Xem hướng dẫn chi tiết'
     },
     entity_repo: {
-        title: '5. Tầng Entity & Repository',
-        subtitle: 'Ánh xạ với bảng trong database và Repository JPA cho module Product.',
+        title: 'Tầng Entity & Repository',
+        subtitle: 'Thiết lập nền tảng dữ liệu cho ứng dụng của bạn.',
         entity: {
-            title: '5.1 Định nghĩa Entity',
-            desc: 'Định nghĩa cấu trúc bảng và các mối quan hệ (ManyToOne, OneToMany).',
+            title: 'Định nghĩa Entity',
+            desc: 'Bắt đầu bằng việc định nghĩa <strong>JPA Entity</strong> tiêu chuẩn phản ánh cấu trúc cơ sở dữ liệu. Framework hỗ trợ mọi loại ID bao gồm <code>Long</code>, <code>String</code>, và <code>UUID</code>.',
             required: 'BẮT BUỘC',
             optional: 'TÙY CHỌN',
             annotations: {
-                entity: 'Đánh dấu class là một JPA Entity mapped với Database.',
-                table: 'Tùy chỉnh tên bảng và Index (Performance tuning).',
+                entity: 'Đánh dấu class là một thực thể JPA.',
+                table: 'Tùy chỉnh tên bảng và Index để tối ưu hiệu năng.',
                 nationalized: 'Hỗ trợ lưu chuỗi Unicode (NVARCHAR) cho SQL Server.',
-                builder: 'Tạo Builder pattern giúp khởi tạo object dễ dãng.'
+                builder: 'Kích hoạt <strong>Builder pattern</strong> giúp khởi tạo đối tượng dễ dàng hơn.'
             },
             code: {
-                comment: 'Entity đại diện cho Sản phẩm (Product).',
-                comment_helper: '// Phương thức Helper cho Many-to-Many thông qua transient'
+                comment: 'Entity đại diện cho tài nguyên Product.',
+                comment_helper: '// Phương thức Helper quản lý quan hệ Many-to-Many thông qua @Transient'
             }
         },
         repo: {
-            title: '5.2 Triển khai Repository',
+            title: 'Triển khai Repository',
             diagram: {
-                standard: 'Standard CRUD',
-                advanced: 'Advanced Filters & Search',
-                ready: 'Ready for Generic Service',
-                required: 'Required by AbService'
+                standard: 'CRUD Chuẩn',
+                advanced: 'Tìm kiếm & Thống kê',
+                ready: 'Giao diện Hợp nhất',
+                required: 'Yêu cầu bởi Service'
             },
-            desc: 'Triển khai Repository cực kỳ đơn giản, chỉ cần define Interface:',
-            note: '<strong>Lưu ý:</strong> Repository bắt buộc phải extends <code>JpaSpecificationExecutor</code> để hỗ trợ bộ lọc nâng cao (Specification).'
+            desc: 'Thay vì kế thừa các Interface lẻ tẻ của Spring, hãy kế thừa <code>IRepository</code>. Interface hợp nhất này kết hợp sức mạnh của <strong>CrudRepository</strong>, <strong>JpaRepository</strong> và <strong>JpaSpecificationExecutor</strong>, trang bị ngay cho tầng dữ liệu cả các thao tác cơ bản lẫn khả năng lọc động nâng cao.',
+            note: '<strong>Lưu ý:</strong> Repository của bạn <strong>BẮT BUỘC</strong> phải kế thừa <code>IRepository</code> để tương thích với tầng Service của framework.'
         }
     },
     dtos: {
-        title: '6. Data Transfer Objects (DTO)',
-        subtitle: 'Sử dụng DTO để tách biệt Model của Database và Model của API.',
+        title: 'Đối tượng DTO (Data Transfer Objects)',
+        subtitle: 'Tách biệt hoàn toàn Contract của API với cấu trúc Database.',
         req: {
-            title: '6.1 Request DTO',
-            desc: 'Tách biệt DTO tạo mới và cập nhật để kiểm soát dữ liệu đầu vào.'
+            title: 'Request DTO',
+            desc: 'Phân tách DTO cho <strong>Tạo mới</strong> và <strong>Cập nhật</strong> giúp kiểm soát dữ liệu đầu vào chặt chẽ (VD: cho phép sửa `price` nhưng cấm sửa `username`). Implement <code>IDto&lt;E&gt;</code> để kích hoạt chuyển đổi tự động.'
         },
         res: {
-            title: '6.2 Response DTO',
-            desc: 'Dữ liệu trả về cho client. Hỗ trợ tự động map từ Entity sang DTO.',
-            tips: '<strong>Tips:</strong> <code>IDto</code> mặc định sử dụng <code>BeanUtils.copyProperties</code>. Nếu tên field của DTO trùng với Entity, bạn <strong>KHÔNG CẦN</strong> viết code mapping thủ công nữa.'
+            title: 'Response DTO',
+            desc: 'Định hình dữ liệu trả về cho client. Bằng cách implement <code>IDto</code>, framework sẽ tự động map các field từ Entity sang DTO thông qua <code>BeanUtils</code>.',
+            tips: '<strong>Mẹo:</strong> Nếu tên field của DTO trùng khớp với Entity, bạn <strong>KHÔNG CẦN</strong> viết bất kỳ code mapping thủ công nào.'
         },
         i18n: {
-            title: '6.3 Hỗ trợ Đa ngôn ngữ',
-            desc: 'Framework hỗ trợ đa ngôn ngữ ngay khi chuyển đổi DTO. Bạn có thể override hàm <code>fromEntity</code> có tham số <code>language</code>.'
+            title: 'Hỗ trợ Đa ngôn ngữ',
+            desc: 'Framework hỗ trợ Localization ngay tại tầng DTO. Override hàm <code>fromEntity(entity, language)</code> để trả về dữ liệu khác nhau dựa trên header <code>Accept-Language</code> của client.'
         },
         code: {
-            comment_convert: '/**\n     * Chuyển đổi sang Entity.\n     * <p>\n     * - Sử dụng BeanUtils.copyProperties cho các field đơn giản.\n     * - Xử lý thủ công cho categoryIds (Set<Long> -> Set<Category>).\n     */',
-            comment_update: '// Tận dụng default method để copy fields cơ bản\n        // Cập nhật quan hệ Many-to-Many an toàn\n            // Trigger clear() + addAll()',
-            comment_auto: '// IDto tự động hỗ trợ mapping từ Entity -> DTO thông qua BeanUtils\n    // nếu tên field trùng khớp (ví dụ: name, price).',
-            comment_i18n: '// Ví dụ override nếu muốn support đa ngôn ngữ\n    // Logic custom cho từng ngôn ngữ'
+            comment_convert: '// Convert DTO -> Entity\n        // 1. Tự động copy field đơn giản\n        // 2. Xử lý field phức tạp (categoryIds -> Set<Category>)',
+            comment_update: '// 1. QUAN TRỌNG: Gọi super để copy các field cơ bản trước\n        // 2. Cập nhật an toàn quan hệ Many-to-Many',
+            comment_auto: '// Không cần code mapping! Các field như "name", "price" tự động được copy.',
+            comment_i18n: '// Logic tùy chỉnh để trả về dữ liệu theo ngôn ngữ (lang)'
         }
     },
     service_layer: {
-        title: '7. Tầng Service',
+        title: 'Tầng Service Handler',
         subtitle: 'Xử lý logic nghiệp vụ và tích hợp các life-cycle hooks.',
         base: {
-            title: '7.1 Lựa chọn Base Class',
-            desc: 'Framework cung cấp các lớp cơ sở (Base Classes) theo mô hình phân tầng. Thay vì luôn dùng <code>AbService</code> (All-in-One), bạn hãy chọn lớp phù hợp nhất với nhu cầu để tối ưu code.',
+            title: 'Lựa chọn Interface',
+            desc: 'Framework áp dụng hướng tiếp cận <strong>"Interface Composition" (Lắp ghép)</strong>. Thay vì kế thừa một lớp cơ sở khổng lồ, bạn chỉ cần implement những interfaces chứa chức năng bạn thực sự cần. Điều này giữ cho service của bạn nhẹ nhàng và đúng trọng tâm.',
             menu: {
-                read_summary: { question: 'Chỉ cần xem danh sách và phân trang?', features: 'exists, count' },
-                read_detail: { question: 'Cần xem chi tiết từng bản ghi?', features: 'findById, findOne' },
-                create: { question: 'Chỉ cho phép đọc và tạo mới?' },
-                update: { question: 'Cho phép chỉnh sửa dữ liệu?' },
-                full: { title: 'AbService (Full Option)', desc: 'Giải pháp toàn diện cho hầu hết các trường hợp.', rec: 'Recommended' }
+                read_summary: { question: 'Cần danh sách chuẩn & phân trang?', features: 'exists, count' },
+                read_detail: { question: 'Cần xem chi tiết theo ID?', features: 'findById, findOne' },
+                create: { question: 'Cần chức năng tạo mới?' },
+                update: { question: 'Cần chức năng cập nhật?' },
+                delete: { question: 'Cần chức năng xóa?' },
+                full: { title: 'IService (Full CRUD)', desc: 'Interface tổng hợp bao gồm TẤT CẢ tính năng.', rec: 'Khuyên dùng' }
             },
-            code_comment: '// Ví dụ: Service chuẩn kế thừa AbService'
+            code_comment: '// Ví dụ: Service implement IService để có full tính năng CRUD'
         },
         hooks: {
-            title: '7.2 Các Hooks Vòng đời',
-            desc: 'Cơ chế "Hook" cho phép bạn can thiệp vào luồng xử lý (trước hoặc sau khi lưu DB) mà không cần viết lại toàn bộ logic CRUD.',
+            title: 'Lifecycle Hooks',
+            desc: 'Các <strong>Default Methods</strong> trong interface đã được trang bị sẵn các điểm "Hook". Bạn có thể override lại các phương thức này trong Service để chèn thêm logic tùy chỉnh mà không cần viết lại luồng CRUD cốt lõi.',
             timeline: {
                 write_flow: 'Luồng Ghi (Create/Update/Delete)',
                 read_flow: 'Luồng Đọc (Read)',
@@ -244,62 +247,71 @@ export default {
                 map_dto: 'Chuyển đổi Entity -> DTO'
             },
             hooks_list: 'Các Hook khả dụng:',
-            code_comment_before: '// Tự động tính toán giá khuyến mãi',
+            code_comment_before: '// Tự động tính toán giá trước khi lưu',
             code_comment_after: '// Gửi thông báo sau khi tạo thành công',
             code_javadoc_desc: 'Service xử lý nghiệp vụ cho Product.',
-            code_javadoc_extends: 'Kế thừa AbService để tận dụng logic CRUD có sẵn.'
+            code_javadoc_extends: 'Implement IService để tận dụng logic CRUD có sẵn.'
         }
     },
     controller_layer: {
-        title: '8. Tầng Controller',
-        subtitle: 'Expose API đơn giản bằng cách implement các Interface.',
+        title: 'Tầng Controller',
+        subtitle: 'Cung cấp API đơn giản thông qua việc lắp ghép Interfaces.',
         hierarchy: {
-            title: '8.1 Phân cấp Class',
-            desc: 'Controller Layer được thiết kế theo pattern lắp ghép Interfaces (Traits). Bạn chỉ cần "khai báo" những gì bạn muốn sử dụng.',
-            base_desc: 'Framework Base Interface',
-            abstract_desc: 'Abstract Class cung cấp implementation',
-            implements: 'implements'
-        },
-        core: {
-            title: '8.2 Định nghĩa Controller',
-            desc: 'Để tạo một Controller chuẩn, bạn kế thừa <code>AbController</code> và implement các interface hành vi bạn cần (Read, Create, Update, Delete).',
-            note: '<strong>Quan trọng:</strong> <code>AbController</code> yêu cầu 2 generic: <code>Entity</code> và <code>ID Type</code>. Nó kết nối tới Service và thực thi các Generic Operations.'
-        },
-        traits: {
-            title: '8.3 Controller Traits',
-            desc: 'Mỗi interface (Trait) khi được implement sẽ tự động kích hoạt các REST API tương ứng. Bạn có thể mix & match chúng linh hoạt.',
-            mix_match_title: 'Chiến thuật Mix & Match:',
-            read_only: {
-                title: 'Read-Only Controller',
-                desc: 'Chỉ xem dữ liệu, không cho phép chỉnh sửa (VD: Log, History).'
-            },
-            append_only: {
-                title: 'Append-Only Controller',
-                desc: 'Chỉ cho phép thêm mới (VD: Interaction Log).'
-            },
-            table: {
-                header: { trait: 'Interface (Trait)', endpoint: 'Endpoints Kích hoạt', usecase: 'Trường hợp sử dụng' },
-                read: { usecase: 'Xem danh sách (Phân trang) & Xem chi tiết' },
-                create: { usecase: 'Tạo mới bản ghi' },
-                update: { usecase: 'Cập nhật toàn phần (PUT) hoặc một phần (PATCH)' },
-                delete: { usecase: 'Xóa (Hard delete) bản ghi theo ID' }
+            title: 'Phân cấp Interface',
+            desc: 'Tầng Controller sử dụng mô hình <strong>"Lắp ghép Interface" (Interface Composition)</strong>. Bạn không bị bắt buộc phải thừa kế một class cụ thể nào. Thay vào đó, bạn khai báo những "năng lực" (Traits) mà bạn muốn Controller của mình sở hữu.',
+            base_desc: 'Interface Gốc',
+            abstract_desc: 'Interface Tổng hợp',
+            implements: 'implements',
+            diagram: {
+                available_traits: 'Các Trait có sẵn',
+                standard: 'Tiêu chuẩn',
+                custom: 'Tùy chỉnh',
+                inherits: 'Tự động kế thừa <strong>TẤT CẢ</strong> traits.',
+                selected: 'Chỉ các trait được chọn mới được kích hoạt.'
             }
         },
+        core: {
+            title: 'Controller Tiêu chuẩn',
+            desc: 'Để tạo một REST Controller tiêu chuẩn, hãy implement interface <code>IController</code>. Interface tổng hợp này kế thừa toàn bộ các traits CRUD, cung cấp ngay lập tức bộ API đầy đủ.',
+            note: '<strong>Yêu cầu:</strong> Bạn cần override `getBaseService()` (để cung cấp logic nghiệp vụ) và các getter DTO class (để định nghĩa định dạng trả về).'
+        },
+        traits: {
+            title: 'Controller Traits (Đặc tính)',
+            desc: 'Mỗi interface (Trait) tương ứng trực tiếp với các REST endpoints cụ thể. Bạn có thể mix & match (lắp ghép) chúng để định nghĩa chính xác phạm vi API của mình.',
+            mix_match_title: 'Chiến thuật Lắp ghép:',
+            read_only: {
+                title: 'Controller Chỉ Đọc',
+                desc: 'Chỉ cung cấp dữ liệu để xem (VD: Danh mục công khai, Nhật ký hệ thống).'
+            },
+            append_only: {
+                title: 'Controller Chỉ Thêm',
+                desc: 'Cho phép thêm dữ liệu mới nhưng cấm sửa đổi (VD: Log tương tác, Dữ liệu IoT).'
+            },
+            table: {
+                header: { trait: 'Interface (Trait)', endpoint: 'Endpoints Kích hoạt', usecase: 'Mục đích sử dụng' },
+                read_summary: { title: 'IReadSummaryController', usecase: 'Xem danh sách, Phân trang & Lọc' },
+                read_detail: { title: 'IReadDetailController', usecase: 'Xem chi tiết bản ghi theo ID' },
+                create: { title: 'ICreateController', usecase: 'Tạo mới dữ liệu' },
+                update: { title: 'IUpdateController', usecase: 'Cập nhật toàn bộ (PUT) hoặc một phần (PATCH)' },
+                delete: { title: 'IDeleteController', usecase: 'Xóa (Mềm hoặc Cứng) theo ID' }
+            },
+            tip: '<strong>Mẹo:</strong> Bạn cũng có thể áp dụng chiến thuật "Lắp ghép Interface" này cho cả <strong>Service Layer</strong>! Nếu Controller chỉ Read-Only, Service của bạn chỉ cần implement <code>IReadService</code> để gọn nhẹ nhất.'
+        },
         custom: {
-            title: '8.4 Custom API',
-            desc: 'Ngoài các Generic API có sẵn, bạn vẫn thoải mái viết thêm các API tùy chỉnh bằng annotation của Spring Boot bình thường.'
+            title: 'API Tùy chỉnh',
+            desc: 'Bạn hoàn toàn tự do viết thêm các endpoints tùy chỉnh bằng các annotation chuẩn của Spring MVC bên cạnh các generic endpoints.'
         },
         code: {
-            comment_class: '// Chỉ cần implement Interfaces để có full CRUD API',
-            comment_summ: 'Chỉ định DTO cho List API (get all)',
-            comment_detail: 'Chỉ định DTO cho Detail API (get one)',
-            comment_readonly: '// Chỉ implement IReadController -> Không có Write API',
-            comment_public: '// Public API -> Chỉ Cho phép Xem & Tạo, Không Sửa/Xóa',
-            comment_custom_filter: '// Tận dụng lại findAll của BaseService'
+            comment_class: '// Implement IController để có đầy đủ CRUD operations',
+            comment_summ: 'Định nghĩa class DTO cho API Danh sách',
+            comment_detail: 'Định nghĩa class DTO cho API Chi tiết',
+            comment_readonly: '// Implement Read Interfaces -> Chỉ có các API ĐỌC',
+            comment_public: '// API Public -> Chỉ được Xem & Tạo, cấm Sửa/Xóa',
+            comment_custom_filter: '// Tái sử dụng logic của base service'
         }
     },
     validation: {
-        title: '9. Hệ thống Validation',
+        title: 'Hệ thống Validation',
         subtitle: 'Hệ thống kiểm tra dữ liệu đầu vào mạnh mẽ, tích hợp sẵn với Spring Validation. Đảm bảo dữ liệu sạch trước khi vào Business Logic.',
         strategy: {
             level1: { title: 'Basic Constraints', desc: 'Kiểm tra định dạng, độ dài, null...' },
@@ -307,7 +319,7 @@ export default {
             level3: { title: 'Database Check', desc: 'Ràng buộc chặt chẽ mức Database.' }
         },
         basic: {
-            title: '9.1 Ràng buộc Cơ bản',
+            title: 'Ràng buộc Cơ bản',
             desc: 'Các annotation kiểm tra định dạng hoặc ràng buộc đơn giản.',
             exists_unique: { title: '@Exists & @Unique', desc: 'Kiểm tra sự tồn tại của dữ liệu trong Database.' },
             enum_value: { title: '@EnumValue', desc: 'Kiểm tra giá trị String/Int có nằm trong tập hằng số của Enum hay không.' },
@@ -315,16 +327,23 @@ export default {
             ids_exist: { title: '@IdsExist', desc: 'Kiểm tra danh sách (Set, List) các ID có tồn tại trong Database hay không.' }
         },
         custom: {
-            title: '9.2 Validator Tùy chỉnh',
+            title: 'Validator Tùy chỉnh',
             desc: 'Sử dụng <strong>Specification</strong> để thực hiện các validation phức tạp.',
             spec: { title: '@SpecValidation (Field Level)', desc: 'Validate trên một trường cụ thể.' },
             dto_spec: { title: '@DtoSpecValidation (Class Level)', desc: 'Khi logic validation phụ thuộc vào <strong>nhiều trường</strong>. Ví dụ: Validate Model và Category phải thuộc về Brand đã chọn.' },
             loader_label: 'Implement Loader:'
         },
         advanced: {
-            title: '9.3 Ràng buộc SQL Tự nhiên',
-            desc: 'Sử dụng <strong>Native SQL</strong> để viết các ràng buộc kiểm tra dữ liệu trực tiếp dưới DB.',
-            sql: { title: '@SqlConstraint', desc: 'Validate logic phức tạp bằng SQL. Hỗ trợ bind biến từ Request Path, Params, hoặc Fields trong DTO.' },
+            title: 'Ràng buộc SQL Tự nhiên',
+            desc: 'Sử dụng <strong>Native SQL</strong> cho các validation siêu phức tạp trực tiếp dưới database. Hỗ trợ <strong>Cơ chế Bind biến động</strong> từ nhiều nguồn khác nhau.',
+            sql: {
+                title: '@SqlConstraint',
+                desc: 'Tự động bind <code>:value</code> vào field hiện tại' +
+                    '<br/>• <strong>path/id</strong>: Lấy từ URL Path (VD: /users/{id})' +
+                    '<br/>• <strong>param/type</strong>: Lấy từ Query Parameter (?type=X)' +
+                    '<br/>• <strong>field/brandId</strong>: Lấy từ field khác trong DTO' +
+                    '<br/>• <strong>header/X-Tenant</strong>: Lấy từ Request Header'
+            },
         },
         code: {
             comment_exists: '// ID danh mục cha phải TỒN TẠI trong bảng categories',
@@ -340,29 +359,29 @@ export default {
         }
     },
     specification: {
-        title: '10. Specification & Tìm kiếm Động',
-        subtitle: 'Hướng dẫn về cách tạo Specification động cho các truy vấn phức tạp.',
+        title: 'Specification & Tìm kiếm Động',
+        subtitle: 'Xây dựng bộ lọc tìm kiếm linh hoạt, hiệu suất cao mà không cần viết boilerplate.',
         default: {
-            title: '10.1 API Tìm kiếm Tích hợp',
-            desc: 'Ngay khi kế thừa <code>AbController</code>, bạn đã có sẵn API <code>GET /api/products</code> hỗ trợ phân trang, sắp xếp và tìm kiếm cơ bản mà <strong>không cần viết thêm code</strong>.',
-            params_title: 'Tham số Truy vấn Hỗ trợ (Supported Query Parameters)',
+            title: 'API Tìm kiếm Tích hợp',
+            desc: 'Bằng cách triển khai <code>IController</code>, bạn ngay lập tức sở hữu API <code>GET /api/products</code> hỗ trợ phân trang, sắp xếp và tìm kiếm cơ bản <strong>mà không cần viết thêm bất kỳ dòng mã nào</strong>.',
+            params_title: 'Các tham số truy vấn hỗ trợ',
             params: {
-                page: 'Số trang (bắt đầu từ 0). Mặc định: 0',
-                size: 'Số lượng bản ghi/trang. Mặc định: 10',
-                sort: 'Trường sắp xếp (VD: price). Mặc định: id',
-                dir: 'Hướng sắp xếp (asc/desc). Mặc định: asc',
-                search: 'Từ khóa tìm kiếm',
-                searchField: 'Trường cần tìm kiếm (VD: name)'
+                page: 'Số thứ tự trang (bắt đầu từ 0). Dùng <code>-1</code> để lấy toàn bộ bản ghi. Mặc định: 0',
+                size: 'Số lượng bản ghi mỗi trang (Tối đa: 200). Mặc định: 10',
+                sort: 'Trường sắp xếp (VD: price).',
+                dir: 'Hướng sắp xếp (asc/desc).',
+                search: 'Từ khóa tìm kiếm (khớp theo <code>LIKE %keyword%</code>)',
+                searchField: 'Trường cần tìm kiếm (VD: name, code). <strong>Bắt buộc</strong> nếu dùng search.'
             },
-            example_title: 'Ví dụ Sử dụng (Example Usage):',
-            example_explain: '-> Lấy trang 0, 20 phần tử, sắp xếp giá giảm dần, tìm các sản phẩm có tên chứa "iphone".'
+            example_title: 'Ví dụ sử dụng:',
+            example_explain: '-> Lấy trang 0, 20 bản ghi, sắp xếp theo giá giảm dần, tìm sản phẩm có tên chứa "iphone".'
         },
         custom: {
-            title: '10.2 Bộ lọc Tùy chỉnh (Advance)',
-            desc: 'Khi bạn cần các bộ lọc phức tạp hơn (ví dụ: khoảng giá, lọc theo danh mục), hãy mở rộng <code>BaseRequestParam</code> và Override method trong Controller.',
-            step1: { title: 'Bước 1: Tạo Request Param Custom', desc: 'Kế thừa <code>BaseRequestParam</code> để thêm các field filter mới.' },
-            step2: { title: 'Bước 2: Triển khai Custom Specification', desc: 'Tạo class <code>ProductSpecification</code> kế thừa <code>GenericSpecification</code> để xử lý logic filter chuyên sâu.' },
-            step3: { title: 'Bước 3: Override Controller', note: '<strong>Lưu ý quan trọng:</strong> Bạn bắt buộc phải override hàm <code>findAll</code> để Spring có thể map đúng class <code>ProductRequestParam</code> của bạn thay vì lớp cha.' }
+            title: 'Bộ lọc Tùy chỉnh (Nâng cao)',
+            desc: 'Khi bạn cần các bộ lọc phức tạp (VD: lọc theo khoảng giá, lọc theo danh mục), hãy tận dụng <code>GenericSpecification</code> để xây dựng các câu truy vấn JPA động dựa trên Request Params tùy chỉnh của bạn.',
+            step1: { title: 'Bước 1: Tạo Request Param Tùy chỉnh', desc: 'Kế thừa <code>BaseRequestParam</code> để thêm các trường lọc đặc thù của bạn (VD: minPrice, maxPrice).' },
+            step2: { title: 'Bước 2: Triển khai Custom Specification', desc: 'Tạo một lớp kế thừa <code>GenericSpecification&lt;E&gt;</code> và override <code>toPredicate</code> để xử lý logic lọc của riêng bạn.' },
+            step3: { title: 'Bước 3: Liên kết trong Controller', note: '<strong>Mẹo:</strong> Chỉ cần override lại hàm <code>getSpecification</code> để chuyển đổi sang bộ máy tìm kiếm tùy chỉnh của bạn.' }
         },
         code: {
             comment_field_brand: '// Lọc theo tên Brand (Join)',
@@ -376,17 +395,17 @@ export default {
         }
     },
     response_handling: {
-        title: '11. Xử lý Phản hồi (Response)',
+        title: 'Xử lý Phản hồi (Response)',
         subtitle: 'Cấu trúc kết quả trả về đồng nhất và cơ chế xử lý lỗi tập trung.',
         structure: {
-            title: '11.1 Cấu trúc Phản hồi',
+            title: 'Cấu trúc Phản hồi',
             desc: 'Thư viện cung cấp 2 lớp wrap chuẩn: <code>HttpApiResponse</code> cho đối tượng đơn/list và <code>PagedResponse</code> cho phân trang.',
             json_title: 'Cấu trúc JSON (HttpApiResponse)',
             paged_title: 'PagedResponse (Phân trang)',
             paged_desc: 'Thay thế <code>Page&lt;T&gt;</code> mặc định để custom fields.'
         },
         exception: {
-            title: '11.2 Xử lý Ngoại lệ',
+            title: 'Xử lý Ngoại lệ',
             desc: 'Sử dụng <code>HttpException</code> để ném lỗi từ Service/Controller. <code>GlobalExceptionHandler</code> sẽ tự động bắt và trả về format chuẩn.',
             throw_title: 'Throw Exception (Ném Lỗi)',
             standard_title: 'Standard Response (Phản hồi Chuẩn)'
@@ -394,6 +413,7 @@ export default {
         code: {
             comment_status: '// Mã HTTP Status',
             comment_msg: '// Thông điệp Human readable',
+            comment_success_flag: '// Cờ trạng thái thành công',
             comment_payload: '// Payload chi tiết',
             comment_success: '// 1. Trả về thành công',
             comment_manual_error: '// 2. Trả về lỗi thủ công (ít dùng, thường throw Exception)',
@@ -407,111 +427,113 @@ export default {
         }
     },
     api_list: {
-        title: '12. Các phương thức Base Service',
-        subtitle: 'Danh sách các phương thức CRUD mạnh mẽ có sẵn trong <code>AbService</code>.',
+        title: 'Các phương thức Base Service',
+        subtitle: 'Danh sách chi tiết các thao tác <strong>CRUD</strong> và các phương thức tiện ích mà framework cung cấp sẵn để tăng tốc độ phát triển và loại bỏ code lặp lại.',
         table: {
             signature: 'Chữ ký Phương thức (Method Signature)',
             desc: 'Mô tả & Return'
         },
         read: {
-            title: '12.1 Các Service Đọc (Read Services)',
-            detail_title: '12.1.1 IReadDetailService',
+            recommend: '★ KHUYÊN DÙNG',
+            title: 'Các Service Đọc (Read Services)',
+            detail_title: 'IReadDetailService',
             detail_subtitle: '(Single Entity Lookup)',
-            summary_title: '12.1.2 IReadSummaryService',
+            summary_title: 'IReadSummaryService',
             summary_subtitle: '(List & Search)',
             summary_note: '<strong>Khuyên dùng:</strong> Luôn ưu tiên sử dụng các hàm nhận tham số <code>Pageable</code>.',
             items: {
-                findById_entity: 'Lấy Entity gốc.',
-                findById_dto: 'Lấy và chuyển đổi sang DTO.',
-                findById_dto_lang: 'Lấy DTO đa ngôn ngữ.',
-                findById_spec: 'Lấy DTO theo ID và điều kiện Spec.',
-                findById_spec_lang: 'Lấy DTO đa ngôn ngữ theo ID và Spec.',
-                findOne_entity: 'Tìm một Entity theo Spec.',
-                findOne_dto: 'Tìm một DTO theo Spec.',
-                findOne_dto_lang: 'Tìm một DTO đa ngôn ngữ theo Spec.',
-                findAll_page_spec_dto: 'Phân trang + Sort + Filter + DTO.',
-                findAll_page_spec_lang: 'Phân trang + Sort + Filter + DTO đa ngôn ngữ.',
-                findAll_page_spec_entity: 'Phân trang trả về Entity.',
-                findAll_list: 'Toàn bộ danh sách Entity.',
-                findAll_list_dto: 'Toàn bộ danh sách DTO.',
-                findAll_list_dto_lang: 'Toàn bộ danh sách DTO đa ngôn ngữ.',
-                findAll_list_spec: 'Danh sách Entity theo Spec.',
-                findAll_list_spec_dto: 'Danh sách DTO theo Spec.',
-                findAllById: 'Tìm theo danh sách ID.',
-                findAllById_dto: 'Tìm theo danh sách ID trả về DTO.',
-                findAllById_dto_lang: 'Tìm theo danh sách ID trả về DTO đa ngôn ngữ.',
-                findAll_page_simple: 'Phân trang đơn giản.',
-                findAll_page_dto: 'Phân trang trả về DTO.',
-                findAll_page_dto_lang: 'Phân trang trả về DTO đa ngôn ngữ.',
-                findAll_page_spec_dto_simple: 'Phân trang + Spec trả về DTO.',
-                findAll_page_spec_dto_lang_simple: 'Phân trang + Spec trả về DTO đa ngôn ngữ.',
-                count: 'Đếm.',
-                exists: 'Checked tồn tại.'
+                findById_entity: 'Lấy một <strong>Thực thể (Entity)</strong> duy nhất theo khóa chính. Ném <code>HttpException</code> (404) nếu không tìm thấy.',
+                findById_dto: 'Tìm thực thể theo ID và chuyển đổi ngay sang <code>DTO</code> để phản hồi.',
+                findById_dto_lang: 'Tìm theo ID và ánh xạ sang DTO có hỗ trợ <strong>Đa ngôn ngữ</strong>.',
+                findById_spec: 'Tìm kiếm một <code>DTO</code> duy nhất dựa hoàn toàn trên các tiêu chí <code>Specification</code> động.',
+                findById_spec_lang: 'Lấy <code>DTO</code> <strong>Đa ngôn ngữ</strong> bằng cách kết hợp <code>ID</code> và các điều kiện lọc <code>Specification</code> bổ sung.',
+                findOne_entity: 'Lấy <strong>Thực thể</strong> đầu tiên thỏa mãn điều kiện <code>Specification</code> cung cấp.',
+                findOne_dto: 'Lấy một <code>DTO</code> duy nhất dựa trên tiêu chí tìm kiếm động.',
+                findOne_dto_lang: 'Lấy một <code>DTO</code> đa ngôn ngữ duy nhất dựa trên tiêu chí động.',
+                findAll_page_spec_dto: '<strong>Tìm kiếm Toàn năng:</strong> Lấy danh sách phân trang, sắp xếp và lọc, sau đó chuyển sang <code>DTO</code>.',
+                findAll_page_spec_lang: 'Tìm kiếm động toàn diện, trả về danh sách DTO phân trang hỗ trợ <strong>Đa ngôn ngữ</strong>.',
+                findAll_page_spec_entity: 'Lấy danh sách <strong>Thực thể</strong> gốc có phân trang dựa trên tiêu chí tìm kiếm.',
+                findAll_list: 'Lấy <strong>tất cả</strong> bản ghi trong database dưới dạng thực thể (thận trọng với bảng dữ liệu lớn).',
+                findAll_list_dto: 'Lấy <strong>tất cả</strong> bản ghi và chuyển đổi thành danh sách DTO.',
+                findAll_list_dto_lang: 'Lấy <strong>tất cả</strong> bản ghi dưới dạng DTO hỗ trợ đa ngôn ngữ.',
+                findAll_list_spec: 'Lấy toàn bộ thực thể khớp với tiêu chí mà không dùng phân trang.',
+                findAll_list_spec_dto: 'Lấy toàn bộ bản ghi khớp tiêu chí dưới dạng danh sách DTO.',
+                findAllById: 'Lấy tập hợp các thực thể dựa trên danh sách các <code>ID</code> cung cấp.',
+                findAllById_dto: 'Tìm nhiều bản ghi theo ID và trả về danh sách DTO.',
+                findAllById_dto_lang: 'Tìm nhiều bản ghi theo ID dưới dạng DTO đa ngôn ngữ.',
+                findAll_page_simple: 'Phân trang cơ bản (page/size) trả về thực thể gốc.',
+                findAll_page_dto: 'Phân trang cơ bản trả về danh sách DTO.',
+                findAll_page_dto_lang: 'Phân trang cơ bản có hỗ trợ đa ngôn ngữ.',
+                findAll_page_spec_dto_simple: 'Phương thức hỗ trợ phân trang kết hợp Specification (Legacy).',
+                findAll_page_spec_dto_lang_simple: 'Hỗ trợ phân trang, Specification và Đa ngôn ngữ (Legacy).',
+                count: 'Đếm tổng số bản ghi thỏa mãn các tiêu chí lọc cung cấp.',
+                exists: 'Kiểm tra xem có ít nhất một bản ghi tồn tại khớp với tiêu chí hay không.'
             }
         },
         write: {
-            title: '12.2 Các Service Ghi (Write Services)',
-            create_title: '12.2.1 ICreateService',
-            update_title: '12.2.2 IUpdateService',
-            delete_title: '12.2.3 IDeleteService',
+            title: 'Các Service Ghi (Write Services)',
+            create_title: 'ICreateService',
+            update_title: 'IUpdateService',
+            delete_title: 'IDeleteService',
             items: {
-                create_entity: 'Lưu thẳng Entity.',
-                create_dto: 'Tạo từ DTO.',
-                create_res: 'Tạo Entity trả về DTO.',
-                create_dto_res: 'Tạo từ DTO trả về DTO khác.',
-                create_dto_dto: 'Tạo từ DTO trả về DTO.',
-                update_entity_id: 'Update Entity theo ID.',
-                update_entity: 'Update Entity (giả định tồn tại).',
-                save_entity: 'Lưu hoặc Cập nhật.',
-                update_dto_id: 'Update từ DTO theo ID.',
-                update_entity_res: 'Update Entity trả về DTO.',
-                save_entity_res: 'Save trả về DTO.',
-                update_dto_res: 'Update từ DTO trả về DTO.',
-                save_dto_res: 'Save từ DTO trả về DTO.',
-                update_req_res: 'Update Req/Res DTO pattern.',
-                update_bulk: 'Bulk Update theo Spec.',
-                delete_id: 'Xóa theo ID.',
-                delete_entity: 'Xóa (có check ID).',
-                delete_dto: 'Xóa (dùng DTO check ID).',
-                delete_res: 'Xóa trả về DTO.',
-                delete_dto_res: 'Xóa từ DTO trả về DTO.',
-                delete_id_res: 'Xóa ID trả về DTO.',
-                delete_spec: 'Bulk Delete theo Spec.'
+                create_entity: 'Lưu trực tiếp một <strong>Thực thể (Entity)</strong> mới vào cơ sở dữ liệu.',
+                create_dto: 'Ánh xạ dữ liệu từ <code>DTO</code> đầu vào sang Entity và thực hiện lưu.',
+                create_res: 'Tạo bản ghi mới và trả về kết quả dưới dạng một class <code>DTO</code> cụ thể.',
+                create_dto_res: 'Nhận một DTO, tạo bản ghi và trả về kết quả qua một DTO view khác.',
+                create_dto_dto: 'Viết tắt cho việc tạo từ DTO và trả về DTO phản hồi.',
+                update_entity_id: 'Cập nhật một <code>Thực thể</code> hiện có dựa trên ID duy nhất.',
+                update_entity: 'Lưu các thay đổi của đối tượng thực thể (giả định đã có ID).',
+                save_entity: 'Cơ chế <strong>Upsert</strong>: Lưu bản ghi mới hoặc cập nhật nếu đã tồn tại.',
+                update_dto_id: 'Cập nhật bản ghi dùng dữ liệu từ <code>DTO</code> thông qua tìm kiếm ID.',
+                update_entity_res: 'Cập nhật thực thể và trả về kết quả dưới dạng DTO.',
+                save_entity_res: 'Upsert bản ghi và trả về kết quả dưới dạng DTO.',
+                update_dto_res: 'Cập nhật từ DTO đầu vào và trả về DTO kết quả.',
+                save_dto_res: 'Upsert từ DTO đầu vào và trả về DTO kết quả.',
+                update_id_res: 'Cập nhật bản ghi theo ID và trả về trạng thái mới dưới dạng DTO.',
+                update_req_res: '<strong>Mô hình chuẩn:</strong> Cập nhật từ Request DTO và trả về Response DTO.',
+                update_bulk: 'Cập nhật hàng loạt các bản ghi thỏa mãn điều kiện <code>Specification</code>.',
+                delete_id: 'Xóa vĩnh viễn một bản ghi dựa trên <strong>Khóa chính (Primary Key)</strong>.',
+                delete_entity: 'Xóa một đối tượng thực thể cụ thể khỏi cơ sở dữ liệu.',
+                delete_res: 'Xóa bản ghi và trả về trạng thái cuối cùng của nó dưới dạng DTO.',
+                delete_dto_res: 'Xóa dựa trên thông tin DTO và trả về phản hồi dạng DTO.',
+                delete_id_res: 'Xóa theo ID và trả về thông tin dữ liệu đã xóa dưới dạng DTO.',
+                delete_spec: 'Xóa hàng loạt toàn bộ các bản ghi thỏa mãn tiêu chí động.'
             }
         },
         hooks: {
-            title: '12.3 Service Hooks',
-            desc: 'Các hooks cho phép bạn can thiệp vào quy trình CRUD mà không cần override toàn bộ phương thức. Hãy override chúng trong <code>ServiceImpl</code> của bạn.',
+            title: 'Vòng đời Service Hooks',
+            desc: 'Hooks là các điểm mở rộng chính để chèn logic nghiệp vụ. Chúng cho phép bạn can thiệp vào các giai đoạn cụ thể của vòng đời <strong>CRUD</strong> mà không cần ghi đè toàn bộ phương thức.',
             read: {
-                title: 'Read Hooks (Đọc dữ liệu)',
-                entity_phase: '1. Entity Phase',
-                entity_desc: 'Chạy ngay sau khi DB trả về. Dùng để tính toán transient fields.',
-                dto_phase: '2. DTO Phase',
-                dto_desc: 'Chạy sau khi map sang DTO. Dùng để enrich data hướng view.'
+                title: 'Hooks Tìm kiếm & Đọc dữ liệu',
+                entity_phase: '1. Giai đoạn Thực thể (Entity)',
+                entity_desc: 'Được thực thi ngay sau khi dữ liệu được lấy từ DB. Phù hợp nhất để tính toán các trường transient hoặc khởi tạo các tập hợp <code>Lazy</code>.',
+                dto_phase: '2. Giai đoạn DTO',
+                dto_desc: 'Được thực thi sau khi Thực thể đã được ánh xạ sang DTO. Phù hợp để thêm dữ liệu <strong>đặc thù cho UI</strong> hoặc định dạng lại dữ liệu.'
             },
             create: {
-                title: 'Create Hooks',
-                before: '- Validate, set default.',
-                after: '- Audit, Notify.'
+                title: 'Hooks Tạo mới',
+                before: '<strong>Trước:</strong> Kiểm tra tính hợp lệ phía server, thiết lập giá trị mặc định, hoặc tiền xử lý dữ liệu.',
+                after: '<strong>Sau:</strong> Kích hoạt các tác vụ phụ như gửi Email thông báo hoặc ghi log Audit.'
             },
             update: {
-                title: 'Update Hooks',
-                before: '- Check rules, pre-process.',
-                after: '- Audit, Notify.'
+                title: 'Hooks Cập nhật',
+                before: '<strong>Trước:</strong> Kiểm tra tính toàn vẹn, quản lý phiên bản thủ công, hoặc cập nhật các trường "ngày chỉnh sửa".',
+                after: '<strong>Sau:</strong> Xóa cache hoặc đồng bộ hóa với các hệ thống bên ngoài.'
             },
             delete: {
-                title: 'Delete Hooks',
-                before: '- Check constraints.',
-                after: '- Cleanup resources.'
+                title: 'Hooks Xóa',
+                before: '<strong>Trước:</strong> Kiểm tra ràng buộc tham chiếu hoặc chuẩn bị logic xóa mềm (soft-delete).',
+                after: '<strong>Sau:</strong> Các tác vụ dọn dép sau khi xóa hoặc loại bỏ các tài nguyên liên quan.'
             },
-            code_comment_logic: '// Custom logic: check business constraints, set default values...'
+            code_comment_logic: '// Logic tùy chỉnh: kiểm tra ràng buộc nghiệp vụ, thiết lập giá trị mặc định...',
+            code_error_price: 'Giá phải là số dương'
         }
     },
     notes: {
-        title: '13. Lưu ý Quan trọng',
+        title: 'Lưu ý Quan trọng',
         subtitle: 'Các lưu ý quan trọng để sử dụng framework hiệu quả và tránh các lỗi thường gặp.',
         modularity: {
-            title: '13.1 Chiến lược Module hóa',
+            title: 'Chiến lược Modularity',
             desc: 'Thay vì tạo ra các "God Class" khổng lồ, hãy áp dụng chiến lược <strong>"Right-sizing"</strong> (dùng đủ chức năng) cho cả Controller và Service.',
             controller_title: 'Controller Layer',
             controller_desc: 'Dùng cơ chế <strong>Traits (Interface)</strong> để lắp ghép API.',
@@ -521,7 +543,7 @@ export default {
             service_link: 'Xem Base Class Selector tại Section 7.1'
         },
         advanced: {
-            title: '13.2 Mẫu Sử dụng Nâng cao',
+            title: 'Mẫu Sử dụng Nâng cao',
             desc: 'Tận dụng tối đa sức mạnh của kế thừa và generic để xây dựng hệ thống linh hoạt.',
             composite: {
                 title: 'Composite Service (Aggregator)',
@@ -543,7 +565,7 @@ export default {
             }
         },
         best_practices: {
-            title: '13.3 Thực hành Tốt nhất',
+            title: 'Thực hành Tốt nhất',
             constructor_title: 'DTO Constructor',
             constructor_desc: 'Tất cả DTO bắt buộc phải có <strong>Public No-Args Constructor</strong> để Reflection hoạt động.',
             override_title: 'Override Method',
@@ -555,7 +577,7 @@ export default {
             opt_lazy: 'Luôn dùng <code>FetchType.LAZY</code> cho quan hệ To-Many.'
         },
         troubleshooting: {
-            title: '13.4 Xử lý Sự cố',
+            title: 'Xử lý Sự cố',
             n1_title: 'Vấn đề N+1 Query',
             n1_method1: 'Cách 1: Sử dụng EntityGraph',
             n1_method2: 'Cách 2: Sử dụng Specification fetch',
@@ -587,67 +609,67 @@ export default {
         search_placeholder: 'Tìm kiếm...',
         author: 'Tác giả',
         menu: {
-            intro: '1. Giới thiệu',
-            intro_solution: '1.1. Giải pháp',
-            intro_features: '1.2. Các chức năng chính',
-            intro_pros_cons: '1.3. Ưu nhược điểm',
-            intro_security: '1.4. Sự an toàn & Minh bạch',
+            intro: 'Giới thiệu',
+            intro_solution: 'Giải pháp',
+            intro_features: 'Các chức năng chính',
+            intro_pros_cons: 'Ưu & Nhược điểm',
+            intro_security: 'Bảo mật & Minh bạch',
 
-            architecture: '2. Kiến trúc & Vòng đời',
-            architecture_diagram: '2.1. Sơ đồ Kiến trúc',
-            framework_spec: '2.2. Phân cấp Class',
-            generic_system: '2.3. Hệ thống Generic Type',
-            request_lifecycle: '2.4. Vòng đời Request',
+            architecture: 'Kiến trúc & Vòng đời',
+            architecture_diagram: 'Sơ đồ Kiến trúc',
+            framework_spec: 'Phân cấp Interface',
+            generic_system: 'Hệ thống Generic Type',
+            request_lifecycle: 'Vòng đời Request',
 
-            installation: '3. Cài đặt & Cấu hình',
-            installation_maven: '3.1. Cấu hình Maven/Gradle',
-            installation_local: '3.2. Môi trường Local',
-            installation_config: '3.3. Cấu hình Ứng dụng',
+            installation: 'Cài đặt & Cấu hình',
+            installation_maven: 'Cấu hình Maven/Gradle',
+            installation_local: 'Môi trường Local',
+            installation_config: 'Cấu hình Ứng dụng',
 
-            quick_start: '4. Bắt đầu nhanh',
+            quick_start: 'Bắt đầu nhanh',
 
-            core_entity_repo: '5. Entity & Repository',
-            core_entity: '5.1. Định nghĩa Entity',
-            core_repo: '5.2. Triển khai Repository',
+            core_entity_repo: 'Thực thể & Repository',
+            core_entity: 'Định nghĩa Entity',
+            core_repo: 'Triển khai Repository',
 
-            dtos: '6. Data Transfer Objects (DTO)',
-            dto_request: '6.1. Request DTO',
-            dto_response: '6.2. Response DTO',
-            dto_i18n: '6.3. Hỗ trợ Đa ngôn ngữ',
+            dtos: 'Đối tượng DTO',
+            dto_request: 'Request DTO',
+            dto_response: 'Response DTO',
+            dto_i18n: 'Hỗ trợ Đa ngôn ngữ',
 
-            service_layer: '7. Tầng Service',
-            core_service: '7.1. Lựa chọn Base Class',
-            service_hooks: '7.2. Các Hooks Vòng đời',
+            service_layer: 'Tầng Service',
+            core_service: 'Lựa chọn Base Class',
+            service_hooks: 'Lifecycle Hooks',
 
-            controller_layer: '8. Tầng Controller',
-            controller_hierarchy: '8.1. Phân cấp Class',
-            core_controller: '8.2. Controller Tiêu chuẩn',
-            controller_traits: '8.3. Controller Traits (Module hóa)',
-            custom_api: '8.4. API Custom (Tùy chỉnh)',
+            controller_layer: 'Tầng Controller',
+            controller_hierarchy: 'Phân cấp Class',
+            core_controller: 'Standard Controller',
+            controller_traits: 'Controller Traits (Modular)',
+            custom_api: 'Custom API',
 
-            validation: '9. Hệ thống Validation',
-            val_basic: '9.1. Ràng buộc Cơ bản',
-            val_custom: '9.2. Validator Tùy chỉnh',
-            val_advanced: '9.3. Ràng buộc SQL Tự nhiên',
+            validation: 'Hệ thống Validation',
+            val_basic: 'Ràng buộc cơ bản',
+            val_custom: 'Custom Validator',
+            val_advanced: 'Native SQL Constraints',
 
-            specifications: '10. Specification & Tim kiếm',
-            spec_default: '10.1. API Tìm kiếm Tích hợp',
-            spec_custom: '10.2. Bộ lọc Tùy chỉnh (Advance)',
+            specifications: 'Specification & Tìm kiếm',
+            spec_default: 'API Tìm kiếm mặc định',
+            spec_custom: 'Bộ lọc tùy chỉnh (Nâng cao)',
 
-            response_handling: '11. Xử lý Phản hồi (Response)',
-            res_structure: '11.1. Cấu trúc Phản hồi',
-            res_exception: '11.2. Xử lý Ngoại lệ',
+            response_handling: 'Xử lý phản hồi',
+            res_structure: 'Cấu trúc phản hồi',
+            res_exception: 'Xử lý ngoại lệ',
 
-            api_list: '12. Các phương thức Base Service',
-            api_read: '12.1. Thao tác Đọc (Read)',
-            api_write: '12.2. Thao tác Ghi (Write)',
-            api_hooks: '12.3. Service Hooks',
+            api_list: 'Các phương thức Base Service',
+            api_read: 'Thao tác Đọc',
+            api_write: 'Thao tác Ghi',
+            api_hooks: 'Service Hooks',
 
-            notes: '13. Lưu ý Quan trọng',
-            notes_modularity: '13.1. Chiến lược Module hóa',
-            notes_advanced: '13.2. Mẫu Sử dụng Nâng cao',
-            notes_best_practices: '13.3. Thực hành Tốt nhất',
-            notes_troubleshooting: '13.4. Xử lý Sự cố'
+            notes: 'Ghi chú quan trọng',
+            notes_modularity: 'Chiến lược Modularity',
+            notes_advanced: 'Các mẫu nâng cao',
+            notes_best_practices: 'Best Practices',
+            notes_troubleshooting: 'Xử lý sự cố'
         },
         keywords: {
             intro: 'Generic Service Framework, giải pháp CRUD, boilerplate code, Spring Boot Backend',
@@ -664,5 +686,18 @@ export default {
             api_list: 'AbService methods, CRUD API reference',
             notes: 'Tips, best practices'
         }
+    },
+    validation_messages: {
+        product_name_required: 'Tên sản phẩm là bắt buộc',
+        product_price_non_negative: 'Giá phải là số không âm',
+        product_categories_not_found: 'Các danh mục được chọn không tồn tại',
+        product_categories_some_not_found: 'Một hoặc nhiều danh mục không tồn tại',
+        product_name_store_exists: 'Sản phẩm với tên này đã tồn tại trong cửa hàng được chọn',
+        category_parent_not_found: 'Danh mục cha không tồn tại',
+        category_name_exists: 'Tên danh mục đã được sử dụng',
+        user_status_invalid: 'Trạng thái không hợp lệ',
+        profile_phone_invalid: 'SĐT không đúng định dạng quốc tế',
+        profile_username_special_chars: 'Tên đăng nhập không được chứa ký tự đặc biệt',
+        brand_model_category_invalid: 'Thương hiệu không hỗ trợ tất cả danh mục của Model đã chọn'
     }
 }

@@ -1,35 +1,32 @@
 package com.natswarchuan.genericservice.payload.request;
 
-import com.natswarchuan.genericservice.exception.HttpException;
-import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
+
+import java.util.Objects;
 
 /**
  * Lớp cơ sở (Base Class) cho các yêu cầu tìm kiếm và phân trang.
  *
- * <p>Cung cấp các tham số chung như:
+ * <p>
+ * Cung cấp các tham số chung như:
  * <ul>
- *   <li><b>page</b>: Số trang hiện tại (bắt đầu từ 0).</li>
- *   <li><b>size</b>: Số lượng bản ghi trên mỗi trang.</li>
- *   <li><b>search</b>: Từ khóa tìm kiếm chung.</li>
- *   <li><b>sort</b>: Cấu hình sắp xếp (trường và chiều).</li>
+ * <li><b>page</b>: Số trang hiện tại (bắt đầu từ 0).</li>
+ * <li><b>size</b>: Số lượng bản ghi trên mỗi trang.</li>
+ * <li><b>search</b>: Từ khóa tìm kiếm chung.</li>
+ * <li><b>sort</b>: Cấu hình sắp xếp (trường và chiều).</li>
  * </ul>
  *
  * @author NatswarChuan
  */
-@SuppressWarnings("null")
 public class BaseRequestParam {
     /**
      * Số trang cần lấy (0-based index).
      *
-     * <p>Mặc định là 0. Giá trị -1 dùng để lấy tất cả (unpaged).
+     * <p>
+     * Mặc định là 0. Giá trị -1 dùng để lấy tất cả (unpaged).
      */
     @Parameter(description = "Số trang (bắt đầu từ 0). -1 để lấy tất cả.", example = "0")
     @Min(value = -1, message = "Số trang phải >= -1")
@@ -38,7 +35,8 @@ public class BaseRequestParam {
     /**
      * Số lượng phần tử trên mỗi trang.
      *
-     * <p>Mặc định là 10. Giới hạn 1-200.
+     * <p>
+     * Mặc định là 10. Giới hạn 1-200.
      */
     @Parameter(description = "Kích thước trang", example = "10")
     @Min(value = 1, message = "Kích thước trang tối thiểu là 1")
@@ -55,12 +53,12 @@ public class BaseRequestParam {
 
     /** Tên trường dùng để sắp xếp kết quả. Mặc định là "id". */
     @Parameter(description = "Trường sắp xếp", example = "id")
-    private String sortBy = "id";
+    private String sortBy;
 
     /** Hướng sắp xếp: "asc" (tăng dần) hoặc "desc" (giảm dần). */
     @Parameter(description = "Hướng sắp xếp (asc/desc)", example = "asc")
     @Pattern(regexp = "(?i)asc|desc", message = "Hướng sắp xếp phải là 'asc' hoặc 'desc'")
-    private String sortDir = "asc";
+    private String sortDir;
 
     /**
      * Khởi tạo mặc định với các giá trị mặc định cho phân trang và sắp xếp.
@@ -176,36 +174,6 @@ public class BaseRequestParam {
         this.sortDir = sortDir;
     }
 
-    /**
-     * Chuyển đổi các tham số hiện tại thành đối tượng {@link Pageable} của Spring Data.
-     *
-     * @return Đối tượng {@link Pageable} với thông tin page, size và sort.
-     * @throws HttpException nếu trường sắp xếp không hợp lệ.
-     */
-    @Hidden
-    public Pageable toPageable() {
-        try {
-            Sort sort = Sort.by(Sort.Direction.fromString(sortDir), sortBy);
-            return PageRequest.of(page, size, sort);
-        } catch (IllegalArgumentException ex) {
-            String message = String.format(
-                    "Tham số sắp xếp không hợp lệ. sortBy='%s', sortDir='%s'. " +
-                            "Vui lòng kiểm tra lại tên trường và hướng sắp xếp (asc/desc).",
-                    sortBy, sortDir);
-            throw new HttpException(HttpStatus.BAD_REQUEST, message, ex);
-        }
-    }
-
-    /**
-     * Kiểm tra xem yêu cầu có phải là lấy tất cả (không phân trang) hay không.
-     *
-     * @return {@code true} nếu page == -1, ngược lại {@code false}.
-     */
-    @Hidden
-    public boolean isUnpaged() {
-        return page == -1;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -213,9 +181,9 @@ public class BaseRequestParam {
         if (!(o instanceof BaseRequestParam))
             return false;
         BaseRequestParam that = (BaseRequestParam) o;
-        return page == that.page && size == that.size && java.util.Objects.equals(search, that.search)
-                && java.util.Objects.equals(searchField, that.searchField)
-                && java.util.Objects.equals(sortBy, that.sortBy) && java.util.Objects.equals(sortDir, that.sortDir);
+        return page == that.page && size == that.size && Objects.equals(search, that.search)
+                && Objects.equals(searchField, that.searchField)
+                && Objects.equals(sortBy, that.sortBy) && Objects.equals(sortDir, that.sortDir);
     }
 
     @Override

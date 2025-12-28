@@ -7,6 +7,7 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +24,7 @@ import java.util.Set;
  *
  * @author NatswarChuan
  */
+@Slf4j
 @Component
 public class IdsExistValidator implements ConstraintValidator<IdsExist, Object> {
 
@@ -49,19 +51,12 @@ public class IdsExistValidator implements ConstraintValidator<IdsExist, Object> 
     if (value instanceof Collection) {
       ids = (Collection<?>) value;
     } else if (value.getClass().isArray()) {
-      // Chuyển đổi mảng thành collection xử lý đơn giản nếu là mảng Object
-      // Xử lý primitive arrays nếu cần, nhưng ở đây giả sử Object[] hoặc List/Set
       try {
         ids = java.util.Arrays.asList((Object[]) value);
       } catch (ClassCastException e) {
-        // Fallback cho primitive arrays nếu cần thiết,
-        // nhưng JPA ID thường là wrapper types (Long, Integer, String, UUID)
         return false;
       }
     } else {
-      // Nếu không phải collection/array, coi như 1 phần tử (tương tự @Exists)
-      // Nhưng @IdsExist chủ yếu dùng cho tập hợp.
-      // Trả về true để tránh conflict với @Exists nếu user lỡ dùng sai type
       return true;
     }
 
@@ -69,7 +64,6 @@ public class IdsExistValidator implements ConstraintValidator<IdsExist, Object> 
       return true;
     }
 
-    // Loại bỏ duplicate và null trong input để đếm chính xác
     Set<Object> uniqueIds = new HashSet<>();
     for (Object id : ids) {
       if (id != null)
@@ -88,10 +82,10 @@ public class IdsExistValidator implements ConstraintValidator<IdsExist, Object> 
 
     try {
       Long count = entityManager.createQuery(query).getSingleResult();
-      // Số lượng bản ghi tìm thấy phải bằng số lượng ID unique truyền vào
       return count == uniqueIds.size();
     } catch (Exception e) {
-      e.printStackTrace();
+      log.error("Error validating IDs existence for entity: {}. IDs: {}. Error: {}",
+          entityClass.getSimpleName(), uniqueIds, e.getMessage(), e);
       return false;
     }
   }

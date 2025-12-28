@@ -2,7 +2,8 @@ package com.example.demo.service;
 
 import com.example.demo.domain.Store;
 import com.example.demo.repository.StoreRepository;
-import com.natswarchuan.genericservice.service.AbService;
+import com.natswarchuan.genericservice.repository.IRepository;
+import com.natswarchuan.genericservice.service.IService;
 import org.springframework.stereotype.Service;
 
 import org.springframework.lang.NonNull;
@@ -10,7 +11,8 @@ import org.springframework.lang.NonNull;
 /**
  * Service xử lý nghiệp vụ cho Store.
  * <p>
- * Kế thừa {@link AbService}, cung cấp các chức năng quản lý cửa hàng chuẩn hóa:
+ * Implement {@link IService}, cung cấp các chức năng quản lý cửa hàng chuẩn hóa
+ * qua default methods:
  * <ul>
  * <li>create: Tạo mới Store</li>
  * <li>findById: Tìm kiếm Store theo ID</li>
@@ -20,7 +22,9 @@ import org.springframework.lang.NonNull;
  * </ul>
  */
 @Service
-public class StoreService extends AbService<Store, Long> {
+public class StoreService implements IService<Store, Long> {
+
+    private final StoreRepository repository;
 
     /**
      * Khởi tạo StoreService.
@@ -28,6 +32,11 @@ public class StoreService extends AbService<Store, Long> {
      * @param repository Repository truy xuất dữ liệu Store.
      */
     public StoreService(@NonNull StoreRepository repository) {
-        super(repository);
+        this.repository = repository;
+    }
+
+    @Override
+    public IRepository<Store, Long> getRepository() {
+        return repository;
     }
 }

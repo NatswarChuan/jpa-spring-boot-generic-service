@@ -9,6 +9,9 @@ import jakarta.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
+
 /**
  * Specification tùy chỉnh cho Product.
  * <p>
@@ -67,8 +70,8 @@ public class ProductSpecification extends GenericSpecification<Product> {
      * @return Predicate tổng hợp (AND logic).
      */
     @Override
-    public Predicate toPredicate(Root<Product> root, CriteriaQuery<?> query,
-            CriteriaBuilder criteriaBuilder) {
+    public Predicate toPredicate(@NonNull Root<Product> root, @Nullable CriteriaQuery<?> query,
+            @NonNull CriteriaBuilder criteriaBuilder) {
         Predicate basePredicate = super.toPredicate(root, query, criteriaBuilder);
 
         List<Predicate> predicates = new ArrayList<>();

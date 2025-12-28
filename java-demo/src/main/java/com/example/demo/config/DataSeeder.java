@@ -8,8 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.lang.NonNull;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * Component khởi tạo dữ liệu mẫu khi ứng dụng khởi chạy.
@@ -20,97 +20,99 @@ import java.util.HashSet;
 @Component
 public class DataSeeder implements CommandLineRunner {
 
-    private final BrandRepository brandRepository;
-    private final CategoryRepository categoryRepository;
-    private final ModelRepository modelRepository;
-    private final ProductRepository productRepository;
-    private final StoreRepository storeRepository;
+        private final BrandRepository brandRepository;
+        private final CategoryRepository categoryRepository;
+        private final ModelRepository modelRepository;
+        private final ProductRepository productRepository;
+        private final StoreRepository storeRepository;
 
-    public DataSeeder(
-            @NonNull BrandRepository brandRepository,
-            @NonNull CategoryRepository categoryRepository,
-            @NonNull ModelRepository modelRepository,
-            @NonNull ProductRepository productRepository,
-            @NonNull StoreRepository storeRepository) {
-        this.brandRepository = brandRepository;
-        this.categoryRepository = categoryRepository;
-        this.modelRepository = modelRepository;
-        this.productRepository = productRepository;
-        this.storeRepository = storeRepository;
-    }
-
-    /**
-     * Thực hiện seed data.
-     *
-     * @param args arguments từ command line.
-     * @throws Exception nếu có lỗi xảy ra.
-     */
-    @Override
-    @Transactional
-    public void run(String... args) throws Exception {
-        if (categoryRepository.count() > 0) {
-            System.out.println("Data already seeded. Skipping.");
-            return;
+        public DataSeeder(
+                        @NonNull BrandRepository brandRepository,
+                        @NonNull CategoryRepository categoryRepository,
+                        @NonNull ModelRepository modelRepository,
+                        @NonNull ProductRepository productRepository,
+                        @NonNull StoreRepository storeRepository) {
+                this.brandRepository = brandRepository;
+                this.categoryRepository = categoryRepository;
+                this.modelRepository = modelRepository;
+                this.productRepository = productRepository;
+                this.storeRepository = storeRepository;
         }
 
-        System.out.println("Seeding initial data...");
+        /**
+         * Thực hiện seed data.
+         *
+         * @param args arguments từ command line.
+         * @throws Exception nếu có lỗi xảy ra.
+         */
+        @Override
+        @Transactional
+        public void run(String... args) throws Exception {
+                if (categoryRepository.count() > 0) {
+                        System.out.println("Data already seeded. Skipping.");
+                        return;
+                }
 
-        Category electronics = Category.builder().name("Electronics").description("Gadgets and devices").build();
-        Category fashion = Category.builder().name("Fashion").description("Clothing and accessories").build();
+                System.out.println("Seeding initial data...");
 
-        categoryRepository.saveAll(Arrays.asList(electronics, fashion));
+                Category electronics = Category.builder().name("Electronics").description("Gadgets and devices")
+                                .build();
+                Category fashion = Category.builder().name("Fashion").description("Clothing and accessories").build();
 
-        Model smartphoneModel = Model.builder()
-                .name("Smartphones")
-                .build();
-        smartphoneModel.setCategories(new HashSet<>(Arrays.asList(electronics)));
-        modelRepository.save(smartphoneModel);
+                List<Category> categories = List.of(electronics, fashion);
+                categoryRepository.saveAll(categories);
 
-        Model laptopModel = Model.builder()
-                .name("Laptops")
-                .build();
-        laptopModel.setCategories(new HashSet<>(Arrays.asList(electronics)));
-        modelRepository.save(laptopModel);
+                Model smartphoneModel = Model.builder()
+                                .name("Smartphones")
+                                .build();
+                smartphoneModel.setCategories(new HashSet<>(List.of(electronics)));
+                modelRepository.save(smartphoneModel);
 
-        Brand apple = Brand.builder()
-                .name("Apple")
-                .description("Premium technology")
-                .model(smartphoneModel)
-                .build();
-        apple.setCategories(new HashSet<>(Arrays.asList(electronics)));
-        brandRepository.save(apple);
+                Model laptopModel = Model.builder()
+                                .name("Laptops")
+                                .build();
+                laptopModel.setCategories(new HashSet<>(List.of(electronics)));
+                modelRepository.save(laptopModel);
 
-        Brand samsung = Brand.builder()
-                .name("Samsung")
-                .description("Innovative technology")
-                .model(smartphoneModel)
-                .build();
-        samsung.setCategories(new HashSet<>(Arrays.asList(electronics)));
-        brandRepository.save(samsung);
+                Brand apple = Brand.builder()
+                                .name("Apple")
+                                .description("Premium technology")
+                                .model(smartphoneModel)
+                                .build();
+                apple.setCategories(new HashSet<>(List.of(electronics)));
+                brandRepository.save(apple);
 
-        Product iphone15 = Product.builder()
-                .name("iPhone 15")
-                .price(BigDecimal.valueOf(999.00))
-                .brand(apple)
-                .build();
-        iphone15.setCategories(new HashSet<>(Arrays.asList(electronics)));
-        productRepository.save(iphone15);
+                Brand samsung = Brand.builder()
+                                .name("Samsung")
+                                .description("Innovative technology")
+                                .model(smartphoneModel)
+                                .build();
+                samsung.setCategories(new HashSet<>(List.of(electronics)));
+                brandRepository.save(samsung);
 
-        Product s24 = Product.builder()
-                .name("Galaxy S24")
-                .price(BigDecimal.valueOf(899.00))
-                .brand(samsung)
-                .build();
-        s24.setCategories(new HashSet<>(Arrays.asList(electronics)));
-        productRepository.save(s24);
+                Product iphone15 = Product.builder()
+                                .name("iPhone 15")
+                                .price(BigDecimal.valueOf(999.00))
+                                .brand(apple)
+                                .build();
+                iphone15.setCategories(new HashSet<>(List.of(electronics)));
+                productRepository.save(iphone15);
 
-        Store mainStore = Store.builder()
-                .name("Main Tech Store")
-                .address("123 Tech Street")
-                .build();
-        mainStore.setCategories(new HashSet<>(Arrays.asList(electronics)));
-        storeRepository.save(mainStore);
+                Product s24 = Product.builder()
+                                .name("Galaxy S24")
+                                .price(BigDecimal.valueOf(899.00))
+                                .brand(samsung)
+                                .build();
+                s24.setCategories(new HashSet<>(List.of(electronics)));
+                productRepository.save(s24);
 
-        System.out.println("Data seeding completed.");
-    }
+                Store mainStore = Store.builder()
+                                .name("Main Tech Store")
+                                .address("123 Tech Street")
+                                .build();
+                mainStore.setCategories(new HashSet<>(List.of(electronics)));
+                storeRepository.save(mainStore);
+
+                System.out.println("Data seeding completed.");
+        }
 }

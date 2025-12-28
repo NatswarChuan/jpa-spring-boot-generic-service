@@ -19,6 +19,9 @@ public class HttpApiResponse<T> {
     /** Thông điệp đi kèm với phản hồi (ví dụ: "Success", "Error description"). */
     private String message;
 
+    /** Trạng thái thành công hay thất bại của request. */
+    private boolean success;
+
     /** Dữ liệu phản hồi thực tế. */
     private T data;
 
@@ -33,11 +36,13 @@ public class HttpApiResponse<T> {
      *
      * @param status  Mã trạng thái.
      * @param message Thông điệp.
+     * @param success Trạng thái thành công.
      * @param data    Dữ liệu.
      */
-    public HttpApiResponse(int status, String message, T data) {
+    public HttpApiResponse(int status, String message, boolean success, T data) {
         this.status = status;
         this.message = message;
+        this.success = success;
         this.data = data;
     }
 
@@ -96,6 +101,24 @@ public class HttpApiResponse<T> {
     }
 
     /**
+     * Lấy trạng thái thành công.
+     *
+     * @return true nếu thành công, false nếu thất bại.
+     */
+    public boolean isSuccess() {
+        return success;
+    }
+
+    /**
+     * Thiết lập trạng thái thành công.
+     *
+     * @param success Trạng thái thành công.
+     */
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
+
+    /**
      * Tạo Builder cho HttpApiResponse.
      *
      * @param <T> Kiểu dữ liệu.
@@ -113,6 +136,7 @@ public class HttpApiResponse<T> {
     public static class HttpApiResponseBuilder<T> {
         private int status;
         private String message;
+        private boolean success;
         private T data;
 
         /**
@@ -138,6 +162,17 @@ public class HttpApiResponse<T> {
         }
 
         /**
+         * Thiết lập trạng thái thành công.
+         *
+         * @param success Trạng thái thành công.
+         * @return Builder.
+         */
+        public HttpApiResponseBuilder<T> success(boolean success) {
+            this.success = success;
+            return this;
+        }
+
+        /**
          * Thiết lập dữ liệu.
          *
          * @param data Dữ liệu.
@@ -154,7 +189,7 @@ public class HttpApiResponse<T> {
          * @return HttpApiResponse.
          */
         public HttpApiResponse<T> build() {
-            return new HttpApiResponse<>(status, message, data);
+            return new HttpApiResponse<>(status, message, success, data);
         }
     }
 
@@ -166,7 +201,8 @@ public class HttpApiResponse<T> {
      * @return HttpApiResponse thành công (200 OK).
      */
     public static <T> HttpApiResponse<T> success(T data) {
-        return HttpApiResponse.<T>builder().status(HttpStatus.OK.value()).message("Success").data(data).build();
+        return HttpApiResponse.<T>builder().status(HttpStatus.OK.value()).message("Success").success(true).data(data)
+                .build();
     }
 
     /**
@@ -178,7 +214,7 @@ public class HttpApiResponse<T> {
      * @return HttpApiResponse thành công.
      */
     public static <T> HttpApiResponse<T> success(T data, HttpStatus status) {
-        return HttpApiResponse.<T>builder().status(status.value()).message("Success").data(data).build();
+        return HttpApiResponse.<T>builder().status(status.value()).message("Success").success(true).data(data).build();
     }
 
     /**
@@ -189,7 +225,8 @@ public class HttpApiResponse<T> {
      * @return HttpApiResponse lỗi (400 Bad Request).
      */
     public static <T> HttpApiResponse<T> error(String message) {
-        return HttpApiResponse.<T>builder().status(HttpStatus.BAD_REQUEST.value()).message(message).build();
+        return HttpApiResponse.<T>builder().status(HttpStatus.BAD_REQUEST.value()).message(message).success(false)
+                .build();
     }
 
     /**
@@ -201,7 +238,7 @@ public class HttpApiResponse<T> {
      * @return HttpApiResponse lỗi.
      */
     public static <T> HttpApiResponse<T> error(String message, HttpStatus status) {
-        return HttpApiResponse.<T>builder().status(status.value()).message(message).build();
+        return HttpApiResponse.<T>builder().status(status.value()).message(message).success(false).build();
     }
 
     /**
@@ -214,6 +251,6 @@ public class HttpApiResponse<T> {
      * @return HttpApiResponse lỗi.
      */
     public static <T> HttpApiResponse<T> error(String message, HttpStatus status, T data) {
-        return HttpApiResponse.<T>builder().status(status.value()).message(message).data(data).build();
+        return HttpApiResponse.<T>builder().status(status.value()).message(message).success(false).data(data).build();
     }
 }

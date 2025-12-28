@@ -6,10 +6,9 @@
 
     <article id="core-entity" class="mb-10 scroll-mt-24">
       <h3 class="text-xl font-bold text-slate-800 mb-6">
-        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">5.1</span>
         {{ $t('entity_repo.entity.title') }}
       </h3>
-      <p class="text-slate-600 mb-6">{{ $t('entity_repo.entity.desc') }}</p>
+      <p class="text-slate-600 mb-6" v-html="$t('entity_repo.entity.desc')"></p>
 
       <!-- Entity Annotation Cheat Sheet -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
@@ -18,28 +17,28 @@
             <code class="text-blue-600 font-bold bg-blue-50 px-2 py-0.5 rounded">@Entity</code>
             <span class="text-xs font-bold text-slate-500 uppercase">{{ $t('entity_repo.entity.required') }}</span>
           </div>
-          <p class="text-sm text-slate-600">{{ $t('entity_repo.entity.annotations.entity') }}</p>
+          <p class="text-sm text-slate-600" v-html="$t('entity_repo.entity.annotations.entity')"></p>
         </div>
         <div class="bg-white border border-slate-200 rounded-lg p-4 shadow-sm">
           <div class="flex items-center gap-2 mb-2">
             <code class="text-purple-600 font-bold bg-purple-50 px-2 py-0.5 rounded">@Table</code>
             <span class="text-xs font-bold text-slate-500 uppercase">{{ $t('entity_repo.entity.optional') }}</span>
           </div>
-          <p class="text-sm text-slate-600">{{ $t('entity_repo.entity.annotations.table') }}</p>
+          <p class="text-sm text-slate-600" v-html="$t('entity_repo.entity.annotations.table')"></p>
         </div>
         <div class="bg-white border border-slate-200 rounded-lg p-4 shadow-sm">
           <div class="flex items-center gap-2 mb-2">
             <code class="text-amber-600 font-bold bg-amber-50 px-2 py-0.5 rounded">@Nationalized</code>
             <span class="text-xs font-bold text-slate-500 uppercase">SQL Server</span>
           </div>
-          <p class="text-sm text-slate-600">{{ $t('entity_repo.entity.annotations.nationalized') }}</p>
+          <p class="text-sm text-slate-600" v-html="$t('entity_repo.entity.annotations.nationalized')"></p>
         </div>
         <div class="bg-white border border-slate-200 rounded-lg p-4 shadow-sm">
           <div class="flex items-center gap-2 mb-2">
             <code class="text-green-600 font-bold bg-green-50 px-2 py-0.5 rounded">@Builder</code>
             <span class="text-xs font-bold text-slate-500 uppercase">Lombok</span>
           </div>
-          <p class="text-sm text-slate-600">{{ $t('entity_repo.entity.annotations.builder') }}</p>
+          <p class="text-sm text-slate-600" v-html="$t('entity_repo.entity.annotations.builder')"></p>
         </div>
       </div>
       <CodeBlock filename="Product.java" :code="entityCode" />
@@ -47,21 +46,21 @@
 
     <article id="core-repo" class="mb-10 scroll-mt-24">
       <h3 class="text-xl font-bold text-slate-800 mb-6">
-        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3">5.2</span>
         {{ $t('entity_repo.repo.title') }}
       </h3>
 
       <div class="flex flex-col md:flex-row items-center gap-4 bg-slate-50 p-6 rounded-xl border border-slate-200 mb-6">
         <div class="flex-1 text-center md:text-right">
-          <span class="block font-mono font-bold text-slate-700">JpaRepository</span>
-          <span class="text-xs text-slate-500">{{ $t('entity_repo.repo.diagram.standard') }}</span>
+          <span class="block font-mono font-bold text-slate-700">IRepository</span>
+          <span class="text-xs text-slate-500">{{ $t('entity_repo.repo.diagram.standard') }} + {{
+            $t('entity_repo.repo.diagram.advanced') }}</span>
         </div>
 
-        <div class="text-slate-400 text-2xl font-bold">+</div>
+        <div class="text-slate-400 text-2xl font-bold">=</div>
 
         <div class="flex-1 text-center md:text-left">
-          <span class="block font-mono font-bold text-blue-600">JpaSpecificationExecutor</span>
-          <span class="text-xs text-blue-500 font-bold">{{ $t('entity_repo.repo.diagram.advanced') }}</span>
+          <span class="block font-mono font-bold text-blue-600">Unified Interface</span>
+          <span class="text-xs text-blue-500 font-bold">{{ $t('entity_repo.repo.diagram.ready') }}</span>
         </div>
 
         <div class="hidden md:block h-12 w-px bg-slate-300 mx-2"></div>
@@ -72,7 +71,7 @@
         </div>
       </div>
 
-      <p class="text-slate-600 mb-3">{{ $t('entity_repo.repo.desc') }}</p>
+      <p class="text-slate-600 mb-3" v-html="$t('entity_repo.repo.desc')"></p>
       <CodeBlock filename="ProductRepository.java" :code="repoCode" />
 
       <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4 mt-4 text-sm text-yellow-800"
@@ -164,13 +163,11 @@ public class Product {
 const repoCode = computed(() => `package com.example.demo.repository;
 
 import com.example.demo.domain.Product;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import com.natswarchuan.genericservice.repository.IRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Long>,
-                                           JpaSpecificationExecutor<Product> {
+public interface ProductRepository extends IRepository<Product, Long> {
 }
 `);
 </script>

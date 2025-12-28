@@ -2,7 +2,8 @@ package com.example.demo.service;
 
 import com.example.demo.domain.Model;
 import com.example.demo.repository.ModelRepository;
-import com.natswarchuan.genericservice.service.AbService;
+import com.natswarchuan.genericservice.repository.IRepository;
+import com.natswarchuan.genericservice.service.IService;
 import org.springframework.stereotype.Service;
 
 import org.springframework.lang.NonNull;
@@ -10,8 +11,8 @@ import org.springframework.lang.NonNull;
 /**
  * Service xử lý nghiệp vụ cho Model.
  * <p>
- * Đóng vai trò lớp logic trung gian, kế thừa từ {@link AbService} để giảm thiểu
- * code lặp lại.
+ * Đóng vai trò lớp logic trung gian, implement {@link IService} để giảm thiểu
+ * code lặp lại qua default methods.
  * Các phương thức chính:
  * <ul>
  * <li>create: Tạo mới Model</li>
@@ -22,7 +23,9 @@ import org.springframework.lang.NonNull;
  * </ul>
  */
 @Service
-public class ModelService extends AbService<Model, Long> {
+public class ModelService implements IService<Model, Long> {
+
+    private final ModelRepository repository;
 
     /**
      * Khởi tạo ModelService.
@@ -30,6 +33,11 @@ public class ModelService extends AbService<Model, Long> {
      * @param repository Repository truy xuất dữ liệu Model.
      */
     public ModelService(@NonNull ModelRepository repository) {
-        super(repository);
+        this.repository = repository;
+    }
+
+    @Override
+    public IRepository<Model, Long> getRepository() {
+        return repository;
     }
 }

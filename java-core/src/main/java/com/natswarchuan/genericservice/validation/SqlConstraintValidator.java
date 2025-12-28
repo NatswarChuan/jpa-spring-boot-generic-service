@@ -6,10 +6,15 @@ import jakarta.persistence.Query;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.HandlerMapping;
+
+
 import java.util.Map;
 
 /**
@@ -51,12 +56,10 @@ public class SqlConstraintValidator implements ConstraintValidator<SqlConstraint
     try {
       Query query = entityManager.createNativeQuery(sql);
 
-      // Bind giá trị chính nếu có trong SQL
       if (sql.contains(":" + valueParam)) {
         query.setParameter(valueParam, value);
       }
 
-      // Bind dependencies từ request và validated object
       bindDependencies(query, value);
 
       Object result = query.getSingleResult();
@@ -85,7 +88,6 @@ public class SqlConstraintValidator implements ConstraintValidator<SqlConstraint
     }
 
     for (String dep : dependencies) {
-      // Format: sqlParam:source/key
       String[] parts = dep.split(":", 2);
       if (parts.length != 2)
         continue;
@@ -107,7 +109,7 @@ public class SqlConstraintValidator implements ConstraintValidator<SqlConstraint
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked"})
   private Object resolveValue(String source, String key, Object value) {
     switch (source.toLowerCase()) {
       case "param":
@@ -124,14 +126,15 @@ public class SqlConstraintValidator implements ConstraintValidator<SqlConstraint
         }
         return null;
       case "field":
-        // Sử dụng BeanWrapper hoặc Reflection để lấy giá trị field từ object 'value'
         if (value == null)
           return null;
         try {
-          org.springframework.beans.BeanWrapper wrapper = new org.springframework.beans.BeanWrapperImpl(value);
+          BeanWrapper wrapper = new BeanWrapperImpl(value);
+          if (key == null || key.isEmpty()) {
+            return null;
+          }
           return wrapper.getPropertyValue(key);
         } catch (Exception e) {
-          // Log or ignore if field not found
           return null;
         }
       default:

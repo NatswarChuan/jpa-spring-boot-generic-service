@@ -1,23 +1,21 @@
 package com.example.demo.controller;
 
 import com.example.demo.domain.Product;
-import com.example.demo.dto.product.ProductCreateReq;
 import com.example.demo.dto.product.ProductDetailRes;
 import com.example.demo.dto.product.ProductRes;
+import com.example.demo.dto.product.ProductCreateReq;
 import com.example.demo.dto.product.ProductUpdateReq;
 import com.example.demo.service.ProductService;
-import com.natswarchuan.genericservice.controller.trait.ICreateController;
-import com.natswarchuan.genericservice.controller.trait.IDeleteController;
-import com.natswarchuan.genericservice.controller.trait.IReadController;
-import com.natswarchuan.genericservice.controller.trait.IUpdateController;
-import com.natswarchuan.genericservice.controller.AbController;
+import com.natswarchuan.genericservice.controller.IController;
 import com.natswarchuan.genericservice.dto.IDto;
 import com.example.demo.dto.product.ProductFilterParam;
 import com.example.demo.specification.ProductSpecification;
 import com.natswarchuan.genericservice.payload.request.BaseRequestParam;
 import com.natswarchuan.genericservice.payload.response.HttpApiResponse;
 import com.natswarchuan.genericservice.payload.response.PagedResponse;
+import com.natswarchuan.genericservice.service.IBaseService;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.lang.NonNull;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -27,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * Controller quản lý Sản phẩm (Product).
  * <p>
- * Ngoài các CRUD chuẩn từ {@link AbController} như:
+ * Ngoài các CRUD chuẩn từ {@link IController} như:
  * <ul>
  * <li>POST /api/v1/products</li>
  * <li>GET /api/v1/products/{id}</li>
@@ -44,12 +42,9 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api/v1/products")
-public class ProductController extends AbController<Product, Long>
-        implements
-        ICreateController<Product, Long, ProductCreateReq>,
-        IUpdateController<Product, Long, ProductUpdateReq>,
-        IDeleteController<Product, Long>,
-        IReadController<Product, Long> {
+public class ProductController implements IController<Product, Long, ProductCreateReq, ProductUpdateReq> {
+
+    private final ProductService service;
 
     /**
      * Khởi tạo ProductController.
@@ -57,14 +52,20 @@ public class ProductController extends AbController<Product, Long>
      * @param service ProductService cho các nghiệp vụ sản phẩm.
      */
     public ProductController(ProductService service) {
-        super(service);
+        this.service = service;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public ProductService getBaseService() {
+        return service;
     }
 
     /**
      * Endpoint API riêng biệt cho việc lọc nâng cao.
      * <p>
      * Chúng ta tạo endpoint `/filter` riêng để tránh xung đột hoặc nhầm lẫn với
-     * endpoint `findAll` mặc định của {@link AbController}.
+     * endpoint `findAll` mặc định của {@link IController}.
      * Endpoint này hỗ trợ lọc theo khoảng giá, tên thương hiệu, v.v. thông qua
      * {@link ProductFilterParam}.
      *
@@ -73,7 +74,7 @@ public class ProductController extends AbController<Product, Long>
      * @return Danh sách sản phẩm đã được lọc và phân trang.
      */
     @GetMapping("/filter")
-    public ResponseEntity<HttpApiResponse<PagedResponse<ProductRes>>> filterProducts(
+    public ResponseEntity<HttpApiResponse<PagedResponse<? extends IDto<Product>>>> filterProducts(
             ProductFilterParam requestParam,
             @RequestHeader(name = "Accept-Language", defaultValue = "en") String language) {
         return this.findAll(requestParam, language);
@@ -90,30 +91,27 @@ public class ProductController extends AbController<Product, Long>
      * @return Specification (câu điều kiện WHERE trong JPA).
      */
     @Override
-    public Specification<Product> getSpecification(
-            BaseRequestParam requestParam) {
+    public Specification<Product> getSpecification(BaseRequestParam requestParam) {
         if (requestParam instanceof ProductFilterParam) {
-            return new ProductSpecification(
-                    (ProductFilterParam) requestParam);
+            return new ProductSpecification((ProductFilterParam) requestParam);
         }
-        return IReadController.super.getSpecification(requestParam);
+        return IController.super.getSpecification(requestParam);
     }
 
     /**
      * Trả về DTO tóm tắt ProductRes cho danh sách.
      */
     @Override
-    @SuppressWarnings("unchecked")
-    public <R extends IDto<Product>> Class<R> getResponseSummaryDtoClass() {
-        return (Class<R>) ProductRes.class;
+    public Class<ProductRes> getResponseSummaryDtoClass() {
+        return ProductRes.class;
     }
 
     /**
      * Trả về DTO chi tiết ProductDetailRes cho xem chi tiết.
      */
     @Override
-    @SuppressWarnings("unchecked")
-    public <R extends IDto<Product>> Class<R> getResponseDetailDtoClass() {
-        return (Class<R>) ProductDetailRes.class;
+    @NonNull
+    public Class<ProductDetailRes> getResponseDetailDtoClass() {
+        return ProductDetailRes.class;
     }
 }

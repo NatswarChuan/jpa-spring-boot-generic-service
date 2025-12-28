@@ -1,25 +1,23 @@
 package com.example.demo.controller;
 
 import com.example.demo.domain.Category;
-import com.example.demo.dto.category.CategoryCreateReq;
 import com.example.demo.dto.category.CategoryDetailRes;
 import com.example.demo.dto.category.CategoryRes;
+import com.example.demo.dto.category.CategoryCreateReq;
 import com.example.demo.dto.category.CategoryUpdateReq;
 import com.example.demo.service.CategoryService;
-import com.natswarchuan.genericservice.controller.trait.ICreateController;
-import com.natswarchuan.genericservice.controller.trait.IDeleteController;
-import com.natswarchuan.genericservice.controller.trait.IReadController;
-import com.natswarchuan.genericservice.controller.trait.IUpdateController;
-import com.natswarchuan.genericservice.controller.AbController;
+import com.natswarchuan.genericservice.controller.IController;
 import com.natswarchuan.genericservice.dto.IDto;
+import com.natswarchuan.genericservice.service.IBaseService;
+import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Controller quản lý Danh mục (Category).
  * <p>
- * Kế thừa {@link AbController} để có sẵn các API CRUD chuẩn cho entity
- * Category.
+ * Implement {@link IController} để có sẵn các API CRUD chuẩn cho entity
+ * Category thông qua các default methods.
  * Các endpoint mặc định bao gồm:
  * <ul>
  * <li>POST /api/v1/categories: Tạo mới Category</li>
@@ -32,12 +30,9 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api/v1/categories")
-public class CategoryController extends AbController<Category, Long>
-        implements
-        ICreateController<Category, Long, CategoryCreateReq>,
-        IUpdateController<Category, Long, CategoryUpdateReq>,
-        IDeleteController<Category, Long>,
-        IReadController<Category, Long> {
+public class CategoryController implements IController<Category, Long, CategoryCreateReq, CategoryUpdateReq> {
+
+    private final CategoryService service;
 
     /**
      * Khởi tạo controller với CategoryService.
@@ -45,7 +40,13 @@ public class CategoryController extends AbController<Category, Long>
      * @param service Service được inject bởi Spring để xử lý nghiệp vụ.
      */
     public CategoryController(CategoryService service) {
-        super(service);
+        this.service = service;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <S extends IBaseService<Category, Long>> S getBaseService() {
+        return (S) service;
     }
 
     /**
@@ -56,9 +57,8 @@ public class CategoryController extends AbController<Category, Long>
      * @return Class của CategoryRes.
      */
     @Override
-    @SuppressWarnings("unchecked")
-    public <R extends IDto<Category>> Class<R> getResponseSummaryDtoClass() {
-        return (Class<R>) CategoryRes.class;
+    public Class<? extends IDto<Category>> getResponseSummaryDtoClass() {
+        return CategoryRes.class;
     }
 
     /**
@@ -69,8 +69,8 @@ public class CategoryController extends AbController<Category, Long>
      * @return Class của CategoryDetailRes.
      */
     @Override
-    @SuppressWarnings("unchecked")
-    public <R extends IDto<Category>> Class<R> getResponseDetailDtoClass() {
-        return (Class<R>) CategoryDetailRes.class;
+    @NonNull
+    public Class<? extends IDto<Category>> getResponseDetailDtoClass() {
+        return CategoryDetailRes.class;
     }
 }
