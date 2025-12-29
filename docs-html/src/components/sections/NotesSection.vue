@@ -185,11 +185,11 @@ const readOnlyControllerCode = computed(() => `@RestController
 public class ProductPublicController implements 
     IReadSummaryController<Product, Long, ProductResponse>,
     IReadDetailController<Product, Long, ProductResponse>,
-    IBaseController<Product, Long>  ${t('notes.code.trait_base')}
+    IBaseController<Product, Long>  ` + t('notes.code.trait_base') + `
 {
     private final ProductService service;
 
-    ${t('notes.code.inject_service')}
+    ` + t('notes.code.inject_service') + `
     public ProductPublicController(ProductService service) {
         this.service = service;
     }
@@ -231,8 +231,8 @@ public class ProductViewService implements IReadDetailService<Product, Long> {
         return repository;
     }
 
-    ${t('notes.code.only_methods')}
-    ${t('notes.code.no_methods')}
+    ` + t('notes.code.only_methods') + `
+    ` + t('notes.code.no_methods') + `
 }
 `);
 
@@ -249,8 +249,8 @@ public class ConfigurationService implements IUpdateService<Config, String> {
         return repository;
     }
 
-    ${t('notes.code.has_methods')}
-    ${t('notes.code.no_delete')}
+    ` + t('notes.code.has_methods') + `
+    ` + t('notes.code.no_delete') + `
 }
 `);
 
@@ -277,7 +277,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 // ...
 Specification<Product> spec = (root, query, cb) -> {
-    ${t('notes.code.only_fetch')}
+    ` + t('notes.code.only_fetch') + `
     if (query.getResultType() != Long.class && query.getResultType() != long.class) {
         root.fetch("brand", JoinType.LEFT);
         root.fetch("category", JoinType.LEFT);
@@ -299,8 +299,8 @@ public class Product {
     @Id private Long id;
     private String name;
 
-    ${t('notes.code.split_column')}
-    ${t('notes.code.important_fetch')}
+    ` + t('notes.code.split_column') + `
+    ` + t('notes.code.important_fetch') + `
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "detail_id")
     private ProductDescription detail;
@@ -311,7 +311,7 @@ public class Product {
 @Data
 public class ProductDescription {
     @Id private Long id;
-    @Lob private String fullDescriptionHTML; ${t('notes.code.heavy_column')}
+    @Lob private String fullDescriptionHTML; ` + t('notes.code.heavy_column') + `
     @Column(columnDefinition="TEXT") private String technicalSpecs;
 }
 `);
@@ -324,11 +324,11 @@ public class OrderService {
 
     @Transactional
     public void createOrder(OrderReq req) {
-        ${t('notes.code.use_findbyid')}
+        ` + t('notes.code.use_findbyid') + `
         Product p = productService.findById(req.getProductId());
         Customer c = customerService.findById(req.getCustomerId());
         
-        ${t('notes.code.business_logic')}
+        ` + t('notes.code.business_logic') + `
     }
 }
 `);
@@ -339,7 +339,7 @@ const softDeleteCode = computed(() => `public abstract class BaseAppService<E ex
     @Override
     public void delete(ID id) {
         E entity = findById(id);
-        entity.setDeleted(true); ${t('notes.code.soft_delete_logic')}
+        entity.setDeleted(true); ` + t('notes.code.soft_delete_logic') + `
         repository.save(entity);
     }
 }
@@ -347,8 +347,8 @@ const softDeleteCode = computed(() => `public abstract class BaseAppService<E ex
 
 const hibernateSoftDeleteCode = computed(() => `@MappedSuperclass
 @SQLDelete(sql = "UPDATE {table_name} SET deleted = true WHERE id = ?")
-${t('notes.soft_delete.hibernate_old')}
-@SQLRestriction("deleted = false") ${t('notes.soft_delete.hibernate_new')}
+` + t('notes.soft_delete.hibernate_old') + `
+@SQLRestriction("deleted = false") ` + t('notes.soft_delete.hibernate_new') + `
 @Getter @Setter
 public abstract class BaseEntity {
     @Column(name = "deleted", nullable = false)
@@ -356,14 +356,14 @@ public abstract class BaseEntity {
 }
 `);
 
-const complexFilterCode = computed(() => `${t('notes.code.param_filter')}
+const complexFilterCode = computed(() => `` + t('notes.code.param_filter') + `
 public class ProductFilterParam extends BaseRequestParam {
     private Double minPrice;
     private Double maxPrice;
     private String brandName;
 }
 
-${t('notes.code.spec_join')}
+` + t('notes.code.spec_join') + `
 public class ProductSpecification extends GenericSpecification<Product> {
     private final ProductFilterParam param;
 
@@ -375,7 +375,7 @@ public class ProductSpecification extends GenericSpecification<Product> {
     @Override
     public Predicate toPredicate(Root<Product> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
         List<Predicate> predicates = new ArrayList<>();
-        ${t('notes.code.leverage_search')}
+        ` + t('notes.code.leverage_search') + `
         predicates.add(super.toPredicate(root, query, cb));
 
         if (param.getMinPrice() != null) 

@@ -139,12 +139,12 @@ import lombok.Data;
 
 @Data
 public class CategoryRequest {
-    ${t('validation.code.comment_exists')}
-    @Exists(entity = Category.class, message = "${t('validation_messages.category_parent_not_found')}")
+    ` + t('validation.code.comment_exists') + `
+    @Exists(entity = Category.class, message = "` + t('validation_messages.category_parent_not_found') + `")
     private Long parentId;
 
-    ${t('validation.code.comment_unique')}
-    @Unique(entity = Category.class, field = "name", message = "${t('validation_messages.category_name_exists')}")
+    ` + t('validation.code.comment_unique') + `
+    @Unique(entity = Category.class, field = "name", message = "` + t('validation_messages.category_name_exists') + `")
     private String name;
 }
 `);
@@ -158,8 +158,8 @@ public enum UserStatus { ACTIVE, INACTIVE, BANNED }
 
 @Data
 public class UserRequest {
-    ${t('validation.code.comment_enum')}
-    @EnumValue(enumClass = UserStatus.class, message = "${t('validation_messages.user_status_invalid')}")
+    ` + t('validation.code.comment_enum') + `
+    @EnumValue(enumClass = UserStatus.class, message = "` + t('validation_messages.user_status_invalid') + `")
     private String status;
 }
 `);
@@ -172,10 +172,10 @@ import lombok.Data;
 
 @Data
 public class ProfileRequest {
-    @PhoneNumber(message = "${t('validation_messages.profile_phone_invalid')}")
+    @PhoneNumber(message = "` + t('validation_messages.profile_phone_invalid') + `")
     private String phone;
 
-    @NoSpecialChars(message = "${t('validation_messages.profile_username_special_chars')}")
+    @NoSpecialChars(message = "` + t('validation_messages.profile_username_special_chars') + `")
     private String username;
 }
 `);
@@ -189,7 +189,7 @@ import java.util.Set;
 
 @Data
 public class ProductRequest {
-    @IdsExist(entity = Category.class, message = "${t('validation_messages.product_categories_not_found')}")
+    @IdsExist(entity = Category.class, message = "` + t('validation_messages.product_categories_not_found') + `")
     private Set<Long> categoryIds;
 }
 `);
@@ -204,11 +204,11 @@ import java.util.Set;
 
 @Data
 public class ProductCreateReq {
-    ${t('validation.code.comment_spec_ids')}
+    ` + t('validation.code.comment_spec_ids') + `
     @SpecValidation(
         entity = Category.class, 
         loader = IdsInSpecLoader.class, 
-        message = "${t('validation_messages.product_categories_some_not_found')}"
+        message = "` + t('validation_messages.product_categories_some_not_found') + `"
     )
     private Set<Long> categoryIds;
 }
@@ -226,7 +226,7 @@ import lombok.Data;
 @DtoSpecValidation(
     loader = ProductUniqueSpec.class,
     mustExist = false,
-    message = "${t('validation_messages.product_name_store_exists')}"
+    message = "` + t('validation_messages.product_name_store_exists') + `"
 )
 public class ProductCreateReq implements IDto<Product> {
     private String name;
@@ -249,7 +249,7 @@ public class ProductUniqueSpec implements SpecificationLoader<ProductCreateReq, 
     @Override
     public Specification<Product> getSpecification(ProductCreateReq... args) {
         ProductCreateReq req = args[0];
-        \${t('validation.code.comment_loader')}
+        ` + t('validation.code.comment_loader') + `
         return (root, query, cb) -> cb.and(
                 cb.equal(root.get("name"), req.getName()),
                 cb.equal(root.get("store").get("id"), req.getStoreId()));
@@ -271,7 +271,7 @@ import lombok.Data;
         = (SELECT count(*) FROM model_categories WHERE model_id = :mid AND category_id IN (:cids)) 
         THEN 1 ELSE 0 END""", 
     dependencies = { "mid:field/modelId", "cids:field/categoryIds" }, 
-    message = "${t('validation_messages.brand_model_category_invalid')}"
+    message = "` + t('validation_messages.brand_model_category_invalid') + `"
 )
 public class BrandUpdateReq implements IDto<Brand> {
     private Long modelId;

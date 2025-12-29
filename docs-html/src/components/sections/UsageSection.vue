@@ -61,10 +61,10 @@ import lombok.Data;
 @Data
 public class ProductCreateReq implements IDto<Product> {
 
-    @NotBlank(message = "${t('validation_messages.product_name_required')}")
+    @NotBlank(message = "` + t('validation_messages.product_name_required') + `")
     private String name;
 
-    @DecimalMin(value = "0.0", message = "${t('validation_messages.product_price_non_negative')}")
+    @DecimalMin(value = "0.0", message = "` + t('validation_messages.product_price_non_negative') + `")
     private BigDecimal price;
 
     @Exists(entity = Brand.class)
@@ -76,12 +76,12 @@ public class ProductCreateReq implements IDto<Product> {
     @Exists(entity = Store.class)
     private Long storeId;
 
-    @IdsExist(entity = Category.class, message = "${t('validation_messages.product_categories_not_found')}")
+    @IdsExist(entity = Category.class, message = "` + t('validation_messages.product_categories_not_found') + `")
     private Set<Long> categoryIds;
 
     @Override
     public Product toEntity() {
-        ${t('dtos.code.comment_convert')}
+        ` + t('dtos.code.comment_convert') + `
         Product product = new Product();
         BeanUtils.copyProperties(this, product, "categoryIds");
         if (this.categoryIds != null) {
@@ -121,12 +121,12 @@ public class ProductUpdateReq implements IDto<Product> {
     @Exists(entity = Store.class)
     private Long storeId;
 
-    @IdsExist(entity = Category.class, message = "${t('validation_messages.product_categories_not_found')}")
+    @IdsExist(entity = Category.class, message = "` + t('validation_messages.product_categories_not_found') + `")
     private Set<Long> categoryIds;
 
     @Override
     public Product updateEntity(Product entity) {
-        ${t('dtos.code.comment_update')}
+        ` + t('dtos.code.comment_update') + `
         IDto.super.updateEntity(entity);
 
         if (this.categoryIds != null) {
@@ -153,11 +153,11 @@ public class ProductRes implements IDto<Product> {
     private String name;
     private BigDecimal price;
 
-    ${t('dtos.code.comment_auto')}
+    ` + t('dtos.code.comment_auto') + `
 }
 `);
 
-const i18nCode = computed(() => `${t('dtos.code.comment_i18n')}
+const i18nCode = computed(() => `` + t('dtos.code.comment_i18n') + `
 @Override
 public void fromEntity(Product entity, String language) {
     IDto.super.fromEntity(entity, language);

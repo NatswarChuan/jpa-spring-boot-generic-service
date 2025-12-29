@@ -1,4 +1,4 @@
-import{u,e as i,c as g,o as b,a as t,t as a,f as r,b as n}from"./index-Dt1VOsda.js";import{_ as l}from"./CodeBlock-CkOxS9D9.js";const v={id:"dtos",class:"scroll-mt-20 mb-16"},_={class:"text-3xl font-bold text-slate-900 border-b pb-4 mb-8"},y={class:"text-slate-600 italic mb-6"},x={id:"dto-request",class:"mb-10 scroll-mt-24"},h={class:"text-xl font-bold text-slate-800 mb-3"},f=["innerHTML"],I={id:"dto-response",class:"mb-10 scroll-mt-24"},D={class:"text-xl font-bold text-slate-800 mb-3"},C=["innerHTML"],P=["innerHTML"],$={id:"dto-i18n",class:"mb-10 scroll-mt-24"},L={class:"text-xl font-bold text-slate-800 mb-3"},S=["innerHTML"],k={__name:"UsageSection",setup(B){const{t:o}=u(),d=i(()=>`package com.example.demo.dto.product;
+import{u,e as i,c as g,o as b,a as t,t as a,f as r,b as n}from"./index-CgjH2hXA.js";import{_ as l}from"./CodeBlock-CwfY0IEK.js";const v={id:"dtos",class:"scroll-mt-20 mb-16"},_={class:"text-3xl font-bold text-slate-900 border-b pb-4 mb-8"},y={class:"text-slate-600 italic mb-6"},x={id:"dto-request",class:"mb-10 scroll-mt-24"},h={class:"text-xl font-bold text-slate-800 mb-3"},f=["innerHTML"],I={id:"dto-response",class:"mb-10 scroll-mt-24"},D={class:"text-xl font-bold text-slate-800 mb-3"},C=["innerHTML"],P=["innerHTML"],L={id:"dto-i18n",class:"mb-10 scroll-mt-24"},S={class:"text-xl font-bold text-slate-800 mb-3"},B=["innerHTML"],M={__name:"UsageSection",setup(E){const{t:o}=u(),d=i(()=>`package com.example.demo.dto.product;
 
 import java.math.BigDecimal;
 import java.util.Set;
@@ -15,10 +15,10 @@ import lombok.Data;
 @Data
 public class ProductCreateReq implements IDto<Product> {
 
-    @NotBlank(message = "${o("validation_messages.product_name_required")}")
+    @NotBlank(message = "`+o("validation_messages.product_name_required")+`")
     private String name;
 
-    @DecimalMin(value = "0.0", message = "${o("validation_messages.product_price_non_negative")}")
+    @DecimalMin(value = "0.0", message = "`+o("validation_messages.product_price_non_negative")+`")
     private BigDecimal price;
 
     @Exists(entity = Brand.class)
@@ -30,12 +30,12 @@ public class ProductCreateReq implements IDto<Product> {
     @Exists(entity = Store.class)
     private Long storeId;
 
-    @IdsExist(entity = Category.class, message = "${o("validation_messages.product_categories_not_found")}")
+    @IdsExist(entity = Category.class, message = "`+o("validation_messages.product_categories_not_found")+`")
     private Set<Long> categoryIds;
 
     @Override
     public Product toEntity() {
-        ${o("dtos.code.comment_convert")}
+        `+o("dtos.code.comment_convert")+`
         Product product = new Product();
         BeanUtils.copyProperties(this, product, "categoryIds");
         if (this.categoryIds != null) {
@@ -73,12 +73,12 @@ public class ProductUpdateReq implements IDto<Product> {
     @Exists(entity = Store.class)
     private Long storeId;
 
-    @IdsExist(entity = Category.class, message = "${o("validation_messages.product_categories_not_found")}")
+    @IdsExist(entity = Category.class, message = "`+o("validation_messages.product_categories_not_found")+`")
     private Set<Long> categoryIds;
 
     @Override
     public Product updateEntity(Product entity) {
-        ${o("dtos.code.comment_update")}
+        `+o("dtos.code.comment_update")+`
         IDto.super.updateEntity(entity);
 
         if (this.categoryIds != null) {
@@ -103,12 +103,12 @@ public class ProductRes implements IDto<Product> {
     private String name;
     private BigDecimal price;
 
-    ${o("dtos.code.comment_auto")}
+    `+o("dtos.code.comment_auto")+`
 }
-`),p=i(()=>`${o("dtos.code.comment_i18n")}
+`),p=i(()=>""+o("dtos.code.comment_i18n")+`
 @Override
 public void fromEntity(Product entity, String language) {
     IDto.super.fromEntity(entity, language);
     // ...
 }
-`);return(e,s)=>(b(),g("section",v,[t("h2",_,a(e.$t("dtos.title")),1),t("p",y,a(e.$t("dtos.subtitle")),1),t("article",x,[t("h3",h,[s[0]||(s[0]=t("span",{class:"bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3"},"6.1",-1)),n(" "+a(e.$t("dtos.req.title")),1)]),t("p",{class:"text-slate-600 mb-3",innerHTML:e.$t("dtos.req.desc")},null,8,f),r(l,{filename:"ProductCreateReq.java",code:d.value},null,8,["code"]),r(l,{filename:"ProductUpdateReq.java",code:c.value},null,8,["code"])]),t("article",I,[t("h3",D,[s[1]||(s[1]=t("span",{class:"bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3"},"6.2",-1)),n(" "+a(e.$t("dtos.res.title")),1)]),t("p",{class:"text-slate-600 mb-3",innerHTML:e.$t("dtos.res.desc")},null,8,C),r(l,{filename:"ProductResponse.java",code:m.value},null,8,["code"]),t("div",{class:"bg-blue-50 border-l-4 border-blue-500 p-4 mb-4 mt-4 text-sm text-blue-800 shadow-sm",innerHTML:e.$t("dtos.res.tips")},null,8,P)]),t("article",$,[t("h3",L,[s[2]||(s[2]=t("span",{class:"bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3"},"6.3",-1)),n(" "+a(e.$t("dtos.i18n.title")),1)]),t("p",{class:"text-slate-600 mb-3",innerHTML:e.$t("dtos.i18n.desc")},null,8,S),r(l,{filename:"ProductResponse.java",code:p.value},null,8,["code"])])]))}};export{k as default};
+`);return(e,s)=>(b(),g("section",v,[t("h2",_,a(e.$t("dtos.title")),1),t("p",y,a(e.$t("dtos.subtitle")),1),t("article",x,[t("h3",h,[s[0]||(s[0]=t("span",{class:"bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3"},"6.1",-1)),n(" "+a(e.$t("dtos.req.title")),1)]),t("p",{class:"text-slate-600 mb-3",innerHTML:e.$t("dtos.req.desc")},null,8,f),r(l,{filename:"ProductCreateReq.java",code:d.value},null,8,["code"]),r(l,{filename:"ProductUpdateReq.java",code:c.value},null,8,["code"])]),t("article",I,[t("h3",D,[s[1]||(s[1]=t("span",{class:"bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3"},"6.2",-1)),n(" "+a(e.$t("dtos.res.title")),1)]),t("p",{class:"text-slate-600 mb-3",innerHTML:e.$t("dtos.res.desc")},null,8,C),r(l,{filename:"ProductResponse.java",code:m.value},null,8,["code"]),t("div",{class:"bg-blue-50 border-l-4 border-blue-500 p-4 mb-4 mt-4 text-sm text-blue-800 shadow-sm",innerHTML:e.$t("dtos.res.tips")},null,8,P)]),t("article",L,[t("h3",S,[s[2]||(s[2]=t("span",{class:"bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-3"},"6.3",-1)),n(" "+a(e.$t("dtos.i18n.title")),1)]),t("p",{class:"text-slate-600 mb-3",innerHTML:e.$t("dtos.i18n.desc")},null,8,B),r(l,{filename:"ProductResponse.java",code:p.value},null,8,["code"])])]))}};export{M as default};

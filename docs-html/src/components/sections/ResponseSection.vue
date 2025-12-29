@@ -79,16 +79,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class MyController { // ...
     
-    ${t('response_handling.code.comment_success')}
+    ` + t('response_handling.code.comment_success') + `
     @GetMapping("/{id}")
     public HttpApiResponse<ProductResponse> getDetail(@PathVariable Long id) {
         ProductResponse res = service.findById(id, ProductResponse.class);
         return HttpApiResponse.success(res); 
     }
 
-    ${t('response_handling.code.comment_manual_error')}
+    ` + t('response_handling.code.comment_manual_error') + `
     public HttpApiResponse<Void> handleError() {
-        return HttpApiResponse.error(${t('response_handling.code.msg_not_found')}, HttpStatus.NOT_FOUND);
+        return HttpApiResponse.error(` + t('response_handling.code.msg_not_found') + `, HttpStatus.NOT_FOUND);
     }
 }
 `);
@@ -108,10 +108,10 @@ public class CustomController { // ...
 
     @GetMapping
     public HttpApiResponse<PagedResponse<ProductResponse>> getList(Pageable pageable) {
-        ${t('response_handling.code.comment_call_service')}
+        ` + t('response_handling.code.comment_call_service') + `
         Page<ProductResponse> page = service.findAll(pageable, spec, ProductResponse.class);
         
-        ${t('response_handling.code.comment_wrap')}
+        ` + t('response_handling.code.comment_wrap') + `
         return HttpApiResponse.success(PagedResponse.of(page));
     }
 }
@@ -127,10 +127,10 @@ import org.springframework.stereotype.Service;
 public class UserService {
     
     public void deleteUser(Long id) {
-        ${t('response_handling.code.comment_throw')}
+        ` + t('response_handling.code.comment_throw') + `
         throw new HttpException(
             HttpStatus.NOT_FOUND, 
-            ${t('response_handling.code.msg_user_not_found')}
+            ` + t('response_handling.code.msg_user_not_found') + `
         );
     }
 }

@@ -75,7 +75,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProductRepository extends IRepository<Product, Long> {
-    ${t('quick_start.steps.repo.comment')}
+    ` + t('quick_start.steps.repo.comment') + `
 }`
   },
   'DTOs': {
@@ -85,21 +85,21 @@ public interface ProductRepository extends IRepository<Product, Long> {
     code: `import com.natswarchuan.genericservice.dto.IDto;
 import lombok.Data;
 
-${t('quick_start.steps.dto.comment_create')}
+` + t('quick_start.steps.dto.comment_create') + `
 @Data
 public class ProductCreateReq implements IDto<Product> {
     private String name;
     private Double price;
 }
 
-${t('quick_start.steps.dto.comment_update')}
+` + t('quick_start.steps.dto.comment_update') + `
 @Data
 public class ProductUpdateReq implements IDto<Product> {
     private String name;
     private Double price;
 }
 
-${t('quick_start.steps.dto.comment_res')}
+` + t('quick_start.steps.dto.comment_res') + `
 @Data
 public class ProductRes implements IDto<Product> {
     private Long id;
@@ -150,13 +150,13 @@ public class ProductController implements IController<Product, Long, ProductCrea
         return (S) service;
     }
 
-    ${t('quick_start.steps.controller.comment_summ')}
+    ` + t('quick_start.steps.controller.comment_summ') + `
     @Override
     public Class<? extends IDto<Product>> getResponseSummaryDtoClass() {
         return ProductRes.class;
     }
 
-    ${t('quick_start.steps.controller.comment_detail')}
+    ` + t('quick_start.steps.controller.comment_detail') + `
     @Override
     public Class<? extends IDto<Product>> getResponseDetailDtoClass() {
         return ProductRes.class;

@@ -9,7 +9,10 @@ const i18n = createI18n({
   messages: {
     en,
     vi
-  }
+  },
+  // Disable message compilation to prevent "${}" and "{}" syntax conflicts
+  messageCompiler: (msg) => (ctx) => msg,
+  escapeParameter: false
 })
 
 export default i18n

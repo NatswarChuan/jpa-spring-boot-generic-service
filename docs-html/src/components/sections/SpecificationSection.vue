@@ -82,7 +82,7 @@ import lombok.EqualsAndHashCode;
 public class ProductFilterParam extends BaseRequestParam {
     private Double minPrice;
     private Double maxPrice;
-    private String brandName; ${t('specification.code.comment_field_brand')}
+    private String brandName; ` + t('specification.code.comment_field_brand') + `
     // ...
 }
 `);
@@ -108,12 +108,12 @@ public class ProductSpecification extends GenericSpecification<Product> {
 
     @Override
     public Predicate toPredicate(Root<Product> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-        ${t('specification.code.comment_reuse')}
+        ` + t('specification.code.comment_reuse') + `
         Predicate basePredicate = super.toPredicate(root, query, cb);
         List<Predicate> predicates = new ArrayList<>();
         predicates.add(basePredicate);
 
-        ${t('specification.code.comment_price')}
+        ` + t('specification.code.comment_price') + `
         if (productParam.getMinPrice() != null) {
             predicates.add(cb.greaterThanOrEqualTo(root.get("price"), productParam.getMinPrice()));
         }
@@ -121,7 +121,7 @@ public class ProductSpecification extends GenericSpecification<Product> {
             predicates.add(cb.lessThanOrEqualTo(root.get("price"), productParam.getMaxPrice()));
         }
 
-        ${t('specification.code.comment_join')}
+        ` + t('specification.code.comment_join') + `
         if (productParam.getBrandName() != null && !productParam.getBrandName().isEmpty()) {
             Join<Product, Brand> brandJoin = root.join("brand", JoinType.INNER);
             predicates.add(cb.like(cb.lower(brandJoin.get("name")), 
@@ -151,11 +151,11 @@ public class ProductController implements IController<Product, Long, ProductCrea
         return service;
     }
 
-    ${t('specification.code.comment_override_spec')}
+    ` + t('specification.code.comment_override_spec') + `
     @Override
     public Specification<Product> getSpecification(BaseRequestParam requestParam) {
         if (requestParam instanceof ProductFilterParam param) {
-            ${t('specification.code.comment_return_spec')}
+            ` + t('specification.code.comment_return_spec') + `
             return new ProductSpecification(param);
         }
         return IController.super.getSpecification(requestParam);

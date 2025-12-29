@@ -238,8 +238,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.lang.NonNull;
 
 /**
- * ${t('service_layer.hooks.code_javadoc_desc')}
- * ${t('service_layer.hooks.code_javadoc_extends')}
+ * ` + t('service_layer.hooks.code_javadoc_desc') + `
+ * ` + t('service_layer.hooks.code_javadoc_extends') + `
  */
 @Service
 public class ProductService implements IService<Product, Long> {
@@ -259,7 +259,7 @@ public class ProductService implements IService<Product, Long> {
 
 const hookExampleCode = computed(() => `@Override
 public Product beforeCreate(Product entity) {
-    ${t('service_layer.hooks.code_comment_before')}
+    ` + t('service_layer.hooks.code_comment_before') + `
     if (entity.getPrice().compareTo(BigDecimal.valueOf(1000)) > 0) {
         entity.setPrice(entity.getPrice().multiply(BigDecimal.valueOf(0.9)));
     }
@@ -268,7 +268,7 @@ public Product beforeCreate(Product entity) {
 
 @Override
 public Product afterCreate(Product entity) {
-    ${t('service_layer.hooks.code_comment_after')}
+    ` + t('service_layer.hooks.code_comment_after') + `
     notificationService.send("New product added: " + entity.getName());
     return entity;
 }
