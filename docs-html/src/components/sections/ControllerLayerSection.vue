@@ -122,7 +122,6 @@
               <td class="p-3 font-mono text-orange-600">{{ $t('controller_layer.traits.table.update.title') }}</td>
               <td class="p-3 space-x-2">
                 <span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-xs font-bold">PUT /{id}</span>
-                <span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-xs font-bold">PATCH /{id}</span>
               </td>
               <td class="p-3 text-slate-600">{{ $t('controller_layer.traits.table.update.usecase') }}</td>
             </tr>

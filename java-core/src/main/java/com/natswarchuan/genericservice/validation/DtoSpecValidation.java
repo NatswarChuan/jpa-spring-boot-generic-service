@@ -10,24 +10,21 @@ import java.lang.annotation.Target;
 import org.springframework.data.jpa.domain.Specification;
 
 /**
- * Annotation validation ở mức class (Type Level) sử dụng {@link Specification}
- * để kiểm tra logic
+ * Annotation validation ở mức class (Type Level) sử dụng {@link Specification} để kiểm tra logic
  * phức tạp.
  *
- * <p>
- * Yêu cầu:
+ * <p>Yêu cầu:
+ *
  * <ul>
- * <li>Class được gán annotation phải implement
- * {@link com.natswarchuan.genericservice.dto.IDto}.
- * <li>Cần cung cấp một implementation của {@link SpecificationLoader} để xác
- * định logic query.
+ *   <li>Class được gán annotation phải implement {@link com.natswarchuan.genericservice.dto.IDto}.
+ *   <li>Cần cung cấp một implementation của {@link SpecificationLoader} để xác định logic query.
  * </ul>
  *
  * @author NatswarChuan
  */
 @Documented
 @Constraint(validatedBy = DtoSpecValidationValidator.class)
-@Target({ ElementType.TYPE })
+@Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DtoSpecValidation {
 
@@ -55,8 +52,7 @@ public @interface DtoSpecValidation {
   /**
    * Class implement {@link SpecificationLoader} để tạo query từ DTO.
    *
-   * <p>
-   * Logic tạo {@link Specification} sẽ nằm ở đây.
+   * <p>Logic tạo {@link Specification} sẽ nằm ở đây.
    *
    * @return Class của loader.
    */
@@ -64,15 +60,14 @@ public @interface DtoSpecValidation {
 
   /**
    * Xác định điều kiện hợp lệ dựa trên số lượng bản ghi tìm được.
+   *
    * <ul>
-   * <li><b>true</b> (Mặc định): Bắt buộc phải TỒN TẠI bản ghi (count > 0).</li>
-   * <li><b>false</b>: Bắt buộc KHÔNG ĐƯỢC tồn tại bản ghi (count == 0). Thường
-   * dùng để check
-   * trùng lặp (Unique).</li>
+   *   <li><b>true</b> (Mặc định): Bắt buộc phải TỒN TẠI bản ghi (count > 0).
+   *   <li><b>false</b>: Bắt buộc KHÔNG ĐƯỢC tồn tại bản ghi (count == 0). Thường dùng để check
+   *       trùng lặp (Unique).
    * </ul>
    *
-   * @return {@code true} nếu yêu cầu tồn tại, {@code false} nếu yêu cầu không tồn
-   *         tại.
+   * @return {@code true} nếu yêu cầu tồn tại, {@code false} nếu yêu cầu không tồn tại.
    */
   boolean mustExist() default true;
 }

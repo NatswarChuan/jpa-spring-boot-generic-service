@@ -8,11 +8,8 @@ import java.util.stream.Stream;
 /**
  * Lớp Validator implementation cho annotation {@link EnumValue}.
  *
- * <p>
- * Logic kiểm tra: So sánh giá trị chuỗi nhập vào với tên (name) của tất cả các
- * hằng số trong
- * Enum được chỉ định. Nếu trùng khớp (case-sensitive), giá trị được coi là hợp
- * lệ.
+ * <p>Logic kiểm tra: So sánh giá trị chuỗi nhập vào với tên (name) của tất cả các hằng số trong
+ * Enum được chỉ định. Nếu trùng khớp (case-sensitive), giá trị được coi là hợp lệ.
  *
  * @author NatswarChuan
  */
@@ -27,18 +24,15 @@ public class EnumValueValidator implements ConstraintValidator<EnumValue, CharSe
    */
   @Override
   public void initialize(EnumValue annotation) {
-    acceptedValues = Stream.of(annotation.enumClass().getEnumConstants())
-        .map(Enum::name)
-        .toList();
+    acceptedValues = Stream.of(annotation.enumClass().getEnumConstants()).map(Enum::name).toList();
   }
 
   /**
    * Thực hiện kiểm tra giá trị.
    *
-   * @param value   Giá trị cần kiểm tra (dưới dạng CharSequence).
+   * @param value Giá trị cần kiểm tra (dưới dạng CharSequence).
    * @param context Context validation.
-   * @return {@code true} nếu giá trị hợp lệ, {@code false} nếu không nằm trong
-   *         danh sách Enum.
+   * @return {@code true} nếu giá trị hợp lệ, {@code false} nếu không nằm trong danh sách Enum.
    */
   @Override
   public boolean isValid(CharSequence value, ConstraintValidatorContext context) {

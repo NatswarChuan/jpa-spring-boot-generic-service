@@ -9,8 +9,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation đảm bảo giá trị tham chiếu phải TỒN TẠI trong Database. Thường
- * dùng cho khóa ngoại
+ * Annotation đảm bảo giá trị tham chiếu phải TỒN TẠI trong Database. Thường dùng cho khóa ngoại
  * (Category ID, Role ID...).
  *
  * <pre>{@code
@@ -22,7 +21,7 @@ import java.lang.annotation.Target;
  */
 @Documented
 @Constraint(validatedBy = ExistsValidator.class)
-@Target({ ElementType.FIELD, ElementType.PARAMETER })
+@Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Exists {
 

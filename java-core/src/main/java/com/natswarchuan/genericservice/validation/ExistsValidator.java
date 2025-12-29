@@ -18,8 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 public class ExistsValidator implements ConstraintValidator<Exists, Object> {
 
-  @PersistenceContext
-  private EntityManager entityManager;
+  @PersistenceContext private EntityManager entityManager;
 
   private Class<?> entityClass;
   private String fieldName;
@@ -33,8 +32,7 @@ public class ExistsValidator implements ConstraintValidator<Exists, Object> {
   @Override
   @Transactional(readOnly = true)
   public boolean isValid(Object value, ConstraintValidatorContext context) {
-    if (value == null)
-      return true;
+    if (value == null) return true;
 
     CriteriaBuilder cb = entityManager.getCriteriaBuilder();
     CriteriaQuery<Long> query = cb.createQuery(Long.class);

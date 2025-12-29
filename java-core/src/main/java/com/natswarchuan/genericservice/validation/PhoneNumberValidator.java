@@ -6,13 +6,9 @@ import java.util.regex.Pattern;
 
 /**
  * Lớp Validator cho annotation {@link PhoneNumber}.
- * 
- * <p>
- * Kiểm tra chuỗi nhập vào có đúng định dạng số điện thoại quốc tế (9-15 số) hay
- * không.
  *
+ * <p>Kiểm tra chuỗi nhập vào có đúng định dạng số điện thoại quốc tế (9-15 số) hay không.
  *
- * 
  * @author NatswarChuan
  */
 public class PhoneNumberValidator implements ConstraintValidator<PhoneNumber, String> {

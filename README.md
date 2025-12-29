@@ -36,13 +36,13 @@ Available on **Maven Central**.
 <dependency>
     <groupId>io.github.natswarchuan</groupId>
     <artifactId>jpa-spring-boot-generic-service</artifactId>
-    <version>1.3.7</version>
+    <version>1.3.8</version>
 </dependency>
 ```
 
 ### Gradle
 ```groovy
-implementation 'io.github.natswarchuan:jpa-spring-boot-generic-service:1.3.7'
+implementation 'io.github.natswarchuan:jpa-spring-boot-generic-service:1.3.8'
 ```
 
 ---

@@ -7,8 +7,7 @@ import java.util.regex.Pattern;
 /**
  * Lớp Validator cho annotation {@link NoSpecialChars}.
  *
- * <p>
- * Sử dụng regex để kiểm tra chỉ chứa chữ cái, số và khoảng trắng.
+ * <p>Sử dụng regex để kiểm tra chỉ chứa chữ cái, số và khoảng trắng.
  *
  * @author NatswarChuan
  */

@@ -1,5 +1,6 @@
 package com.natswarchuan.genericservice.validation;
 
+import com.natswarchuan.genericservice.exception.HttpException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -12,24 +13,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import com.natswarchuan.genericservice.exception.HttpException;
-import org.springframework.http.HttpStatus;
 
 /**
  * Lớp Validator cho annotation {@link SpecValidation}.
  *
- * <p>
- * Thực hiện kiểm tra tính hợp lệ của một giá trị đơn lẻ (field hoặc parameter)
- * bằng cách sử dụng
+ * <p>Thực hiện kiểm tra tính hợp lệ của một giá trị đơn lẻ (field hoặc parameter) bằng cách sử dụng
  * {@link SpecificationLoader} để tạo ra truy vấn JPA Specification.
  *
- * <p>
- * Validator này thích hợp để kiểm tra các điều kiện phức tạp liên quan đến cơ
- * sở dữ liệu mà các
- * annotation validation đơn giản không đáp ứng được (ví dụ: kiểm tra sự tồn tại
- * có điều kiện, kiểm
+ * <p>Validator này thích hợp để kiểm tra các điều kiện phức tạp liên quan đến cơ sở dữ liệu mà các
+ * annotation validation đơn giản không đáp ứng được (ví dụ: kiểm tra sự tồn tại có điều kiện, kiểm
  * tra quan hệ...).
  *
  * @author NatswarChuan
@@ -38,11 +33,9 @@ import org.springframework.http.HttpStatus;
 @Component
 public class SpecValidationValidator implements ConstraintValidator<SpecValidation, Object> {
 
-  @PersistenceContext
-  private EntityManager entityManager;
+  @PersistenceContext private EntityManager entityManager;
 
-  @Autowired
-  private ApplicationContext applicationContext;
+  @Autowired private ApplicationContext applicationContext;
 
   private Class<?> entityClass;
   private Class<? extends SpecificationLoader<?, ?>> loaderClass;
@@ -63,14 +56,13 @@ public class SpecValidationValidator implements ConstraintValidator<SpecValidati
   /**
    * Kiểm tra tính hợp lệ của giá trị.
    *
-   * @param value   Giá trị cần kiểm tra.
+   * @param value Giá trị cần kiểm tra.
    * @param context Context validation.
-   * @return {@code true} nếu hợp lệ (hoặc null), {@code false} nếu không hợp lệ
-   *         hoặc có lỗi.
+   * @return {@code true} nếu hợp lệ (hoặc null), {@code false} nếu không hợp lệ hoặc có lỗi.
    */
   @Override
   @Transactional(readOnly = true)
-  @SuppressWarnings({ "unchecked" })
+  @SuppressWarnings({"unchecked"})
   public boolean isValid(Object value, ConstraintValidatorContext context) {
     if (value == null) {
       return true;
@@ -89,7 +81,8 @@ public class SpecValidationValidator implements ConstraintValidator<SpecValidati
       CriteriaQuery<Long> query = cb.createQuery(Long.class);
       Root<Object> root = (Root<Object>) query.from(entityClass);
       if (root == null) {
-        throw new HttpException(HttpStatus.INTERNAL_SERVER_ERROR,
+        throw new HttpException(
+            HttpStatus.INTERNAL_SERVER_ERROR,
             "Không thể tạo Root từ Entity: " + entityClass.getName());
       }
       Predicate predicate = ((Specification<Object>) spec).toPredicate(root, query, cb);
@@ -112,8 +105,13 @@ public class SpecValidationValidator implements ConstraintValidator<SpecValidati
       if (e instanceof HttpException) {
         throw (HttpException) e;
       }
-      log.error("Error executing SpecValidation for entity: {}, loader: {}, value: {}. Error: {}",
-          entityClass.getSimpleName(), loaderClass.getSimpleName(), value, e.getMessage(), e);
+      log.error(
+          "Error executing SpecValidation for entity: {}, loader: {}, value: {}. Error: {}",
+          entityClass.getSimpleName(),
+          loaderClass.getSimpleName(),
+          value,
+          e.getMessage(),
+          e);
       return false;
     }
   }
@@ -127,7 +125,8 @@ public class SpecValidationValidator implements ConstraintValidator<SpecValidati
   private SpecificationLoader<?, ?> getLoaderInstance() {
     Class<? extends SpecificationLoader<?, ?>> currentLoaderClass = this.loaderClass;
     if (currentLoaderClass == null) {
-      throw new HttpException(HttpStatus.INTERNAL_SERVER_ERROR,
+      throw new HttpException(
+          HttpStatus.INTERNAL_SERVER_ERROR,
           "Không thể khởi tạo SpecificationLoader: loaderClass is null");
     }
     try {
@@ -136,7 +135,9 @@ public class SpecValidationValidator implements ConstraintValidator<SpecValidati
       try {
         return loaderClass.getDeclaredConstructor().newInstance();
       } catch (Exception ex) {
-        throw new HttpException(HttpStatus.INTERNAL_SERVER_ERROR, ex,
+        throw new HttpException(
+            HttpStatus.INTERNAL_SERVER_ERROR,
+            ex,
             "Không thể khởi tạo SpecificationLoader: " + loaderClass.getName());
       }
     }

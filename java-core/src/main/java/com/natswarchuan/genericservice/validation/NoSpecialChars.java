@@ -11,14 +11,13 @@ import java.lang.annotation.Target;
 /**
  * Annotation để đảm bảo chuỗi không chứa ký tự đặc biệt.
  *
- * <p>
- * Chỉ cho phép chữ cái (a-z, A-Z), chữ số (0-9) và khoảng trắng.
+ * <p>Chỉ cho phép chữ cái (a-z, A-Z), chữ số (0-9) và khoảng trắng.
  *
  * @author NatswarChuan
  */
 @Documented
 @Constraint(validatedBy = NoSpecialCharsValidator.class)
-@Target({ ElementType.FIELD, ElementType.PARAMETER })
+@Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface NoSpecialChars {
 

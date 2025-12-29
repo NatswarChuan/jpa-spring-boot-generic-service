@@ -9,8 +9,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation đảm bảo danh sách các ID tham chiếu phải TỒN TẠI trong Database.
- * Thường dùng cho các
+ * Annotation đảm bảo danh sách các ID tham chiếu phải TỒN TẠI trong Database. Thường dùng cho các
  * trường danh sách khóa ngoại ({@code List<Long> categoryIds...}).
  *
  * <pre>{@code
@@ -22,7 +21,7 @@ import java.lang.annotation.Target;
  */
 @Documented
 @Constraint(validatedBy = IdsExistValidator.class)
-@Target({ ElementType.FIELD, ElementType.PARAMETER })
+@Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface IdsExist {
 

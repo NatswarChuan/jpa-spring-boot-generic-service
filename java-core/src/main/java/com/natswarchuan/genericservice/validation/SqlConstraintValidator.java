@@ -6,7 +6,7 @@ import jakarta.persistence.Query;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-
+import java.util.Map;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +14,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.HandlerMapping;
 
-
-import java.util.Map;
-
 /**
  * Validator cho {@link SqlConstraint}.
  *
- * <p>
- * Thực thi câu native SQL để kiểm tra tính hợp lệ. Hỗ trợ bind dependencies từ
+ * <p>Thực thi câu native SQL để kiểm tra tính hợp lệ. Hỗ trợ bind dependencies từ
  * HttpServletRequest (path, param, header).
  *
  * @author NatswarChuan
@@ -29,11 +25,9 @@ import java.util.Map;
 @Component
 public class SqlConstraintValidator implements ConstraintValidator<SqlConstraint, Object> {
 
-  @PersistenceContext
-  private EntityManager entityManager;
+  @PersistenceContext private EntityManager entityManager;
 
-  @Autowired
-  private HttpServletRequest request;
+  @Autowired private HttpServletRequest request;
 
   private String sql;
   private String valueParam;
@@ -89,15 +83,13 @@ public class SqlConstraintValidator implements ConstraintValidator<SqlConstraint
 
     for (String dep : dependencies) {
       String[] parts = dep.split(":", 2);
-      if (parts.length != 2)
-        continue;
+      if (parts.length != 2) continue;
 
       String sqlParam = parts[0].trim();
       String definition = parts[1].trim();
 
       String[] sourceParts = definition.split("/", 2);
-      if (sourceParts.length != 2)
-        continue;
+      if (sourceParts.length != 2) continue;
 
       String source = sourceParts[0].trim();
       String key = sourceParts[1].trim();
@@ -109,7 +101,7 @@ public class SqlConstraintValidator implements ConstraintValidator<SqlConstraint
     }
   }
 
-  @SuppressWarnings({ "unchecked"})
+  @SuppressWarnings({"unchecked"})
   private Object resolveValue(String source, String key, Object value) {
     switch (source.toLowerCase()) {
       case "param":
@@ -117,8 +109,7 @@ public class SqlConstraintValidator implements ConstraintValidator<SqlConstraint
       case "header":
         return request != null ? request.getHeader(key) : null;
       case "path":
-        if (request == null)
-          return null;
+        if (request == null) return null;
         Object pathVarsObj = request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
         if (pathVarsObj instanceof Map) {
           Map<String, String> pathVars = (Map<String, String>) pathVarsObj;
@@ -126,8 +117,7 @@ public class SqlConstraintValidator implements ConstraintValidator<SqlConstraint
         }
         return null;
       case "field":
-        if (value == null)
-          return null;
+        if (value == null) return null;
         try {
           BeanWrapper wrapper = new BeanWrapperImpl(value);
           if (key == null || key.isEmpty()) {

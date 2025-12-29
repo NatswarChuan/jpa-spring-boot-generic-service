@@ -7,20 +7,17 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
 /**
  * Validator cho {@link IdsExist}.
  *
- * <p>
- * Kiểm tra xem tất cả các ID trong danh sách/mảng có tồn tại trong database
- * không.
+ * <p>Kiểm tra xem tất cả các ID trong danh sách/mảng có tồn tại trong database không.
  *
  * @author NatswarChuan
  */
@@ -28,8 +25,7 @@ import java.util.Set;
 @Component
 public class IdsExistValidator implements ConstraintValidator<IdsExist, Object> {
 
-  @PersistenceContext
-  private EntityManager entityManager;
+  @PersistenceContext private EntityManager entityManager;
 
   private Class<?> entityClass;
   private String fieldName;
@@ -66,12 +62,10 @@ public class IdsExistValidator implements ConstraintValidator<IdsExist, Object> 
 
     Set<Object> uniqueIds = new HashSet<>();
     for (Object id : ids) {
-      if (id != null)
-        uniqueIds.add(id);
+      if (id != null) uniqueIds.add(id);
     }
 
-    if (uniqueIds.isEmpty())
-      return true;
+    if (uniqueIds.isEmpty()) return true;
 
     CriteriaBuilder cb = entityManager.getCriteriaBuilder();
     CriteriaQuery<Long> query = cb.createQuery(Long.class);
@@ -84,8 +78,12 @@ public class IdsExistValidator implements ConstraintValidator<IdsExist, Object> 
       Long count = entityManager.createQuery(query).getSingleResult();
       return count == uniqueIds.size();
     } catch (Exception e) {
-      log.error("Error validating IDs existence for entity: {}. IDs: {}. Error: {}",
-          entityClass.getSimpleName(), uniqueIds, e.getMessage(), e);
+      log.error(
+          "Error validating IDs existence for entity: {}. IDs: {}. Error: {}",
+          entityClass.getSimpleName(),
+          uniqueIds,
+          e.getMessage(),
+          e);
       return false;
     }
   }

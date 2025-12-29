@@ -13,16 +13,14 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Lớp Validator cho annotation {@link Unique}.
  *
- * <p>
- * Sử dụng {@link EntityManager} để truy vấn trực tiếp Database.
+ * <p>Sử dụng {@link EntityManager} để truy vấn trực tiếp Database.
  *
  * @author NatswarChuan
  */
 @Component
 public class UniqueValidator implements ConstraintValidator<Unique, Object> {
 
-  @PersistenceContext
-  private EntityManager entityManager;
+  @PersistenceContext private EntityManager entityManager;
 
   private Class<?> entityClass;
   private String fieldName;

@@ -11,16 +11,15 @@ import org.springframework.lang.Nullable;
 
 /**
  * Lớp cài đặt mặc định cho {@link Specification} để hỗ trợ tìm kiếm động.
- * <p>
- * Lớp này chuyển đổi các tham số từ {@link BaseRequestParam} thành các điều
- * kiện
- * truy vấn (Predicate) của JPA Criteria API.
- * <p>
- * Hỗ trợ các tính năng:
+ *
+ * <p>Lớp này chuyển đổi các tham số từ {@link BaseRequestParam} thành các điều kiện truy vấn
+ * (Predicate) của JPA Criteria API.
+ *
+ * <p>Hỗ trợ các tính năng:
+ *
  * <ul>
- * <li>Tìm kiếm theo từ khóa (like) trên một trường cụ thể.</li>
- * <li>Mặc định trả về điều kiện luôn đúng (conjunction) nếu không có tham số
- * tìm kiếm.</li>
+ *   <li>Tìm kiếm theo từ khóa (like) trên một trường cụ thể.
+ *   <li>Mặc định trả về điều kiện luôn đúng (conjunction) nếu không có tham số tìm kiếm.
  * </ul>
  *
  * @param <E> Kiểu thực thể (Entity).
@@ -28,51 +27,53 @@ import org.springframework.lang.Nullable;
  */
 public class GenericSpecification<E> implements Specification<E> {
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    /** Tham số yêu cầu chứa thông tin tìm kiếm. */
-    private final BaseRequestParam requestParam;
+  /** Tham số yêu cầu chứa thông tin tìm kiếm. */
+  private final BaseRequestParam requestParam;
 
-    /**
-     * Khởi tạo Specification với các tham số yêu cầu.
-     *
-     * @param requestParam Đối tượng chứa thông tin tìm kiếm (search, searchField).
-     */
-    public GenericSpecification(BaseRequestParam requestParam) {
-        this.requestParam = requestParam;
+  /**
+   * Khởi tạo Specification với các tham số yêu cầu.
+   *
+   * @param requestParam Đối tượng chứa thông tin tìm kiếm (search, searchField).
+   */
+  public GenericSpecification(BaseRequestParam requestParam) {
+    this.requestParam = requestParam;
+  }
+
+  /**
+   * Tạo Predicate (điều kiện lọc) dựa trên {@link BaseRequestParam}.
+   *
+   * @param root Root của truy vấn (đại diện cho bảng/Entity).
+   * @param query CriteriaQuery hiện tại (thường không dùng trong filter đơn giản).
+   * @param criteriaBuilder Builder để tạo các biểu thức Criteria.
+   * @return {@link Predicate} đại diện cho điều kiện lọc.
+   */
+  @Override
+  public Predicate toPredicate(
+      @NonNull Root<E> root,
+      @Nullable CriteriaQuery<?> query,
+      @NonNull CriteriaBuilder criteriaBuilder) {
+    if (requestParam.getSearch() == null
+        || requestParam.getSearch().isEmpty()
+        || requestParam.getSearchField() == null
+        || requestParam.getSearchField().isEmpty()) {
+      return criteriaBuilder.conjunction();
     }
 
-    /**
-     * Tạo Predicate (điều kiện lọc) dựa trên {@link BaseRequestParam}.
-     *
-     * @param root            Root của truy vấn (đại diện cho bảng/Entity).
-     * @param query           CriteriaQuery hiện tại (thường không dùng trong filter
-     *                        đơn giản).
-     * @param criteriaBuilder Builder để tạo các biểu thức Criteria.
-     * @return {@link Predicate} đại diện cho điều kiện lọc.
-     */
-    @Override
+    try {
+      Class<?> fieldType = root.get(requestParam.getSearchField()).getJavaType();
 
-    public Predicate toPredicate(@NonNull Root<E> root, @Nullable CriteriaQuery<?> query,
-            @NonNull CriteriaBuilder criteriaBuilder) {
-        if (requestParam.getSearch() == null || requestParam.getSearch().isEmpty() ||
-                requestParam.getSearchField() == null || requestParam.getSearchField().isEmpty()) {
-            return criteriaBuilder.conjunction();
-        }
+      if (fieldType != null && String.class.isAssignableFrom(fieldType)) {
+        return criteriaBuilder.like(
+            criteriaBuilder.lower(root.get(requestParam.getSearchField()).as(String.class)),
+            "%" + requestParam.getSearch().toLowerCase() + "%");
+      }
 
-        try {
-            Class<?> fieldType = root.get(requestParam.getSearchField()).getJavaType();
+      return criteriaBuilder.conjunction();
 
-            if (fieldType != null && String.class.isAssignableFrom(fieldType)) {
-                return criteriaBuilder.like(
-                        criteriaBuilder.lower(root.get(requestParam.getSearchField()).as(String.class)),
-                        "%" + requestParam.getSearch().toLowerCase() + "%");
-            }
-
-            return criteriaBuilder.conjunction();
-
-        } catch (IllegalArgumentException e) {
-            return criteriaBuilder.conjunction();
-        }
+    } catch (IllegalArgumentException e) {
+      return criteriaBuilder.conjunction();
     }
+  }
 }

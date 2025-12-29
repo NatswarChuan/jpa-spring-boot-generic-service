@@ -11,8 +11,7 @@ import java.lang.annotation.Target;
 /**
  * Annotation để đảm bảo giá trị của field là duy nhất trong Database.
  *
- * <p>
- * Ví dụ:
+ * <p>Ví dụ:
  *
  * <pre>{@code
  * @Unique(entity = User.class, field = "email", message = "Email đã tồn tại")
@@ -23,7 +22,7 @@ import java.lang.annotation.Target;
  */
 @Documented
 @Constraint(validatedBy = UniqueValidator.class)
-@Target({ ElementType.FIELD, ElementType.PARAMETER })
+@Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Unique {
 

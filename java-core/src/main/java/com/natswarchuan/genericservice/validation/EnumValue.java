@@ -9,17 +9,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation dùng để xác thực giá trị của trường hoặc tham số phải nằm trong
- * tập hợp các hằng số
+ * Annotation dùng để xác thực giá trị của trường hoặc tham số phải nằm trong tập hợp các hằng số
  * của một Enum cụ thể.
  *
- * <p>
- * Hữu ích khi bạn nhận dữ liệu dưới dạng String hoặc Integer nhưng muốn đảm bảo
- * nó map chính xác
+ * <p>Hữu ích khi bạn nhận dữ liệu dưới dạng String hoặc Integer nhưng muốn đảm bảo nó map chính xác
  * vào một giá trị Enum trong hệ thống.
  *
- * <p>
- * Ví dụ sử dụng:
+ * <p>Ví dụ sử dụng:
  *
  * <pre>{@code
  * @EnumValue(enumClass = Status.class, message = "Status không hợp lệ")
@@ -30,7 +26,7 @@ import java.lang.annotation.Target;
  */
 @Documented
 @Constraint(validatedBy = EnumValueValidator.class)
-@Target({ ElementType.FIELD, ElementType.PARAMETER })
+@Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface EnumValue {
 
